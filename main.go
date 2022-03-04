@@ -30,7 +30,12 @@ func main() {
 	})
 	r.GET("/cloud-image", func(c *gin.Context){
 		c.HTML(http.StatusOK, "cloud-image.html", gin.H{
-			"title": "海芯导航",
+			"title": "海芯云图",
+		})
+	})
+	r.GET("/cloud-HOS", func(c *gin.Context){
+		c.HTML(http.StatusOK, "cloud-HOS.html", gin.H{
+			"title": "海芯存储",
 		})
 	})
 	r.POST("/home", new(Nav).home)

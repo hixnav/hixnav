@@ -103,7 +103,9 @@
 				</el-col>
 				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
 					style="float:right" text-color="#303133" active-text-color="#909399">
-
+					<el-menu-item index="2">
+						海芯存储
+					</el-menu-item>
 					<el-menu-item index="3">
 						海芯云图
 					</el-menu-item>
@@ -204,13 +206,16 @@
 			methods: {
 				handleSelect(key, keyPath) {
 					console.log(key, keyPath);
+					if (key == 2) {
+						location.href = "./cloud-HOS"
+					}
 					if (key == 3) {
 						location.href = "./cloud-image"
 					}
 					if (key == 4) {
 						location.href = "https://wennmu.github.io"
 					}
-					if (key == 10 &&　keyPath == "2-1") {
+					if (key == "2-1") {
 						location.href = "./add-link"
 					}
 					
