@@ -1,0 +1,10 @@
+package main
+
+var sql = "
+CREATE TABLE IF NOT EXISTS `navs`(
+   `id` INT UNSIGNED AUTO_INCREMENT,
+   `name` VARCHAR(255) NOT NULL,
+   `desc` VARCHAR(255) NOT NULL,
+   `url` VARCHAR(255) NOT NULL,
+   PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;"

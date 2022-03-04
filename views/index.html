@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{[{.title}]}</title>
+		<!-- import CSS -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<style>
+			.time {
+				font-size: 13px;
+				color: #999;
+			}
+
+			.bottom {
+				margin-top: 13px;
+				line-height: 12px;
+			}
+
+			.button {
+				padding: 0;
+				float: right;
+			}
+
+			.image {
+				width: 100%;
+				display: block;
+			}
+
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+
+			.clearfix:after {
+				clear: both
+			}
+
+			.page {
+
+				margin: 0px;
+				padding: 0px;
+			}
+
+			.bg-banner {
+				width: 100%;
+				height: 20rem;
+				background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg") no-repeat center center;
+				background-color: #56CCF2;
+				/* fallback for old browsers */
+				background-color: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);
+				/* Chrome 10-25, Safari 5.1-6 */
+				background-color: linear-gradient(to right, #2F80ED, #56CCF2);
+				/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+				background-size: cover;
+			}
+
+			div[v-cloak] {
+				display: none
+			}
+
+			.footer {
+
+				text-align: center width: 100%;
+				height: 6rem;
+				background: #212930;
+				box-sizing: border-box;
+				color: #6c7d8f;
+			}
+
+			.footer .copy {
+				text-align: center;
+				font-size: 14px;
+				font-weight: 700;
+			}
+
+			.footer .footer-section {
+				marign: 0;
+				padding: 0;
+				height: 2rem
+			}
+		</style>
+	</head>
+	<body class="page">
+		<div id="app" v-cloak>
+			<el-row :span="24">
+				<el-col :span="4">
+					<a href="/" style="text-decoration:none;color:#000">
+						<div style="padding:0 10px 0 30px;float:left;align:center">
+							<el-avatar style="margin-top: 10px" :size="50"
+								src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+							</el-avatar>
+						</div>
+						<div style="line-height:68px;font-weight:800;font-size:20px;padding:0  30px;">
+							<span>{[{.title}]}</span>
+						</div>
+					</a>
+
+				</el-col>
+				<el-col :span="6" style="padding:14px 10px 0 30px;float:left;align:center">
+					<el-input placeholder="搜索关键词" v-model="searchVal" class="input-with-select">
+						<el-button slot="append" icon="el-icon-search"></el-button>
+				</el-col>
+				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+					style="float:right" text-color="#303133" active-text-color="#909399">
+
+					<el-menu-item index="3">
+						海芯云图
+					</el-menu-item>
+					<el-menu-item index="4">
+						我的博客
+					</el-menu-item>
+					<el-submenu index="10">
+						<template slot="title">我的</template>
+						<el-menu-item index="2-1">添加导航</el-menu-item>
+						<el-menu-item index="2-2">添加文链</el-menu-item>
+					</el-submenu>
+					<el-menu-item>
+						登陆
+					</el-menu-item>
+
+				</el-menu>
+
+			</el-row>
+			<div class="bg-banner">
+
+				<el-row :gutter="16" style="margin-left: 0px; margin-right: 0px;">
+					<el-col :span="6" style="padding:0 30px;">
+						<div style="height:20rem;padding: '20px 0';background-color: rgba(100, 100, 100, 0.2);">
+							<el-row>
+								<el-col :span="8" v-for="(c, index) in cates" :key="c"
+									style="color:#FFF;font-size:14px;padding:20px 0;text-align:center"><span
+										@click="goAnchor('#anchor' + c.Cate)">{{c.Catename}}</span></el-col>
+							</el-row>
+						</div>
+					</el-col>
+				</el-row>
+			</div>
+			<div class="line"></div>
+			<div>
+				<el-row v-for="(c, index) in cates">
+					<section :id="'anchor' + c.Cate" style="padding-left:30px">
+						<h3>{{c.Catename}}</h3>
+					</section>
+					<el-col :span="6" v-for="(o, index) in navs[c.Cate]" :key="o" style="padding: 30px;">
+						<el-card :body-style="{ padding: '0px' }">
+							<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image"> -->
+							<div style="padding: 14px;">
+								<el-row :gutter="16">
+									<el-col :span="5">
+										<el-avatar style="background-color:#FFF" :src="o.Logo"></el-avatar>
+									</el-col>
+									<el-col :span="15">
+										<span>{{o.Name}}</span>
+										<div class="bottom clearfix">
+											<time class="time">{{ o.Desc }}</time>
+
+										</div>
+									</el-col>
+									<el-col :span="4">
+
+										<div class="bottom clearfix">
+
+											<el-button icon="" size="small" round class="button" @click="jumpTo(o.Url)">
+												访问</el-button>
+										</div>
+									</el-col>
+
+								</el-row>
+
+							</div>
+						</el-card>
+					</el-col>
+				</el-row>
+			</div>
+			<div class="footer">
+
+				<el-row class="footer-section"></el-row>
+				<el-row :gutter="24" class="footer-section" style="line-height:2rem;margin:0;padding:0">
+					<div class='copy'> Power By HaiXinNav ©2202 海芯导航 v1.10.2 </div>
+				</el-row>
+				<el-row class="footer-section"></el-row>
+
+			</div>
+		</div>
+	</body>
+	<!-- import Vue before Element -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+	<!-- import JavaScript -->
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+		new Vue({
+			el: '#app',
+			data: function() {
+				return {
+					searchVal: "",
+					activeIndex: '1',
+					activeIndex2: '1',
+					"navs": [],
+					"cates": []
+				}
+			},
+			methods: {
+				handleSelect(key, keyPath) {
+					console.log(key, keyPath);
+					if (key == 3) {
+						location.href = "./cloud-image"
+					}
+					if (key == 4) {
+						location.href = "https://wennmu.github.io"
+					}
+					if (key == 10 &&　keyPath == "2-1") {
+						location.href = "./add-link"
+					}
+					
+				},
+				jumpTo(url) {
+					//this.$router.push({path:url}); 
+					location.href = url
+				},
+				goAnchor(selector) {
+					document.querySelector(selector).scrollIntoView({
+						behavior: "smooth",
+						block: "center",
+						inline: "nearest"
+					});
+				}
+			},
+			created: function() {
+				let self = this
+				axios.post('/home')
+					.then(function(response) {
+						console.log(response);
+						self.navs = response.data.navs
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+				axios.post('/cates')
+					.then(function(response) {
+						console.log(response);
+						self.cates = response.data.cates
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			}
+		})
+	</script>
+</html>
