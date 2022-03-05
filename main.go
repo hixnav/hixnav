@@ -17,6 +17,7 @@ var (
 func main() {
 	r := gin.Default()
 	r.Delims("{[{", "}]}")
+	 r.Static("/statics", "./statics")
 	r.LoadHTMLGlob("views/*")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
