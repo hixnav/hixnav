@@ -1,256 +1,296 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="shortcut icon" href="./statics/favicon.ico" type="image/x-icon"/>
-		<title>{[{.title}]}</title>
-		<!-- import CSS -->
-		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-		<style>
-			.time {
-				font-size: 13px;
-				color: #999;
-			}
 
-			.bottom {
-				margin-top: 13px;
-				line-height: 12px;
-			}
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="./statics/favicon.ico" type="image/x-icon" />
+	<title>{[{.title}]}</title>
+	<!-- import CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<style>
+		.time {
+			font-size: 13px;
+			color: #999;
+		}
 
-			.button {
-				padding: 0;
-				float: right;
-			}
+		.bottom {
+			margin-top: 10px;
+			line-height: 12px;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 
-			.image {
-				width: 100%;
-				display: block;
-			}
+		.bottom time {
+			font-size: 12px;
+		}
 
-			.clearfix:before,
-			.clearfix:after {
-				display: table;
-				content: "";
-			}
+		.bottom .el-button {
+			font-size: 12px;
+		}
 
-			.clearfix:after {
-				clear: both
-			}
+		.button {
+			padding: 0;
+			float: right;
+		}
 
-			.page {
+		.image {
+			width: 100%;
+			display: block;
+		}
 
-				margin: 0px;
-				padding: 0px;
-			}
+		.clearfix:before,
+		.clearfix:after {
+			display: table;
+			content: "";
+		}
 
-			.bg-banner {
-				width: 100%;
-				height: 20rem;
-				background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg") no-repeat center center;
-				background-color: #56CCF2;
-				/* fallback for old browsers */
-				background-color: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);
-				/* Chrome 10-25, Safari 5.1-6 */
-				background-color: linear-gradient(to right, #2F80ED, #56CCF2);
-				/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-				background-size: cover;
-			}
+		.clearfix:after {
+			clear: both
+		}
 
-			div[v-cloak] {
-				display: none
-			}
+		.page {
 
-			.footer {
+			margin: 0px;
+			padding: 0px;
+		}
 
-				text-align: center width: 100%;
-				height: 6rem;
-				background: #212930;
-				box-sizing: border-box;
-				color: #6c7d8f;
-			}
+		.bg-banner {
+			width: 100%;
+			height: 20rem;
+			background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg") no-repeat center center;
+			background-color: #56CCF2;
+			/* fallback for old browsers */
+			background-color: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);
+			/* Chrome 10-25, Safari 5.1-6 */
+			background-color: linear-gradient(to right, #2F80ED, #56CCF2);
+			/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background-size: cover;
+		}
 
-			.footer .copy {
-				text-align: center;
-				font-size: 14px;
-				font-weight: 700;
-			}
+		div[v-cloak] {
+			display: none
+		}
 
-			.footer .footer-section {
-				marign: 0;
-				padding: 0;
-				height: 2rem
-			}
-		</style>
-	</head>
-	<body class="page">
-		<div id="app" v-cloak>
-			<el-row :span="24">
-				<el-col :span="8">
-					<a href="/" style="text-decoration:none;color:#000">
-						<div style="padding:0 10px 0 30px;float:left;align:center;">
-							<div style="width:162px;height:38px;padding-top: 10px;margin-top: 10px;background-image: url(/statics/img/logo.png);background-size: cover;"></div>
+		.footer {
+
+			text-align: center width: 100%;
+			height: 6rem;
+			background: #212930;
+			box-sizing: border-box;
+			color: #6c7d8f;
+		}
+
+		.footer .copy {
+			text-align: center;
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		.footer .footer-section {
+			marign: 0;
+			padding: 0;
+			height: 2rem
+		}
+
+		.linked-title {
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		.backup {
+			height: 100%;
+			width: 100%;
+			background-color: #FFF;
+			box-shadow: 0 0 6px rgba(0, 0, 0, .12);
+			text-align: center;
+			line-height: 40px;
+			border-radius: 3px;
+			color: #1989fa;
+		}
+	</style>
+</head>
+
+<body class="page">
+	<div id="app" v-cloak>
+		<el-row :span="24">
+			<el-col :span="6">
+				<a href="/" style="text-decoration:none;color:#000">
+					<div style="padding:0 10px 0 30px;float:left;align:center;">
+						<div
+							style="width:132px;height:30px;padding-top: 12px;margin-top: 10px;background-image: url(/statics/img/logo.png);background-size: cover;">
 						</div>
-						<div style="line-height:68px;font-weight:800;font-size:28px;padding:0  60px;color: #333333">
-							<span>{[{.title}]}</span>
-						</div>
-					</a>
+					</div>
+					<div style="line-height:60px;font-weight:800;font-size:20px;padding:0  60px;color: #333333">
+						<span>{[{.title}]}</span>
+					</div>
+				</a>
 
+			</el-col>
+			<el-col :span="6" style="padding:14px 10px 0 30px;float:left;">
+				<el-input placeholder="搜索关键词" v-model="searchVal" class="input-with-select">
+					<el-button slot="append" icon="el-icon-search"></el-button>
+			</el-col>
+			<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+				style="float:right" text-color="#303133" active-text-color="#909399">
+				<el-menu-item index="1">
+					文链
+				</el-menu-item>
+				<el-menu-item index="2">
+					云存储
+				</el-menu-item>
+				<el-menu-item index="3">
+					云图
+				</el-menu-item>
+				<el-menu-item index="4">
+					云笔记
+				</el-menu-item>
+				<el-submenu index="10">
+					<template slot="title">我的</template>
+					<el-menu-item index="2-0">博客</el-menu-item>
+					<el-menu-item index="2-1">添加导航</el-menu-item>
+					<el-menu-item index="2-2">添加文链</el-menu-item>
+				</el-submenu>
+				<el-menu-item>
+					登陆
+				</el-menu-item>
+
+			</el-menu>
+
+		</el-row>
+		<div class="bg-banner">
+
+			<el-row :gutter="16" style="margin-left: 0px; margin-right: 0px;">
+				<el-col :span="6" style="padding:0 30px;">
+					<div style="height:20rem;padding: '20px 0';background-color: rgba(100, 100, 100, 0.2);">
+						<el-row>
+							<el-col :span="8" v-for="(c, index) in cates" :key="c"
+								style="color:#FFF;font-size:14px;padding:20px 0;text-align:center"><span
+									@click="goAnchor('#anchor' + c.Cate)">{{c.Catename}}</span></el-col>
+						</el-row>
+					</div>
 				</el-col>
-				<el-col :span="6" style="padding:14px 10px 0 30px;float:left;align:center">
-					<el-input placeholder="搜索关键词" v-model="searchVal" class="input-with-select">
-						<el-button slot="append" icon="el-icon-search"></el-button>
-				</el-col>
-				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-					style="float:right" text-color="#303133" active-text-color="#909399">
-					<el-menu-item index="2">
-						海芯文链
-					</el-menu-item>
-					<el-menu-item index="2">
-						海芯存储
-					</el-menu-item>
-					<el-menu-item index="3">
-						海芯云图
-					</el-menu-item>
-					<el-submenu index="10">
-						<template slot="title">我的</template>
-						<el-menu-item index="2-0">博客</el-menu-item>
-						<el-menu-item index="2-1">添加导航</el-menu-item>
-						<el-menu-item index="2-2">添加文链</el-menu-item>
-					</el-submenu>
-					<el-menu-item>
-						登陆
-					</el-menu-item>
-
-				</el-menu>
-
 			</el-row>
-			<div class="bg-banner">
-
-				<el-row :gutter="16" style="margin-left: 0px; margin-right: 0px;">
-					<el-col :span="6" style="padding:0 30px;">
-						<div style="height:20rem;padding: '20px 0';background-color: rgba(100, 100, 100, 0.2);">
-							<el-row>
-								<el-col :span="8" v-for="(c, index) in cates" :key="c"
-									style="color:#FFF;font-size:14px;padding:20px 0;text-align:center"><span
-										@click="goAnchor('#anchor' + c.Cate)">{{c.Catename}}</span></el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-			</div>
-			<div class="line"></div>
-			<div>
-				<el-row v-for="(c, index) in cates">
-					<section :id="'anchor' + c.Cate" style="padding-left:30px">
-						<h3>{{c.Catename}}</h3>
-					</section>
-					<el-col :span="6" v-for="(o, index) in navs[c.Cate]" :key="o" style="padding: 30px;">
-						<el-card :body-style="{ padding: '0px' }">
-							<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image"> -->
-							<div style="padding: 14px;">
-								<el-row :gutter="16">
-									<el-col :span="5">
-										<el-avatar style="background-color:#FFF" :src="o.Logo"></el-avatar>
-									</el-col>
-									<el-col :span="15">
-										<span>{{o.Name}}</span>
-										<div class="bottom clearfix">
-											<time class="time">{{ o.Desc }}</time>
-
-										</div>
-									</el-col>
-									<el-col :span="4">
-
-										<div class="bottom clearfix">
-
-											<el-button icon="" size="small" round class="button" @click="jumpTo(o.Url)">
-												访问</el-button>
-										</div>
-									</el-col>
-
-								</el-row>
-
-							</div>
-						</el-card>
-					</el-col>
-				</el-row>
-			</div>
-			<div class="footer">
-
-				<el-row class="footer-section"></el-row>
-				<el-row :gutter="24" class="footer-section" style="line-height:2rem;margin:0;padding:0">
-					<div class='copy'> Power By <a href="https://hixnav.github.io/" style="text-decoration: none;color: #6c7d8f;">HaiXinNav</a> ©2202 海芯导航 v1.10.2 </div>
-				</el-row>
-				<el-row class="footer-section"></el-row>
-
-			</div>
 		</div>
-	</body>
-	<!-- import Vue before Element -->
-	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-	<!-- import JavaScript -->
-	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script>
-		new Vue({
-			el: '#app',
-			data: function() {
-				return {
-					searchVal: "",
-					activeIndex: '1',
-					activeIndex2: '1',
-					"navs": [],
-					"cates": []
-				}
-			},
-			methods: {
-				handleSelect(key, keyPath) {
-					console.log(key, keyPath);
-					if (key == 2) {
-						location.href = "./cloud-HOS"
-					}
-					if (key == 3) {
-						location.href = "./cloud-image"
-					}
-					if (key == "2-0") {
-						location.href = "https://wennmu.github.io"
-					}
-					if (key == "2-1") {
-						location.href = "./add-link"
-					}
-					
-				},
-				jumpTo(url) {
-					//this.$router.push({path:url}); 
-					location.href = url
-				},
-				goAnchor(selector) {
-					document.querySelector(selector).scrollIntoView({
-						behavior: "smooth",
-						block: "center",
-						inline: "nearest"
-					});
-				}
-			},
-			created: function() {
-				let self = this
-				axios.post('/home')
-					.then(function(response) {
-						console.log(response);
-						self.navs = response.data.navs
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
-				axios.post('/cates')
-					.then(function(response) {
-						console.log(response);
-						self.cates = response.data.cates
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+		<div class="line"></div>
+		<div>
+			<el-row v-for="(c, index) in cates">
+				<section :id="'anchor' + c.Cate" style="padding-left:30px">
+					<h3>{{c.Catename}}</h3>
+				</section>
+				<el-col :span="6" v-for="(o, index) in navs[c.Cate]" :key="o" style="padding: 30px;">
+					<el-card :body-style="{ padding: '0px' }">
+						<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image"> -->
+						<div style="padding: 14px;">
+							<el-row :gutter="20">
+								<el-col :span="5">
+									<el-avatar style="background-color:#FFF" :src="o.Logo"></el-avatar>
+								</el-col>
+								<el-col :span="12">
+									<div class="linked-title">{{o.Name}}</div>
+									<div class="bottom clearfix">
+										<time class="time">{{ o.Desc }}</time>
+
+									</div>
+								</el-col>
+								<el-col :span="7">
+
+									<div class="bottom clearfix">
+
+										<el-button icon="" size="small" round class="button" @click="jumpTo(o.Url)">
+											访问</el-button>
+									</div>
+								</el-col>
+
+							</el-row>
+
+						</div>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<el-backtop>
+			<div class="backup">
+				<i class="el-icon-arrow-up"></i>	
+			</div>
+		</el-backtop>
+		<div class="footer">
+
+			<el-row class="footer-section"></el-row>
+			<el-row :gutter="24" class="footer-section" style="line-height:2rem;margin:0;padding:0">
+				<div class='copy'> Power By <a href="https://hixnav.github.io/"
+						style="text-decoration: none;color: #6c7d8f;">HixNav</a> ©2202 海芯导航 v1.10.2 </div>
+			</el-row>
+			<el-row class="footer-section"></el-row>
+
+		</div>
+	</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#app',
+		data: function () {
+			return {
+				searchVal: "",
+				activeIndex: '1',
+				activeIndex2: '1',
+				"navs": [],
+				"cates": []
 			}
-		})
-	</script>
+		},
+		methods: {
+			handleSelect(key, keyPath) {
+				console.log(key, keyPath);
+				if (key == 2) {
+					location.href = "./cloud-HOS"
+				}
+				if (key == 3) {
+					location.href = "./cloud-image"
+				}
+				if (key == "2-0") {
+					location.href = "https://wennmu.github.io"
+				}
+				if (key == "2-1") {
+					location.href = "./add-link"
+				}
+
+			},
+			jumpTo(url) {
+				//this.$router.push({path:url}); 
+				location.href = url
+			},
+			goAnchor(selector) {
+				document.querySelector(selector).scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+					inline: "nearest"
+				});
+			}
+		},
+		created: function () {
+			let self = this
+			axios.post('/home')
+				.then(function (response) {
+					console.log(response);
+					self.navs = response.data.navs
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			axios.post('/cates')
+				.then(function (response) {
+					console.log(response);
+					self.cates = response.data.cates
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		}
+	})
+</script>
+
 </html>
