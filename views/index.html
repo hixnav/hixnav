@@ -49,7 +49,6 @@
 		}
 
 		.page {
-
 			margin: 0px;
 			padding: 0px;
 		}
@@ -218,7 +217,9 @@
 			<el-row class="footer-section"></el-row>
 			<el-row :gutter="24" class="footer-section" style="line-height:2rem;margin:0;padding:0">
 				<div class='copy'> Power By <a href="https://hixnav.github.io/"
-						style="text-decoration: none;color: #6c7d8f;">HixNav</a> ©2202 海芯导航 v1.10.2 </div>
+						style="text-decoration: none;color: #c0c0c0;">HixNav</a> ©2202 海芯导航 v1.10.2  
+						<a href="https://github.com/hixnav/hixnav.github.com/blob/main/README.md" style="text-decoration: none;color: #c0c0c0" target="_blank">捐赠</a>
+					</div>
 			</el-row>
 			<el-row class="footer-section"></el-row>
 
@@ -227,6 +228,7 @@
 </body>
 <!-- import Vue before Element -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://unpkg.com/vue-router@4"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -244,19 +246,27 @@
 		},
 		methods: {
 			handleSelect(key, keyPath) {
-				console.log(key, keyPath);
+				if (key == 1) {
+					location.href = "./article"
+				}
 				if (key == 2) {
 					location.href = "./cloud-HOS"
 				}
 				if (key == 3) {
 					location.href = "./cloud-image"
 				}
+				if (key == 4) {
+                    location.href = "./docs"
+                }
 				if (key == "2-0") {
 					location.href = "https://wennmu.github.io"
 				}
 				if (key == "2-1") {
 					location.href = "./add-link"
 				}
+				if (key == "2-2") {
+                    location.href = "./article?dialog"
+                }
 
 			},
 			jumpTo(url) {

@@ -1,111 +1,117 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>{[{.title}]}</title>
   <!-- import CSS -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <style>
-     .time {
-    font-size: 13px;
-    color: #999;
-  }
-  
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
+    .time {
+      font-size: 13px;
+      color: #999;
+    }
 
-  .button {
-    padding: 0;
-    float: right;
-  }
+    .bottom {
+      margin-top: 13px;
+      line-height: 12px;
+    }
 
-  .image {
-    width: 100%;
-    display: block;
-  }
+    .button {
+      padding: 0;
+      float: right;
+    }
 
-  .clearfix:before,
-  .clearfix:after {
+    .image {
+      width: 100%;
+      display: block;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
       display: table;
       content: "";
-  }
-  
-  .clearfix:after {
+    }
+
+    .clearfix:after {
       clear: both
-  }
+    }
   </style>
 </head>
+
 <body>
   <div id="app">
-   <el-row :span="24">
-		<el-col :span="6">
-			<a href="/" style="text-decoration:none;color:#000"><div style="padding:0 10px 0 30px;float:left;align:center">
-					<el-avatar style="margin-top: 10px" :size="50" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"></el-avatar>
-			</div>
-			<div style="line-height:68px;font-weight:800;font-size:26px;padding:0  30px;">
-					<span >{[{.title}]}</span>	
-			</div>
-			</a>
-			
-		</el-col>
-		
-		
-		<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" style="float:right"   text-color="#303133" active-text-color="#909399">
-			
-			 <el-submenu index="10">
-				<template slot="title">我的</template>
-				<el-menu-item index="2-1">添加导航</el-menu-item>
-				<el-menu-item index="2-2">添加文链</el-menu-item>
-			  </el-submenu>
-			<el-menu-item>
-				登陆
-			</el-menu-item>
-        
-		</el-menu>
-		
-	</el-row>
-	
-     <div style="padding-top:20px">
-	 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="标题" prop="name">
-    <el-input type="input" v-model="ruleForm.name" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="图标" prop="logo">
-    <el-input type="input" v-model="ruleForm.logo" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="简述" prop="desc">
-    <el-input type="input" v-model="ruleForm.desc" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="地址" prop="url">
-    <el-input type="input" v-model="ruleForm.url" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="分类ID" prop="cate">
-    <el-input type="number" v-model="ruleForm.cate" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="分类名称" prop="catename">
-    <el-input type="input" v-model="ruleForm.catename" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-    <el-button @click="resetForm('ruleForm')">重置</el-button>
-  </el-form-item>
-</el-form>
-	 </div>
-     
+    <el-row :span="24">
+      <el-col :span="6">
+        <a href="/" style="text-decoration:none;color:#000">
+          <div style="padding:0 10px 0 30px;float:left;align:center">
+            <el-avatar style="margin-top: 10px" :size="50"
+              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+            </el-avatar>
+          </div>
+          <div style="line-height:68px;font-weight:800;font-size:26px;padding:0  30px;">
+            <span>{[{.title}]}</span>
+          </div>
+        </a>
+
+      </el-col>
+
+
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+        style="float:right" text-color="#303133" active-text-color="#909399">
+
+        <el-submenu index="10">
+          <template slot="title">我的</template>
+          <el-menu-item index="2-1">添加导航</el-menu-item>
+          <el-menu-item index="2-2">添加文链</el-menu-item>
+        </el-submenu>
+        <el-menu-item>
+          登陆
+        </el-menu-item>
+
+      </el-menu>
+
+    </el-row>
+
+    <div style="padding-top:20px">
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="标题" prop="name">
+          <el-input type="input" v-model="ruleForm.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="图标" prop="logo">
+          <el-input type="input" v-model="ruleForm.logo" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="简述" prop="desc">
+          <el-input type="input" v-model="ruleForm.desc" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="url">
+          <el-input type="input" v-model="ruleForm.url" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="分类ID" prop="cate">
+          <el-input type="number" v-model="ruleForm.cate" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="分类名称" prop="catename">
+          <el-input type="input" v-model="ruleForm.catename" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
   </div>
 </body>
-  <!-- import Vue before Element -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <!-- import JavaScript -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    new Vue({
-      el: '#app',
-      data: function() {
-        var checkAge = (rule, value, callback) => {
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: function () {
+      var checkAge = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('年龄不能为空'));
         }
@@ -140,17 +146,17 @@
           callback();
         }
       };
-	  return {
-		searchVal:"",
-		activeIndex: '1',
+      return {
+        searchVal: "",
+        activeIndex: '1',
         activeIndex2: '1',
         ruleForm: {
           name: '',
-		  desc: '',
+          desc: '',
           url: '',
           logo: '',
-		  cate:0,
-		  catename:''
+          cate: 0,
+          catename: ''
         },
         rules: {
           pass: [
@@ -164,28 +170,28 @@
           ]
         }
       };
-      }
-      ,
-	  components:{
+    }
+    ,
+    components: {
 
-	  },
+    },
     methods: {
-	handleSelect(key, keyPath) {
+      handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-           console.log(this.ruleForm)
-			this.ruleForm.cate = parseInt(this.ruleForm.cate)
+            console.log(this.ruleForm)
+            this.ruleForm.cate = parseInt(this.ruleForm.cate)
             axios.post('/addLink', JSON.stringify(this.ruleForm))
-                .then(function (response) {
-                    console.log(response);
-                    self.navs = response.data.navs
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+              .then(function (response) {
+                console.log(response);
+                self.navs = response.data.navs
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
           } else {
             console.log('error submit!!');
             return false;
@@ -196,17 +202,18 @@
         this.$refs[formName].resetFields();
       }
     },
-      created:function(){
-            let self = this
-            axios.post('/home')
-                .then(function (response) {
-                    console.log(response);
-                    self.navs = response.data.navs
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-      }
-    })
-  </script>
+    created: function () {
+      let self = this
+      axios.post('/home')
+        .then(function (response) {
+          console.log(response);
+          self.navs = response.data.navs
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  })
+</script>
+
 </html>
