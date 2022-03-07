@@ -37,6 +37,24 @@
       </el-row>
     </div>
     <div class="line"></div>
+     <el-row :gutter="16" style="margin:0;width:98%;margin:0 auto">
+        <div
+          style="margin:20px 20px;box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.12); padding: 20px"
+        >
+          <el-descriptions
+            class="margin-top"
+            title=""
+            :colon="false"
+            column="10"
+          >
+            <template slot="extra"> </template>
+            <el-descriptions-item v-for="o in quikList" :key="o">
+              <!-- <i class="el-icon-search"></i> -->
+              <el-link href="o.href" target="_blank">{{o.name}}</el-link>
+            </el-descriptions-item>
+          </el-descriptions>
+        </div>
+      </el-row>
     <div>
       <el-row v-for="c in cates" :key="c">
         <section :id="'anchor' + c.Cate" style="padding-left: 30px">
@@ -104,6 +122,40 @@ export default {
       activeIndex1: "1",
       navs: [],
       cates: [],
+      quikList: [
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+        {
+          href:'https://www.baidu.com',
+          name:'百度一下'
+        },
+      ],
     };
   },
   methods: {
