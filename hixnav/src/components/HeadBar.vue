@@ -58,6 +58,11 @@
               >添加文链</router-link
             ></el-menu-item
           >
+          <el-menu-item index="2-2"
+            ><router-link to="/settting"
+              >设置中心</router-link
+            ></el-menu-item
+          >
         </el-submenu>
         <el-menu-item> 登陆 </el-menu-item>
       </el-menu>
