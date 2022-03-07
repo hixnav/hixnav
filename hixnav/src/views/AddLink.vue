@@ -135,15 +135,20 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      self = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
           this.ruleForm.cate = parseInt(this.ruleForm.cate);
           this.axios
-            .post("/addLink", JSON.stringify(this.ruleForm))
+            .post("/api/addLink", JSON.stringify(this.ruleForm))
             .then(function (response) {
               console.log(response);
-              self.navs = response.data.navs;
+              self.$notify({
+                title: "成功",
+                message: "手动刷新页面查看",
+                type: "success",
+              });
             })
             .catch(function (error) {
               console.log(error);
