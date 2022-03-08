@@ -204,7 +204,7 @@ export default {
       var url = this.form.url;
       var urlArr = url.split("/");
       var hostname = urlArr[2];
-      this.form.logo = "http://" + hostname + "/favicon.ico";
+      this.form.logo = urlArr[0] + "//" + hostname + "/favicon.ico";
       this.form.type = parseInt(this.form.type);
       console.log(this.form);
 
