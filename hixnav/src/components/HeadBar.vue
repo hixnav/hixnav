@@ -44,9 +44,9 @@
         <el-menu-item index="3">
           <router-link to="/cloud-image">云图</router-link>
         </el-menu-item>
-        <el-menu-item index="4">
+        <!-- <el-menu-item index="4">
           <router-link to="/docs">云笔记</router-link>
-        </el-menu-item>
+        </el-menu-item> -->
         <el-submenu index="10">
           <template slot="title">我的</template>
           <el-menu-item index="2-0">博客</el-menu-item>

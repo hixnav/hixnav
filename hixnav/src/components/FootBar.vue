@@ -54,7 +54,7 @@ export default {
   background: #212930;
   box-sizing: border-box;
   color: #6c7d8f;
-  position: fixed;
+  position: absolute;
   left: 0;
   bottom: 0;
   z-index: 9999;

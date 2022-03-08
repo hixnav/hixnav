@@ -50,7 +50,7 @@
             <template slot="extra"> </template>
             <el-descriptions-item v-for="o in quikList" :key="o">
               <!-- <i class="el-icon-search"></i> -->
-              <el-link href="o.href" target="_blank">{{o.name}}</el-link>
+              <el-link :href="o.href" target="_blank">{{o.name}}</el-link>
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -125,35 +125,15 @@ export default {
       quikList: [
         {
           href:'https://www.baidu.com',
-          name:'百度一下'
+          name:'百度'
         },
         {
-          href:'https://www.baidu.com',
-          name:'百度一下'
+          href:'https://fanyi.baidu.com/',
+          name:'百度翻译'
         },
         {
-          href:'https://www.baidu.com',
-          name:'百度一下'
-        },
-        {
-          href:'https://www.baidu.com',
-          name:'百度一下'
-        },
-        {
-          href:'https://www.baidu.com',
-          name:'百度一下'
-        },
-        {
-          href:'https://www.baidu.com',
-          name:'百度一下'
-        },
-        {
-          href:'https://www.baidu.com',
-          name:'百度一下'
-        },
-        {
-          href:'https://www.baidu.com',
-          name:'百度一下'
+          href:'https://note.youdao.com/',
+          name:'有道云笔记'
         },
       ],
     };
