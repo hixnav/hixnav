@@ -20,12 +20,12 @@
         </a>
       </el-col>
       <el-col :span="6" style="padding: 14px 10px 0 30px; float: left">
-        <el-input
+        <!-- <el-input
           placeholder="搜索关键词"
           :value="searchVal"
           class="input-with-select"
         />
-        <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-button slot="append" icon="el-icon-search"></el-button> -->
       </el-col>
       <el-menu
         :default-active="activeIndex"
@@ -36,7 +36,7 @@
         active-text-color="#909399"
       >
         <el-menu-item index="1">
-          <router-link to="/article">文链</router-link>
+          <router-link to="/article">云链</router-link>
         </el-menu-item>
         <el-menu-item index="2">
           <router-link to="/cloud-HOS">云存储</router-link>
@@ -47,24 +47,19 @@
         <!-- <el-menu-item index="4">
           <router-link to="/docs">云笔记</router-link>
         </el-menu-item> -->
-        <el-submenu index="10">
-          <template slot="title">我的</template>
-          <el-menu-item index="2-0">博客</el-menu-item>
-          <el-menu-item index="2-1"
+        <!-- <el-submenu index="10"> -->
+          <!-- <template slot="title">我的</template> -->
+          <!-- <el-menu-item index="2-0">博客</el-menu-item> -->
+          <!-- <el-menu-item index="2-1"
             ><router-link to="/add-link">添加导航</router-link></el-menu-item
-          >
-          <el-menu-item index="2-2"
-            ><router-link to="/article?dialog"
-              >添加文链</router-link
-            ></el-menu-item
-          >
-          <el-menu-item index="2-2"
+          > -->
+          <!-- <el-menu-item index="2-2"
             ><router-link to="/settting"
               >设置中心</router-link
             ></el-menu-item
-          >
-        </el-submenu>
-        <el-menu-item> 登陆 </el-menu-item>
+          > -->
+        <!-- </el-submenu> -->
+        <!-- <el-menu-item> 登陆 </el-menu-item> -->
       </el-menu>
     </el-row>
   </div>

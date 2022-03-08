@@ -19,6 +19,10 @@
             <i class="el-icon-folder"></i>
             <span slot="title">文件</span>
           </el-menu-item>
+           <el-menu-item index="4">
+            <i class="el-icon-folder"></i>
+            <span slot="title">笔记</span>
+          </el-menu-item>
           <el-menu-item index="4">
             <i class="el-icon-folder"></i>
             <span slot="title">脑图</span>
@@ -61,7 +65,7 @@
         </el-main>
       </el-container>
     </el-container>
-    <FootBar />
+    <!-- <FootBar /> -->
   </div>
 </template>
 
@@ -82,4 +86,7 @@ export default {
 </script>
 
 <style scoped>
+.cloud-hos{
+  min-height: 100vh;
+}
 </style>

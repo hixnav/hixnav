@@ -43,10 +43,10 @@ export default {
   margin: 0;
   padding: 0;
 }
-.footer-copy {
+/* .footer-copy {
   width: 100%;
   height: 4rem;
-}
+} */
 .footer {
   text-align: center;
   width: 100%;
@@ -54,9 +54,6 @@ export default {
   background: #212930;
   box-sizing: border-box;
   color: #6c7d8f;
-  position: absolute;
-  left: 0;
-  bottom: 0;
   z-index: 9999;
 }
 .footer-section-middle {

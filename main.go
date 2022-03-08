@@ -141,7 +141,7 @@ func (s *Cate) list(c *gin.Context){
 // 文链操作
 type Article struct{
 	Id int64
-	Type int64 `json:"Type, int"`
+	Type int64 `json:"Type, string"`
 	Catename string
 	Name string
 	Logo string

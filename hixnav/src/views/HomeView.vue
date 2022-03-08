@@ -100,6 +100,11 @@
         </el-col>
       </el-row>
     </div>
+    <!-- 悬浮按钮 -->
+    <div class="" style="position:fixed;right:40px;bottom:108px;"> 
+      <router-link to="/add-link"><el-button type="primary" icon="el-icon-edit" circle></el-button></router-link>
+    </div>
+    <!-- 悬浮按钮结束 -->
     <FootBar />
   </div>
 </template>
@@ -123,6 +128,10 @@ export default {
       navs: [],
       cates: [],
       quikList: [
+        {
+          href:'https://wennmu.github.io/',
+          name:'我的博客'
+        },
         {
           href:'https://www.baidu.com',
           name:'百度'

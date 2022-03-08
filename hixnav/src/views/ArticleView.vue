@@ -16,26 +16,11 @@
         <section style="">
           <h3>文档</h3>
         </section>
-        <el-col :span="24" style="padding: 20px 0">
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Golang相关</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Linux相关</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Nginx</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Mysql</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >JavaScript</el-link
-          >
+        <!-- <el-col :span="24" style="padding: 20px 0">
           <el-link href="https://element.eleme.io" target="_blank"
             >Element</el-link
           >
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row :gutter="20">
         <div
@@ -45,7 +30,7 @@
             class="margin-top"
             title=""
             :colon="false"
-            column="3"
+            column="12"
           >
             <template slot="extra"> </template>
             <el-descriptions-item v-for="o in docLinks" :key="o">
@@ -56,18 +41,20 @@
         </div>
       </el-row>
       <el-row class="el-row" :gutter="20">
-        <section style="">
+        <el-col :span="2" style="">
           <h3>链接</h3>
-        </section>
-        <el-col :span="24" style="padding: 20px 0">
-          <el-link
-            v-for="o in linkCates"
-            :key="o"
-            href="#"
-            @click="findlinks(o.Catename)"
-            target="_blank"
-            >{{ o.Catename }}</el-link
-          >
+        </el-col>
+        <el-col :span="20" style="padding: 20px 0">
+          <el-row :gutter="20">
+            <el-button
+              size="small"
+              round
+              v-for="o in linkCates"
+              :key="o"
+              style="display: inline; margin: 0 20px"
+              >{{ o.Catename }}</el-button
+            >
+          </el-row>
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -78,11 +65,10 @@
             class="margin-top"
             title=""
             :colon="false"
-            column="3"
+            column="12"
           >
             <template slot="extra"> </template>
             <el-descriptions-item v-for="o in commonLinks" :key="o">
-              <i class="el-icon-search"></i>
               <el-link :href="o.Url" target="_blank">{{ o.Name }}</el-link>
             </el-descriptions-item>
           </el-descriptions>
@@ -90,6 +76,17 @@
       </el-row>
     </div>
     <!-- 这里内容结束 -->
+    <!-- 悬浮按钮 -->
+    <!-- <div class=""   >  -->
+    <el-button
+      style="position: fixed; right: 40px; bottom: 108px; z-index: 9999"
+      type="primary"
+      icon="el-icon-edit"
+      circle
+      @click="openAddDrawer"
+    ></el-button>
+    <!-- </div> -->
+    <!-- 悬浮按钮结束 -->
     <!-- 这里是弹出层 -->
     <div class="drawer">
       <el-drawer
@@ -101,6 +98,19 @@
       >
         <div class="demo-drawer__content" style="padding: 30px">
           <el-form :model="form">
+            <el-form-item label="类别" :label-width="formLabelWidth">
+              <el-select v-model="form.type" placeholder="类别">
+                <el-option label="文档" value=2></el-option>
+                <el-option label="链接" value=1></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="标签" :label-width="formLabelWidth">
+              <el-input
+                id="linked_label"
+                v-model="form.catename"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
             <el-form-item label="名称" :label-width="formLabelWidth">
               <el-input
                 id="linked_name"
@@ -110,9 +120,8 @@
             </el-form-item>
             <el-form-item label="地址" :label-width="formLabelWidth">
               <el-input
-                id="linked_addr"
-                v-model="form.addr"
-                autocomplete="off"
+                id="linked_url"
+                v-model="form.url"
               ></el-input>
             </el-form-item>
           </el-form>
@@ -124,7 +133,8 @@
       </el-drawer>
     </div>
     <!-- 这里弹出层结束 -->
-    <FootBar />
+
+    <!-- <FootBar /> -->
   </div>
 </template>
 
@@ -143,36 +153,53 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       // 链接
-      linkCates:[
+      linkCates: [
         {
-          Catename:'办公',
+          Catename: "办公",
         },
         {
-          Catename:'博文',
-        }
+          Catename: "博文",
+        },
       ],
-      docLinks:[],
-      commonLinks:[],
+      docLinks: [],
+      commonLinks: [],
       // 弹出层控制
       dialog: false,
       formLabelWidth: "80px",
       form: {
         name: "",
-        addr: "",
+        type: 1,
+        url: "",
       },
     };
   },
-  method: {
+  methods: {
+    openAddDrawer() {
+      console.log("drawer");
+      this.dialog = true;
+    },
     cancelForm() {
       this.dialog = false;
-      clearTimeout(this.timer);
     },
     linkedSubmit() {
+      var url = this.form.url;
+      var urlArr = url.split("/");
+      var hostname = urlArr[2];
+      this.form.logo = hostname + "/favicon.ico";
+      this.form.type = parseInt(this.form.type)
+      console.log(this.form)
+
+      self = this;
       this.axios
-        .post("/addArticleLink", JSON.stringify(this.form))
+        .post("/api/addArticleLink", JSON.stringify(this.form))
         .then(function (response) {
           console.log(response);
-          this.$refs.drawer.closeDrawer();
+          self.dialog = false;
+          self.$notify({
+                title: "成功",
+                message: "手动刷新页面查看",
+                type: "success",
+              });
         })
         .catch(function (error) {
           console.log(error);
@@ -180,26 +207,26 @@ export default {
     },
   },
   created() {
-    self = this
-      this.axios
-        .post("/api/article", {Type: 2})
-        .then(function (response) {
-          console.log(response);
-          self.docLinks = response.data.links
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        this.axios
-        .post("/api/article", {Type: 1, Catename:'常用'})
-        .then(function (response) {
-          console.log(response);
-          self.commonLinks = response.data.links
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-    },
+    self = this;
+    this.axios
+      .post("/api/article", { Type: 2 })
+      .then(function (response) {
+        console.log(response);
+        self.docLinks = response.data.links;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    this.axios
+      .post("/api/article", { Type: 1, Catename: "常用" })
+      .then(function (response) {
+        console.log(response);
+        self.commonLinks = response.data.links;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
 };
 </script>
 
@@ -209,7 +236,6 @@ export default {
 }
 
 .main > .el-row {
-  display: inline-block;
   margin: 20px 0;
 }
 .bg-banner {

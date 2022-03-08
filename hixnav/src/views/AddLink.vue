@@ -65,7 +65,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <FootBar />
+    <!-- <FootBar /> -->
   </div>
 </template>
 
@@ -167,4 +167,7 @@ export default {
 </script>
 
 <style scoped>
+.add-link{
+  /* height: 1000px; */
+}
 </style>

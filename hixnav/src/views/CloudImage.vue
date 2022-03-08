@@ -57,7 +57,7 @@
         </el-col>
       </el-row>
     </section>
-    <FootBar />
+    <!-- <FootBar /> -->
   </div>
 </template>
 
@@ -102,6 +102,9 @@ export default {
 </script>
 
 <style scoped>
+.cloud-image{
+  min-height: 100vh;
+}
 .ci-main {
   margin: 4rem 0;
   text-align: center;
