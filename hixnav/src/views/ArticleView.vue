@@ -173,12 +173,12 @@ export default {
       activeIndex2: "1",
       // 链接
       linkCates: [
-        {
-          Catename: "办公",
-        },
-        {
-          Catename: "博文",
-        },
+        // {
+        //   Catename: "办公",
+        // },
+        // {
+        //   Catename: "博文",
+        // },
       ],
       docLinks: [],
       commonLinks: [],

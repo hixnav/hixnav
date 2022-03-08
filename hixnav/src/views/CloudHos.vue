@@ -9,21 +9,18 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
-          default-active="1-4-1"
+          :default-active="param.active"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          :collapse="isCollapse"
         >
-          <el-menu-item index="4">
+          <el-menu-item index="1">
             <i class="el-icon-folder"></i>
             <span slot="title">文件</span>
           </el-menu-item>
-           <el-menu-item index="4">
+          <el-menu-item index="2">
             <i class="el-icon-folder"></i>
             <span slot="title">笔记</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="3">
             <i class="el-icon-folder"></i>
             <span slot="title">脑图</span>
           </el-menu-item>
@@ -31,7 +28,7 @@
             <i class="el-icon-folder"></i>
             <span slot="title">视频</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="5">
             <i class="el-icon-folder"></i>
             <span slot="title">图片</span>
           </el-menu-item>
@@ -43,21 +40,14 @@
       </el-aside>
       <el-container>
         <el-header>
-          <el-row :span="24">
-            <el-menu
-              :default-active="activeIndex"
-              class="el-menu-demo"
-              mode="horizontal"
-              @select="handleSelect"
-              text-color="#303133"
-              active-text-color="#909399"
-            >
-              <el-submenu index="10">
-                <template slot="title">节点</template>
-                <el-menu-item index="2-1">TeCentCOS</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </el-row>
+          <el-upload
+            class="upload-demo"
+            action="/api/uploadIO"
+            :data="param"
+            show-file-list="false"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-header>
         <el-main>
           <!-- 操作 -->
@@ -79,14 +69,18 @@ export default {
     FootBar,
   },
   data: function () {
-    return [];
+    return {
+      param:{
+        active:"1", //默认上传文件类型
+      }
+    };
   },
   method: {},
 };
 </script>
 
 <style scoped>
-.cloud-hos{
+.cloud-hos {
   min-height: 100vh;
 }
 </style>

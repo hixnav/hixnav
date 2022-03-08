@@ -15,7 +15,7 @@
               color: #333333;
             "
           >
-            <span>{{ title }}</span>
+            <!-- <span>{{ title }}</span> -->
           </div>
         </a>
       </el-col>
@@ -36,12 +36,15 @@
         active-text-color="#909399"
       >
         <el-menu-item index="1">
-          <router-link to="/article">云链</router-link>
+          <router-link to="/">导航</router-link>
         </el-menu-item>
         <el-menu-item index="2">
-          <router-link to="/cloud-HOS">云存储</router-link>
+          <router-link to="/article">快链</router-link>
         </el-menu-item>
         <el-menu-item index="3">
+          <router-link to="/cloud-HOS">云存储</router-link>
+        </el-menu-item>
+        <el-menu-item index="4">
           <router-link to="/cloud-image">云图</router-link>
         </el-menu-item>
         <!-- <el-menu-item index="4">
