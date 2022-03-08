@@ -59,6 +59,7 @@ func main() {
 		api.POST("/addLink", new(Nav).addLink)
 
 		// 文链
+		api.POST("/article", new(Article).list)
 		// api.POST("/addArticleLink", new(Article).addArticleLink)
 
 		// 云图
@@ -140,26 +141,47 @@ func (s *Cate) list(c *gin.Context){
 // 文链操作
 type Article struct{
 	Id int64
-	Typename string `json:"Typename, string"`
+	Type string `json:"Type, string"`
 	Catename string
 	Name string
+	Logo string
 	Url string
 }
 
-func (s *Nav) addArticleLink(c *gin.Context){
-// var nav Nav
-// if err := c.ShouldBindJSON(&nav); err != nil {
-// 	log.Println(err.Error())
-// 	 c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
-// 	 return
-//   }
+func (s *Nav) list(c *gin.Context) {
+	var req Article
+	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Println(err.Error())
+	 	c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+	 	returnC
+  }
+	var articles []Article
+	_ = db.Table("links").Where("type = ?", req.Type).Where("catename = ?", req.Catename).Find(&articles)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"links": articles,
+	})
+}
 
-//  result := db.Table("navs").Create(&nav)
-//  if result.Error != nil {
-// 	c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
-// 	 return
-//  }
-//  c.JSON(http.StatusOK, map[string]interface{}{
-// 	"code": 0,
-// })
+func (s *Article) addArticleLink(c *gin.Context){
+	var req Article
+	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+		return
+	}
+	data := Article{
+		Type : req.Type,
+		Catename : req.Catename,
+		Name :req.Name,
+		Logo :req.Logo,
+		Url: req.Url,
+	}
+	result := db.Table("links").Create(&nav)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
+	})
 }
