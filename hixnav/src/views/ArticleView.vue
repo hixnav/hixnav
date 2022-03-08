@@ -237,7 +237,7 @@ export default {
         console.log(error);
       });
     this.axios
-      .post("/api/article", { Type: 1, Catename: "常用" })
+      .post("/api/article", { Type: 1, Catename: "" })
       .then(function (response) {
         console.log(response);
         self.commonLinks = response.data.links;
