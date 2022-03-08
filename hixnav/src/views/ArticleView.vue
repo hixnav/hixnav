@@ -30,12 +30,22 @@
             class="margin-top"
             title=""
             :colon="false"
-            column="12"
+            column="4"
           >
             <template slot="extra"> </template>
             <el-descriptions-item v-for="o in docLinks" :key="o">
-              <!-- <i class="el-icon-search"></i> -->
-              <el-link :href="o.Url" target="_blank">{{ o.Name }}</el-link>
+              <el-link :href="o.Url" target="_blank">
+                <el-avatar
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    margin: 0 10px;
+                    background-color: #fff;
+                  "
+                  :src="o.Logo"
+                  size="small"
+                ></el-avatar>
+                {{ o.Name }}</el-link>
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -65,11 +75,23 @@
             class="margin-top"
             title=""
             :colon="false"
-            column="12"
+            column="4"
           >
             <template slot="extra"> </template>
             <el-descriptions-item v-for="o in commonLinks" :key="o">
-              <el-link :href="o.Url" target="_blank">{{ o.Name }}</el-link>
+              <el-link :href="o.Url" target="_blank">
+                <el-avatar
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    margin: 0 10px;
+                    background-color: #fff;
+                  "
+                  :src="o.Logo"
+                  size="small"
+                ></el-avatar>
+                {{ o.Name }}</el-link
+              >
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -100,8 +122,8 @@
           <el-form :model="form">
             <el-form-item label="类别" :label-width="formLabelWidth">
               <el-select v-model="form.type" placeholder="类别">
-                <el-option label="文档" value=2></el-option>
-                <el-option label="链接" value=1></el-option>
+                <el-option label="文档" value="2"></el-option>
+                <el-option label="链接" value="1"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="标签" :label-width="formLabelWidth">
@@ -119,10 +141,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="地址" :label-width="formLabelWidth">
-              <el-input
-                id="linked_url"
-                v-model="form.url"
-              ></el-input>
+              <el-input id="linked_url" v-model="form.url"></el-input>
             </el-form-item>
           </el-form>
           <div class="demo-drawer__footer" style="float: right">
@@ -185,9 +204,9 @@ export default {
       var url = this.form.url;
       var urlArr = url.split("/");
       var hostname = urlArr[2];
-      this.form.logo = hostname + "/favicon.ico";
-      this.form.type = parseInt(this.form.type)
-      console.log(this.form)
+      this.form.logo = "http://" + hostname + "/favicon.ico";
+      this.form.type = parseInt(this.form.type);
+      console.log(this.form);
 
       self = this;
       this.axios
@@ -196,10 +215,10 @@ export default {
           console.log(response);
           self.dialog = false;
           self.$notify({
-                title: "成功",
-                message: "手动刷新页面查看",
-                type: "success",
-              });
+            title: "成功",
+            message: "手动刷新页面查看",
+            type: "success",
+          });
         })
         .catch(function (error) {
           console.log(error);
@@ -251,4 +270,5 @@ export default {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-size: cover;
 }
+
 </style>
