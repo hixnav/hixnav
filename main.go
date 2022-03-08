@@ -60,7 +60,7 @@ func main() {
 
 		// 文链
 		api.POST("/article", new(Article).list)
-		// api.POST("/addArticleLink", new(Article).addArticleLink)
+		api.POST("/addArticleLink", new(Article).addArticleLink)
 
 		// 云图
 		api.POST("/upload", cmd.UploadFile)
@@ -141,22 +141,26 @@ func (s *Cate) list(c *gin.Context){
 // 文链操作
 type Article struct{
 	Id int64
-	Type string `json:"Type, string"`
+	Type int64 `json:"Type, int"`
 	Catename string
 	Name string
 	Logo string
 	Url string
 }
 
-func (s *Nav) list(c *gin.Context) {
+func (s *Article) list(c *gin.Context) {
 	var req Article
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
 	 	c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
-	 	returnC
+	 	return
   }
 	var articles []Article
-	_ = db.Table("links").Where("type = ?", req.Type).Where("catename = ?", req.Catename).Find(&articles)
+	dbimpl := db.Table("links").Where("type = ?", req.Type).Find(&articles)
+	if req.Catename != "" {
+		dbimpl = dbimpl.Where("catename = ?", req.Catename)
+	}
+	dbimpl.Find(&articles)
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"links": articles,
 	})
@@ -176,7 +180,7 @@ func (s *Article) addArticleLink(c *gin.Context){
 		Logo :req.Logo,
 		Url: req.Url,
 	}
-	result := db.Table("links").Create(&nav)
+	result := db.Table("links").Create(&data)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return

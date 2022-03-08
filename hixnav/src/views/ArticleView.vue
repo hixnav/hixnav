@@ -48,11 +48,9 @@
             column="3"
           >
             <template slot="extra"> </template>
-            <el-descriptions-item v-for="i in 20" :key="i">
-              <i class="el-icon-search"></i>
-              <el-link href="https://element.eleme.io" target="_blank"
-                >百度一下</el-link
-              >
+            <el-descriptions-item v-for="o in docLinks" :key="o">
+              <!-- <i class="el-icon-search"></i> -->
+              <el-link :href="o.Url" target="_blank">{{ o.Name }}</el-link>
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -62,23 +60,13 @@
           <h3>链接</h3>
         </section>
         <el-col :span="24" style="padding: 20px 0">
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Golang相关</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Linux相关</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Nginx</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Mysql</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >JavaScript</el-link
-          >
-          <el-link href="https://element.eleme.io" target="_blank"
-            >Element</el-link
+          <el-link
+            v-for="o in linkCates"
+            :key="o"
+            href="#"
+            @click="findlinks(o.Catename)"
+            target="_blank"
+            >{{ o.Catename }}</el-link
           >
         </el-col>
       </el-row>
@@ -93,11 +81,9 @@
             column="3"
           >
             <template slot="extra"> </template>
-            <el-descriptions-item v-for="i in 20" :key="i">
+            <el-descriptions-item v-for="o in commonLinks" :key="o">
               <i class="el-icon-search"></i>
-              <el-link href="https://element.eleme.io" target="_blank"
-                >百度一下</el-link
-              >
+              <el-link :href="o.Url" target="_blank">{{ o.Name }}</el-link>
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -156,6 +142,17 @@ export default {
       searchVal: "",
       activeIndex: "1",
       activeIndex2: "1",
+      // 链接
+      linkCates:[
+        {
+          Catename:'办公',
+        },
+        {
+          Catename:'博文',
+        }
+      ],
+      docLinks:[],
+      commonLinks:[],
       // 弹出层控制
       dialog: false,
       formLabelWidth: "80px",
@@ -182,6 +179,27 @@ export default {
         });
     },
   },
+  created() {
+    self = this
+      this.axios
+        .post("/api/article", {Type: 2})
+        .then(function (response) {
+          console.log(response);
+          self.docLinks = response.data.links
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        this.axios
+        .post("/api/article", {Type: 1, Catename:'常用'})
+        .then(function (response) {
+          console.log(response);
+          self.commonLinks = response.data.links
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    },
 };
 </script>
 
