@@ -67,6 +67,7 @@ func main() {
 
 		// 云存储
 		api.POST("/uploadIO", cmd.UploadIO)
+		api.POST("/listIO", cmd.GetFileIO)
 
 		db, _ = gorm.Open(mysql.Open(cmd.DNS), &gorm.Config{})
 		if err := r.Run("0.0.0.0:8543"); err != nil {

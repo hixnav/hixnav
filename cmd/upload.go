@@ -60,9 +60,15 @@ func tencentCOS(c *gin.Context,bucket string,  file *multipart.FileHeader) {
 	})
 }
 
+type Bucket struct {
+	Active     string `form:"active" json:"active"  binding:"required"`
+}
+
 func GetFileIO(c *gin.Context) {
-	bucketId := c.PostForm("active")
-	tencentCOSListObj(c, bucketId)
+	var req  Bucket
+	_ = c.ShouldBindJSON(&req)
+	log.Println("bucketId:",req.Active)
+	tencentCOSListObj(c, bcketMap[req.Active])
 }
 
 
