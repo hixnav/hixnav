@@ -62,7 +62,7 @@
             ></el-menu-item
           > -->
         <!-- </el-submenu> -->
-        <!-- <el-menu-item> 登陆 </el-menu-item> -->
+        <el-menu-item> <router-link to="/signin">登陆</router-link>  </el-menu-item>
       </el-menu>
     </el-row>
   </div>
