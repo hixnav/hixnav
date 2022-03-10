@@ -140,18 +140,19 @@ export default {
         if (valid) {
           console.log(this.ruleForm);
           this.ruleForm.cate = parseInt(this.ruleForm.cate);
-          this.axios
-            .post("/api/addLink", JSON.stringify(this.ruleForm))
-            .then(function (response) {
-              console.log(response);
+          this.$store
+            .dispatch("nav/addLink", JSON.stringify(this.ruleForm))
+            .then((response) => {
+             console.log(response);
               self.$notify({
                 title: "成功",
                 message: "手动刷新页面查看",
                 type: "success",
               });
             })
-            .catch(function (error) {
-              console.log(error);
+            .catch((res) => {
+               console.log(res);
+              this.$message.error("失败");
             });
         } else {
           console.log("error submit!!");

@@ -3,21 +3,23 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"gitee.com/wennmu/haixinnav.git/cmd"
 	"net/http"
 	"strconv"
+	"strings"
+
+	"gitee.com/wennmu/haixinnav.git/cmd"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 //校验登录状态
 func Check() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var tokenStr string
-		//bearToken := c.GetHeader("Authorization")
-		//tokenSlice := strings.Split(bearToken, " ")
-		//tokenStr = tokenSlice[1]
-		tokenStr = c.Query("token")
+		bearToken := c.GetHeader("Authorization")
+		tokenSlice := strings.Split(bearToken, " ")
+		tokenStr = tokenSlice[1]
+		// tokenStr = c.Query("token")
 		token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, errors.New("unexpected signing method")
