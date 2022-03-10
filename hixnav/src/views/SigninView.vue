@@ -34,16 +34,11 @@
               :type="passwordType"
               v-model="loginForm.password"
               placeholder="请输入密码"
-            ></el-input>
-            <span class="show-pwd" @click="showPwd">
-              <svg-icon
-                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-              />
-            </span>
+            > <template slot="suffix"><i class="el-icon-view" @click="showPwd"></i></template></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <div>
+      <div style="padding-top:12px">
         <el-button
           :loading="loading"
           type="primary"
