@@ -28,21 +28,29 @@
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-            :key="passwordType"
+              :key="passwordType"
               ref="password"
               name="password"
               :type="passwordType"
               v-model="loginForm.password"
               placeholder="请输入密码"
             ></el-input>
-             <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon
+                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+              />
+            </span>
           </el-form-item>
         </el-form>
       </div>
       <div>
-        <el-button :loading="loading"  type="primary" style="width: 100%" @click.native.prevent="handleLogin">Sign In</el-button>
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width: 100%"
+          @click.native.prevent="handleLogin"
+          >Sign In</el-button
+        >
       </div>
       <div class="back">
         <router-link to="/">
@@ -56,44 +64,77 @@
 export default {
   name: "signin",
   data() {
+    const validateUsername = (rule, value, callback) => {
+      if (value.length < 1) {
+        callback(new Error("Please enter the correct user name"));
+      } else {
+        callback();
+      }
+    };
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error("The password can not be less than 6 digits"));
+      } else {
+        callback();
+      }
+    };
     return {
       loginForm: {
         username: "",
         password: "",
       },
-       loading: false,
-             passwordType: 'password',
-      redirect: undefined
+      loginRules: {
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername },
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword },
+        ],
+      },
+      loading: false,
+      passwordType: "password",
+      redirect: undefined,
     };
   },
   methods: {
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch((res) => {
-            this.loading = false
-          })
+          this.loading = true;
+          this.$store
+            .dispatch("user/login", this.loginForm)
+            .then((res) => {
+              console.log(res);
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+              this.$message({
+                message: "登陆成功",
+                type: "success",
+              });
+            })
+            .catch((res) => {
+               console.log(res);
+              this.$message.error("登陆失败");
+              this.loading = false;
+            });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log("error submit!!");
+          this.$message.error("登陆失败");
+          return false;
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
 

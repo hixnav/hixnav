@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"gitee.com/wennmu/haixinnav.git/cmd"
 	"gitee.com/wennmu/haixinnav.git/middleware"
+	"gitee.com/wennmu/haixinnav.git/internal/e"
 )
 
 var (
@@ -55,7 +56,7 @@ func main() {
 	// })
 	api := r.Group("/api")
 	 {
-		api.POST("/login", cmd.Login)
+		api.POST("/login", e.ErrorWrapper(cmd.Login))
 
 		api.POST("/home", new(Nav).home)
 		api.POST("/cates", new(Cate).list)

@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"log"
 	"gitee.com/wennmu/haixinnav.git/internal/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"time"
-	"net/http"
+	"gitee.com/wennmu/haixinnav.git/internal/e"
 )
 
 type LoginRequest struct {
@@ -13,18 +14,17 @@ type LoginRequest struct {
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-func Login(c *gin.Context) {
+func Login(c *gin.Context) (interface{}, error) {
 	var req LoginRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
-		return
+		log.Fatalln(err.Error())
+		return nil, e.AppError{Code: -1, Msg: err.Error()}
 	}
 
 	uid := (model.Admin{}).UserInfo(req.Username, req.Password)
 	if uid <= 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
-		return
+		return nil, e.AppError{Code: -1, Msg: "user not found"}
 
 	}
 
@@ -37,16 +37,14 @@ func Login(c *gin.Context) {
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atCliams)
 	token, err := at.SignedString([]byte(APP_SECRET))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "sign error"})
-		return
+		return nil, e.AppError{Code: -1, Msg: err.Error()}
 	}
 
 
-	c.JSON(http.StatusOK, gin.H{
+	return map[string]interface{}{
 		"token":  token,
 		"expire": atCliams["exp"],
-	})
-		return
+	}, nil
 }
 
 func Logout(c *gin.Context) (interface{}, error) {
