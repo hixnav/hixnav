@@ -73,4 +73,10 @@ const router = new VueRouter({
   routes
 })
 
+// 重置路由
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
 export default router

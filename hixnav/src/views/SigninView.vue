@@ -5,29 +5,104 @@
         <img class="signin_logo" src="../assets/logo.png" alt="" />
       </div>
       <div class="signin_title">Sign in with your account</div>
-      <div class="signin_tip">Please enter the correct account and password and log in
-
-</div>
-      <div>
-        <el-input v-model="account" placeholder="请输入账号"></el-input>
+      <div class="signin_tip">
+        Please enter the correct account and password and log in
       </div>
       <div>
-        <el-input v-model="passport" placeholder="请输入密码"></el-input>
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="loginRules"
+          class="login-form"
+          auto-complete="on"
+          label-position="left"
+        >
+          <el-form-item prop="username">
+            <el-input
+              ref="username"
+              type="text"
+              name="username"
+              v-model="loginForm.username"
+              placeholder="请输入账号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+            :key="passwordType"
+              ref="password"
+              name="password"
+              :type="passwordType"
+              v-model="loginForm.password"
+              placeholder="请输入密码"
+            ></el-input>
+             <span class="show-pwd" @click="showPwd">
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+          </el-form-item>
+        </el-form>
       </div>
-      <div><el-button type="primary" style="width:100%">Sign In</el-button></div>
-      <div class="back"><router-link to="/"> <i class="el-icon-s-home"></i>  return to home page</router-link></div>
+      <div>
+        <el-button :loading="loading"  type="primary" style="width: 100%" @click.native.prevent="handleLogin">Sign In</el-button>
+      </div>
+      <div class="back">
+        <router-link to="/">
+          <i class="el-icon-s-home"></i> return to home page</router-link
+        >
+      </div>
     </el-card>
   </div>
 </template>
+<script>
+export default {
+  name: "signin",
+  data() {
+    return {
+      loginForm: {
+        username: "",
+        password: "",
+      },
+       loading: false,
+             passwordType: 'password',
+      redirect: undefined
+    };
+  },
+  methods: {
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch((res) => {
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  }
+};
+</script>
+
 <style>
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  background-color: #f5f7f9;
-  overflow: hidden;
 }
 
 .signin {
@@ -36,6 +111,8 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+  overflow: hidden;
+
   display: flex;
   width: 100%;
   height: 100%;
@@ -43,6 +120,7 @@ body {
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: center;
+  background-color: #f5f7f9;
 }
 
 .signin_card {
@@ -52,11 +130,10 @@ body {
   padding: 40px;
   width: 300px;
   text-align: center;
-  
 }
 
 .el-card__body {
-    padding: 0 0 20px;
+  padding: 0 0 20px;
 }
 
 .signin_card div {
@@ -67,12 +144,12 @@ body {
 .signin_logo {
   width: 200px;
   margin: 0 auto;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
 .signin_title {
   font-size: 24px;
-  font-weight: 700  ;
+  font-weight: 700;
 }
 
 .signin_tip {
@@ -80,15 +157,15 @@ body {
   font-weight: 300;
   color: darkgrey;
 }
-.back{
+.back {
   font-size: 14px;
   color: darkgrey;
   padding-top: 20px;
 }
-.back a{
+.back a {
   color: darkgrey;
 }
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 </style>

@@ -144,6 +144,10 @@ export default {
           href:'https://note.youdao.com/',
           name:'有道云笔记'
         },
+        {
+          href:'https://mail.google.com/',
+          name:'Gmail'
+        },
       ],
     };
   },

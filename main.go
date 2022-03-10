@@ -8,6 +8,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gitee.com/wennmu/haixinnav.git/cmd"
+	"gitee.com/wennmu/haixinnav.git/middleware"
 )
 
 var (
@@ -21,7 +22,7 @@ func main() {
 	r.Static("/assets", "./hixnav/dist/assets")
 	r.LoadHTMLGlob("hixnav/dist/index.html")
 	// r.LoadHTMLGlob("views/*")
-
+	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": "海芯导航",
@@ -54,25 +55,29 @@ func main() {
 	// })
 	api := r.Group("/api")
 	 {
+		api.POST("/login", cmd.Login)
+
 		api.POST("/home", new(Nav).home)
 		api.POST("/cates", new(Cate).list)
-		api.POST("/addLink", new(Nav).addLink)
-
+		
 		// 文链
 		api.POST("/article", new(Article).list)
+	}
+	api.Use(middleware.Check())
+	{
+		api.POST("/addLink", new(Nav).addLink)
 		api.POST("/addArticleLink", new(Article).addArticleLink)
-
-		// 云图
-		api.POST("/upload", cmd.UploadFile)
-
 		// 云存储
 		api.POST("/uploadIO", cmd.UploadIO)
 		api.POST("/listIO", cmd.GetFileIO)
 
-		db, _ = gorm.Open(mysql.Open(cmd.DNS), &gorm.Config{})
-		if err := r.Run("0.0.0.0:8543"); err != nil {
-			log.Fatal(err)
-		}
+		// 云图
+		api.POST("/upload", cmd.UploadFile)
+
+	}
+	db, _ = gorm.Open(mysql.Open(cmd.DNS), &gorm.Config{})
+	if err := r.Run("0.0.0.0:8543"); err != nil {
+		log.Fatal(err)
 	}
 }
 
