@@ -13,20 +13,21 @@ router.beforeEach(async(to, from, next) => {
         next({ path: '/' })
         NProgress.done()
       } else {
-        const userInfo = store.getters.name
-        if (userInfo) {
-          next()
-        } else {
-          try {
-            await store.dispatch('user/getInfo')
-            next()
-          } catch (error) {
-            await store.dispatch('user/resetToken')
-            Message.error(error || 'Has Error')
-            next(`/signin?redirect=${to.path}`)
-            NProgress.done()
-          }
-        }
+        next()
+        // const userInfo = store.getters.name
+        // if (userInfo) {
+        //   next()
+        // } else {
+        //   try {
+        //     await store.dispatch('user/getInfo')
+        //     next()
+        //   } catch (error) {
+        //     await store.dispatch('user/resetToken')
+        //     Message.error(error || 'Has Error')
+        //     next(`/signin?redirect=${to.path}`)
+        //     NProgress.done()
+        //   }
+        // }
       }
     } else {
       if (whiteList.indexOf(to.path) !== -1) {

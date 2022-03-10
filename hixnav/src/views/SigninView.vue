@@ -114,7 +114,7 @@ export default {
           this.$store
             .dispatch("user/login", this.loginForm)
             .then((res) => {
-              console.log(res);
+              console.log(this.redirect);
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
               this.$message({
@@ -134,6 +134,14 @@ export default {
         }
       });
     },
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
   },
 };
 </script>
