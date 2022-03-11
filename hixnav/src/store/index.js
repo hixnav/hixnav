@@ -4,6 +4,7 @@ import getters from './getters'
 import user from './modules/user'
 import nav from './modules/nav'
 import cloud from './modules/cloud'
+import link from './modules/link'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
   modules: {
     user,
     nav,
-    cloud
+    cloud,
+    link
   },
   getters
 })

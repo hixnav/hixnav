@@ -45,7 +45,8 @@
                   :src="o.Logo"
                   size="small"
                 ></el-avatar>
-                {{ o.Name }}</el-link>
+                {{ o.Name }}</el-link
+              >
             </el-descriptions-item>
           </el-descriptions>
         </div>
@@ -209,9 +210,9 @@ export default {
       console.log(this.form);
 
       self = this;
-      this.axios
-        .post("/api/addArticleLink", JSON.stringify(this.form))
-        .then(function (response) {
+      this.$store
+        .dispatch("link/addArticleLink", JSON.stringify(this.form))
+        .then((response) => {
           console.log(response);
           self.dialog = false;
           self.$notify({
@@ -220,8 +221,9 @@ export default {
             type: "success",
           });
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("失败");
         });
     },
   },
@@ -270,5 +272,4 @@ export default {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-size: cover;
 }
-
 </style>
