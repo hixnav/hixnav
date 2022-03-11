@@ -28,12 +28,13 @@
         <el-button slot="append" icon="el-icon-search"></el-button> -->
       </el-col>
       <el-menu
-        :default-active="activeIndex"
+        :default-active="this.$store.state.nav.activeIndex"
         class="el-menu-demo"
         mode="horizontal"
         style="float: right; text-decoration: none"
         text-color="#303133"
         active-text-color="#909399"
+        @select="handleSelect"
       >
         <el-menu-item index="1">
           <router-link to="/">导航</router-link>
@@ -80,6 +81,7 @@ export default {
   },
   methods: {
     handleSelect: function (key, keyPath) {
+      this.$store.state.nav.activeIndex = key
       // console.log(keyPath);
       // if (key == 1) {
       //   location.href = "./article";
@@ -114,6 +116,9 @@ export default {
             });
     }
   },
+  created:function(){
+    console.log(this.$store.state.nav.activeIndex)
+  }
 };
 </script>
 
@@ -122,6 +127,7 @@ export default {
 .head_bar {
   margin: 0;
   padding: 0;
+  border-bottom: solid 1px #e6e6e6;
 }
 .logo {
   width: 132px;

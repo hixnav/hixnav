@@ -2,6 +2,7 @@ import { addLink } from '@/api/nav'
 
 const getDefaultState = () => {
   return {
+    activeIndex: 1
   }
 }
 

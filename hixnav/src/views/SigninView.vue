@@ -2,7 +2,9 @@
   <div class="signin">
     <el-card class="signin_card">
       <div class="signin_logo">
-         <router-link to="/"><img class="signin_logo" src="../assets/logo.png" alt="" /></router-link>
+        <router-link to="/"
+          ><img class="signin_logo" src="../assets/logo.png" alt=""
+        /></router-link>
       </div>
       <div class="signin_title">Sign in with your account</div>
       <div class="signin_tip">
@@ -34,11 +36,14 @@
               :type="passwordType"
               v-model="loginForm.password"
               placeholder="请输入密码"
-            > <template slot="suffix"><i class="el-icon-view" @click="showPwd"></i></template></el-input>
+            >
+              <template slot="suffix"
+                ><i class="el-icon-view" @click="showPwd"></i></template
+            ></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <div style="padding-top:12px">
+      <div style="padding-top: 12px">
         <el-button
           :loading="loading"
           type="primary"
@@ -112,18 +117,18 @@ export default {
               console.log(this.redirect);
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
-              this.$message({
-                message: "登陆成功",
-                type: "success",
-              });
+              // this.$message({
+              //   message: "登陆成功",
+              //   type: "success",
+              // });
             })
             .catch((res) => {
-               console.log(res);
-              this.$message.error("登陆失败");
+              console.log(res);
+              // this.$message.error("登陆失败");
               this.loading = false;
             });
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           this.$message.error("登陆失败");
           return false;
         }
@@ -132,11 +137,11 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 };
 </script>

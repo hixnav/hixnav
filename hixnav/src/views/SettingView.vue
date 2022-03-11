@@ -3,8 +3,6 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
-      :activeIndex="activeIndex"
-      :activeIndex1="activeIndex1"
     />
     <el-container>
       <el-aside width="200px">

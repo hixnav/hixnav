@@ -5,11 +5,13 @@ import user from './modules/user'
 import nav from './modules/nav'
 import cloud from './modules/cloud'
 import link from './modules/link'
+import createPersistedState from "vuex-persistedstate"
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+
   },
   mutations: {
   },
@@ -21,7 +23,18 @@ const store = new Vuex.Store({
     cloud,
     link
   },
-  getters
+  getters,
+  plugins: [createPersistedState({
+    // paths:  ['user.signin','nav.activeIndex']
+    storage: window.localStorage,
+    reducer (val) {
+      return {
+        // 只保存module user内部所有变量持久化
+        user: val.user,
+        nav: val.nav
+      }
+    }
+  })],
 })
 
 export default store

@@ -3,8 +3,6 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
-      :activeIndex="activeIndex"
-      :activeIndex1="activeIndex1"
     />
     <div class="bg-banner">
       <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
@@ -170,8 +168,6 @@ export default {
   data: function () {
     return {
       searchVal: "",
-      activeIndex: "1",
-      activeIndex2: "1",
       // 链接
       linkCates: [
         // {
