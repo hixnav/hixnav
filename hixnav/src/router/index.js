@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { createRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
@@ -75,7 +76,7 @@ const router = new VueRouter({
 
 // 重置路由
 export function resetRouter() {
-  const newRouter = createRouter()
+  const newRouter = new VueRouter({})
   router.matcher = newRouter.matcher // reset router
 }
 

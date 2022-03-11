@@ -4,12 +4,12 @@ import (
 	"log"
 	"net/http"
 
+	"gitee.com/wennmu/haixinnav.git/cmd"
+	"gitee.com/wennmu/haixinnav.git/internal/e"
+	"gitee.com/wennmu/haixinnav.git/middleware"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gitee.com/wennmu/haixinnav.git/cmd"
-	"gitee.com/wennmu/haixinnav.git/middleware"
-	"gitee.com/wennmu/haixinnav.git/internal/e"
 )
 
 var (
@@ -55,12 +55,13 @@ func main() {
 	// 	})
 	// })
 	api := r.Group("/api")
-	 {
+	{
 		api.POST("/login", e.ErrorWrapper(cmd.Login))
+		api.POST("/logout", e.ErrorWrapper(cmd.Logout))
 
 		api.POST("/home", new(Nav).home)
 		api.POST("/cates", new(Cate).list)
-		
+
 		// 文链
 		api.POST("/article", new(Article).list)
 	}
@@ -88,25 +89,24 @@ func index(c *gin.Context) {
 	})
 }
 
-type Nav struct{
-		Id int64
-		Cate int64 `json:"Cate, int"`
-		Catename string
-		Name string
-		Logo string
-		Desc string
-		Url string
-	}
-	
+type Nav struct {
+	Id       int64
+	Cate     int64 `json:"Cate, int"`
+	Catename string
+	Name     string
+	Logo     string
+	Desc     string
+	Url      string
+}
+
 func (s *Nav) home(c *gin.Context) {
-		var cates []Cate
+	var cates []Cate
 	_ = db.Table("navs").Select("cate as cate, catename as catename").Group("cate,catename").Scan(&cates)
 	var data []Nav
-	
-	
+
 	res := make(map[int64]interface{}, len(cates))
 	for _, cate := range cates {
-	_ = db.Table("navs").Where("cate = ?", cate.Cate).Find(&data)
+		_ = db.Table("navs").Where("cate = ?", cate.Cate).Find(&data)
 		res[cate.Cate] = data
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -114,33 +114,33 @@ func (s *Nav) home(c *gin.Context) {
 	})
 }
 
-func (s *Nav) addLink(c *gin.Context){
+func (s *Nav) addLink(c *gin.Context) {
 	var nav Nav
 	if err := c.ShouldBindJSON(&nav); err != nil {
 		log.Println(err.Error())
-         c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
-         return
-      }
-	
-	 result := db.Table("navs").Create(&nav)
-	 if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+		return
+	}
+
+	result := db.Table("navs").Create(&nav)
+	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
-         return
-	 }
-	 c.JSON(http.StatusOK, map[string]interface{}{
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,
 	})
 }
 
-type Cate struct{
-		Cate int64 `json:"Cate, int"`
-		Catename string
+type Cate struct {
+	Cate     int64 `json:"Cate, int"`
+	Catename string
 }
 
-func (s *Cate) list(c *gin.Context){
+func (s *Cate) list(c *gin.Context) {
 	var cates []Cate
 	res := db.Table("navs").Select("cate as cate, catename as catename").Group("cate,catename").Scan(&cates)
-	if  res.Error != nil {
+	if res.Error != nil {
 		log.Println(res.Error)
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -148,24 +148,23 @@ func (s *Cate) list(c *gin.Context){
 	})
 }
 
-
 // 文链操作
-type Article struct{
-	Id int64
-	Type int64 `json:"Type, string"`
+type Article struct {
+	Id       int64
+	Type     int64 `json:"Type, string"`
 	Catename string
-	Name string
-	Logo string
-	Url string
+	Name     string
+	Logo     string
+	Url      string
 }
 
 func (s *Article) list(c *gin.Context) {
 	var req Article
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
-	 	c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
-	 	return
-  }
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+		return
+	}
 	var articles []Article
 	dbimpl := db.Table("links").Where("type = ?", req.Type).Find(&articles)
 	if req.Catename != "" {
@@ -177,7 +176,7 @@ func (s *Article) list(c *gin.Context) {
 	})
 }
 
-func (s *Article) addArticleLink(c *gin.Context){
+func (s *Article) addArticleLink(c *gin.Context) {
 	var req Article
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
@@ -185,11 +184,11 @@ func (s *Article) addArticleLink(c *gin.Context){
 		return
 	}
 	data := Article{
-		Type : req.Type,
-		Catename : req.Catename,
-		Name :req.Name,
-		Logo :req.Logo,
-		Url: req.Url,
+		Type:     req.Type,
+		Catename: req.Catename,
+		Name:     req.Name,
+		Logo:     req.Logo,
+		Url:      req.Url,
 	}
 	result := db.Table("links").Create(&data)
 	if result.Error != nil {

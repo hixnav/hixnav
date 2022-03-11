@@ -4,6 +4,7 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
+    signin: false,
     token: getToken(),
     name: '',
     avatar: ''
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_SIGNIN: (state, signin) => {
+    state.signin = signin
   }
 }
 
@@ -36,6 +40,7 @@ const actions = {
         console.log(response)
         const { data } = response
         commit('SET_TOKEN', data.token)
+        commit('SET_SIGNIN', true)
         setToken(data.token)
         resolve()
       }).catch(error => {

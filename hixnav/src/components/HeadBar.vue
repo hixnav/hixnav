@@ -62,7 +62,8 @@
             ></el-menu-item
           > -->
         <!-- </el-submenu> -->
-        <el-menu-item> <router-link to="/signin">登陆</router-link>  </el-menu-item>
+        <el-menu-item v-if="!this.$store.state.user.signin"> <router-link to="/signin">登陆</router-link>  </el-menu-item>
+        <el-menu-item v-else> <div @click="logout">退出</div>  </el-menu-item>
       </el-menu>
     </el-row>
   </div>
@@ -102,6 +103,16 @@ export default {
       //   location.href = "./article?dialog";
       // }
     },
+    logout: function() {
+      this.$store
+            .dispatch("user/logout")
+            .then((response) => {
+              this.$router.go(0)
+            })
+            .catch((res) => {
+               console.log(res);
+            });
+    }
   },
 };
 </script>
