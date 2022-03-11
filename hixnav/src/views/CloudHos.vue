@@ -8,7 +8,7 @@
     />
     <el-container>
       <el-aside width="200px">
-        <el-menu :default-active="param.active" class="el-menu-vertical-demo">
+        <el-menu :default-active="param.active" class="el-menu-vertical-demo" @select="handleSelect">
           <el-menu-item index="1">
             <i class="el-icon-folder"></i>
             <span slot="title">文件</span>
@@ -39,9 +39,14 @@
         <el-header>
           <el-upload
             class="upload-file"
+            :name="file"
             action="/api/uploadIO"
             :data="param"
+            :limit="1"
             show-file-list="false"
+            :auto-upload="true"
+            :http-request="uploadIO"
+            :with-credentials="true"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -86,6 +91,7 @@ export default {
       searchVal: "",
       activeIndex: "1",
       activeIndex1: "1",
+      file:"file",
       param: {
         active: "1", //默认上传文件类型
       },
@@ -94,16 +100,43 @@ export default {
     };
   },
   methods: {
+    handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+        this.param.active = key
+        this.listFile()
+      },
     listFile: function () {
       let self = this;
-      this.axios
-        .post("/api/listIO", this.param)
-        .then(function (response) {
+      this.$store
+        .dispatch("cloud/listIO", this.param)
+        .then((response) => {
           console.log(response);
           self.fileLists = response.data.files;
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((res) => {
+          console.log(res);
+        });
+    },
+     uploadIO: function (params) {
+      let self = this,file = params.file,formData = new window.FormData();
+        // fileType = file.type,
+        // isImage = fileType.indexOf('image') != -1,
+        
+        formData.append(self.file, file)
+        formData.append("active", this.param.active)
+      this.$store
+        .dispatch("cloud/uploadIO", formData)
+        .then((response) => {
+          console.log(response);
+          self.$notify({
+            title: "成功",
+            message: "上传成功",
+            type: "success",
+          });
+        })
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("上传失败");
         });
     },
   },
