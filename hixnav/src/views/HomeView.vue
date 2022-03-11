@@ -39,7 +39,7 @@
     <div class="line"></div>
      <el-row :gutter="16" style="margin:0;width:98%;margin:0 auto">
         <div
-          style="margin:20px 20px;box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.12); padding: 20px"
+          style="margin:20px 20px; padding: 20px"
         >
           <el-descriptions
             class="margin-top"

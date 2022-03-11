@@ -2,7 +2,7 @@
   <div class="signin">
     <el-card class="signin_card">
       <div class="signin_logo">
-        <img class="signin_logo" src="../assets/logo.png" alt="" />
+         <router-link to="/"><img class="signin_logo" src="../assets/logo.png" alt="" /></router-link>
       </div>
       <div class="signin_title">Sign in with your account</div>
       <div class="signin_tip">
