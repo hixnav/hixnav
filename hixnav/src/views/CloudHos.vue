@@ -3,10 +3,15 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <el-container>
       <el-aside width="200px">
-        <el-menu :default-active="param.active" class="el-menu-vertical-demo" @select="handleSelect">
+        <el-menu
+          :default-active="param.active"
+          class="el-menu-vertical-demo"
+          @select="handleSelect"
+        >
           <el-menu-item index="1">
             <i class="el-icon-folder"></i>
             <span slot="title">文件</span>
@@ -55,14 +60,24 @@
           <el-card class="box-card" shadow="never">
             <template>
               <el-table :data="fileLists" style="width: 100%">
-                <el-table-column prop="Key" label="文件名" width="240">
+                <el-table-column prop="key" label="文件名" width="280">
                 </el-table-column>
-                <el-table-column prop="Size" label="文件大小" width="180">
+                <el-table-column prop="size" label="文件大小">
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="100">
-                  <template slot-scope="">
-                    <el-button type="text" size="small">下载</el-button>
-                    <el-button type="text" size="small">删除</el-button>
+                <el-table-column fixed="right" label="操作" width="120">
+                  <template slot-scope="scope">
+                    <el-button
+                      type="text"
+                      size="small"
+                      @click="downFile(scope.row)"
+                      >下载</el-button
+                    >
+                    <el-button
+                      type="text"
+                      size="small"
+                      @click="delFile(scope.row)"
+                      >删除</el-button
+                    >
                   </template>
                 </el-table-column>
               </el-table>
@@ -78,6 +93,7 @@
 <script>
 import HeadBar from "@/components/HeadBar.vue";
 import FootBar from "@/components/FootBar.vue";
+let Base64 = require("js-base64").Base64;
 export default {
   name: "CloundHos",
   components: {
@@ -87,9 +103,8 @@ export default {
   data: function () {
     return {
       searchVal: "",
-      activeIndex: "1",
-      activeIndex1: "1",
-      file:"file",
+      activeIndex: "3",
+      file: "file",
       param: {
         active: "1", //默认上传文件类型
       },
@@ -98,11 +113,76 @@ export default {
     };
   },
   methods: {
+    downFile(row) {
+      row.active = this.param.active;
+      console.log(row);
+      this.$store
+        .dispatch("cloud/downIO", row)
+        .then((response) => {
+          console.log(response);
+          // let blob = Base64.decode(response.data.file);
+          // let bdata = [];
+          // bdata.push(blob);
+
+          let raw = window.atob(response.data.file);
+          let rawLength = response.data.contentLength;
+          let uInt8Array = new Uint8Array(rawLength);
+
+          for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+          }
+          let objUrl = window.URL.createObjectURL(
+            new Blob([uInt8Array], { type: response.data.contentType })
+          );
+
+          let a = document.createElement("a");
+          a.href = objUrl;
+          a.download = row.key;
+          a.style.display = "none";
+          a.click();
+          a.remove();
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    },
+    base64ToBlob: function (code) {
+      let parts = code.split(";base64,");
+      let contentType = parts[0].split(":")[1];
+      let raw = window.atob(parts[1]);
+      let rawLength = raw.length;
+
+      let uInt8Array = new Uint8Array(rawLength);
+
+      for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    },
+    delFile(row) {
+      row.active = this.param.active;
+      console.log(row);
+      this.$store
+        .dispatch("cloud/delIO", row)
+        .then((response) => {
+          console.log(response);
+          this.$notify({
+            title: "成功",
+            message: "操作成功",
+            type: "success",
+          });
+          location.reload();
+        })
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("操作失败");
+        });
+    },
     handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-        this.param.active = key
-        this.listFile()
-      },
+      console.log(key, keyPath);
+      this.param.active = key;
+      this.listFile();
+    },
     listFile: function () {
       let self = this;
       this.$store
@@ -115,13 +195,15 @@ export default {
           console.log(res);
         });
     },
-     uploadIO: function (params) {
-      let self = this,file = params.file,formData = new window.FormData();
-        // fileType = file.type,
-        // isImage = fileType.indexOf('image') != -1,
-        
-        formData.append(self.file, file)
-        formData.append("active", this.param.active)
+    uploadIO: function (params) {
+      let self = this,
+        file = params.file,
+        formData = new window.FormData();
+      // fileType = file.type,
+      // isImage = fileType.indexOf('image') != -1,
+
+      formData.append(self.file, file);
+      formData.append("active", this.param.active);
       this.$store
         .dispatch("cloud/uploadIO", formData)
         .then((response) => {
@@ -131,6 +213,7 @@ export default {
             message: "上传成功",
             type: "success",
           });
+          location.reload();
         })
         .catch((res) => {
           console.log(res);

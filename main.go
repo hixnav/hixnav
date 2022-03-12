@@ -72,6 +72,8 @@ func main() {
 		// 云存储
 		api.POST("/uploadIO", cmd.UploadIO)
 		api.POST("/listIO", cmd.GetFileIO)
+		api.POST("/downIO", cmd.DownFileIO)
+		api.POST("/delIO", cmd.DelFileIO)
 
 		// 云图
 		api.POST("/upload", cmd.UploadFile)

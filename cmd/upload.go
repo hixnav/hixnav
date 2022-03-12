@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"net/url"
 
-	"log"
-	"mime/multipart"
-
 	"github.com/gin-gonic/gin"
 	"github.com/tencentyun/cos-go-sdk-v5"
+	"io/ioutil"
+	"log"
+	"mime/multipart"
 )
 
 var bcketMap = map[string]string{
@@ -67,6 +67,7 @@ func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
 
 type Bucket struct {
 	Active string `form:"active" json:"active"  binding:"required"`
+	Key    string `form:"key" json:"key"`
 }
 
 func GetFileIO(c *gin.Context) {
@@ -98,11 +99,96 @@ func tencentCOSListObj(c *gin.Context, bucket string) {
 		log.Println(err)
 	}
 
+	type keyMap map[string]interface{}
+	var keyMaps []keyMap
+	for _, item := range v.Contents {
+		keyMaps = append(keyMaps, keyMap{
+			"key":  item.Key,
+			"size": item.Size,
+		})
+	}
+
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,
 		"data": map[string]interface{}{
-			"files": v.Contents,
+			"files": keyMaps,
 		},
 		"msg": "",
+	})
+}
+
+func DownFileIO(c *gin.Context) {
+	var req Bucket
+	_ = c.ShouldBindJSON(&req)
+	log.Println("bucketId:", req.Active)
+	tencentCOSDownObj(c, bcketMap[req.Active], req.Key)
+}
+
+func tencentCOSDownObj(c *gin.Context, bucket, key string) {
+	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
+	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
+	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	b := &cos.BaseURL{BucketURL: u}
+	cli := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+		},
+	})
+
+	opt := &cos.ObjectGetOptions{}
+	resp, err := cli.Object.Get(
+		context.Background(), key, opt,
+	)
+	if err != nil {
+		log.Printf("%v", err)
+	}
+	log.Printf("%v", *resp)
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+	}
+	contentType := resp.Header.Get("Content-Type")
+	contentLength := resp.Header.Get("Content-Length")
+	resp.Body.Close()
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
+		"data": map[string]interface{}{
+			"file":          data,
+			"contentType":   contentType,
+			"contentLength": contentLength,
+		},
+		"msg": "",
+	})
+
+}
+
+func DelFileIO(c *gin.Context) {
+	var req Bucket
+	_ = c.ShouldBindJSON(&req)
+	log.Println("bucketId:", req.Active)
+	tencentCOSDelObj(c, bcketMap[req.Active], req.Key)
+}
+
+func tencentCOSDelObj(c *gin.Context, bucket, key string) {
+	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
+	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
+	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	b := &cos.BaseURL{BucketURL: u}
+	cli := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+		},
+	})
+
+	_, err := cli.Object.Delete(context.Background(), key)
+	if err != nil {
+		log.Println(err)
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
+		"data": "",
+		"msg":  "",
 	})
 }

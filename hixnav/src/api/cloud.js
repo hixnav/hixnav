@@ -16,3 +16,19 @@ export function uploadIO(data) {
     data
   })
 }
+
+export function downIO(data) {
+  return request({
+    url: '/api/downIO',
+    method: 'post',
+    data
+  })
+}
+
+export function delIO(data) {
+  return request({
+    url: '/api/delIO',
+    method: 'post',
+    data
+  })
+}
