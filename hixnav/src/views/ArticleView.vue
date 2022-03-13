@@ -1,5 +1,5 @@
 <template>
-  <div id="article">
+  <div id="article"  v-if="show">
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
@@ -13,9 +13,27 @@
     <div class="main">
       <el-row class="el-row" :gutter="20">
         <section style="">
-          <section style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center;">
-          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">文档</div>
-        </section>
+          <section
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+            "
+          >
+            <img
+              src="../assets/tag-blue.png"
+              alt=""
+              style="
+                display: inline-block;
+                width: 10px;
+                height: 20px;
+                padding: 0 10px 0;
+                margin-top: 2px;
+              "
+            />
+            <div style="font-weight: 700; font-size: 18px">文档</div>
+          </section>
         </section>
         <!-- <el-col :span="24" style="padding: 20px 0">
           <el-link href="https://element.eleme.io" target="_blank"
@@ -24,8 +42,7 @@
         </el-col> -->
       </el-row>
       <el-row :gutter="20">
-        <div class="main_card"
-        >
+        <div class="main_card">
           <el-descriptions
             class="margin-top"
             title=""
@@ -53,9 +70,28 @@
       </el-row>
       <el-row class="el-row" :gutter="20">
         <el-col :span="2" style="">
-          <section style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center; padding-top:2rem">
-          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">链接</div>
-        </section>
+          <section
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              padding-top: 2rem;
+            "
+          >
+            <img
+              src="../assets/tag-blue.png"
+              alt=""
+              style="
+                display: inline-block;
+                width: 10px;
+                height: 20px;
+                padding: 0 10px 0;
+                margin-top: 2px;
+              "
+            />
+            <div style="font-weight: 700; font-size: 18px">链接</div>
+          </section>
         </el-col>
         <el-col :span="20" style="padding: 20px 0">
           <el-row :gutter="20">
@@ -169,6 +205,8 @@ export default {
   },
   data: function () {
     return {
+      show: false,
+      loading: true,
       searchVal: "",
       activeIndex: "2",
       // 链接
@@ -246,6 +284,11 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+
+    var t = setTimeout(function () {
+      self.show = true;
+      self.loading = false;
+    }, 500);
   },
 };
 </script>
@@ -266,8 +309,8 @@ export default {
   background-size: cover;
 }
 
-.main_card{
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.12); 
+.main_card {
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.12);
   padding: 20px;
 }
 </style>

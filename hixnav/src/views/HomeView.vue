@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="show" >
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
@@ -36,28 +36,42 @@
       </el-row>
     </div>
     <div class="line"></div>
-     <el-row :gutter="16" style="margin:0;width:98%;margin:0 auto">
-        <div
-          style="margin:20px 20px; padding: 20px"
-        >
-          <el-descriptions
-            class="margin-top"
-            title=""
-            :colon="false"
-            column="10"
-          >
-            <template slot="extra"> </template>
-            <el-descriptions-item v-for="o in quikList" :key="o">
-              <!-- <i class="el-icon-search"></i> -->
-              <el-link :href="o.href" target="_blank">{{o.name}}</el-link>
-            </el-descriptions-item>
-          </el-descriptions>
-        </div>
-      </el-row>
+    <el-row :gutter="16" style="margin: 0; width: 98%; margin: 0 auto">
+      <div style="margin: 20px 20px; padding: 20px">
+        <el-descriptions class="margin-top" title="" :colon="false" column="10">
+          <template slot="extra"> </template>
+          <el-descriptions-item v-for="o in quikList" :key="o">
+            <!-- <i class="el-icon-search"></i> -->
+            <el-link :href="o.href" target="_blank">{{ o.name }}</el-link>
+          </el-descriptions-item>
+        </el-descriptions>
+      </div>
+    </el-row>
     <div>
       <el-row v-for="c in cates" :key="c">
-        <section :id="'anchor' + c.Cate" style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center; padding-left: 30px;padding-top:2rem">
-          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">{{ c.Catename }}</div>
+        <section
+          :id="'anchor' + c.Cate"
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 30px;
+            padding-top: 2rem;
+          "
+        >
+          <img
+            src="../assets/tag-blue.png"
+            alt=""
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 20px;
+              padding: 0 10px 0;
+              margin-top: 2px;
+            "
+          />
+          <div style="font-weight: 700; font-size: 18px">{{ c.Catename }}</div>
         </section>
         <el-col
           :span="6"
@@ -100,12 +114,17 @@
       </el-row>
     </div>
     <!-- 悬浮按钮 -->
-    <div class="" style="position:fixed;right:40px;bottom:108px;"> 
-      <router-link to="/add-link"><el-button type="primary" icon="el-icon-edit" circle></el-button></router-link>
+    <div class="" style="position: fixed; right: 40px; bottom: 108px">
+      <router-link to="/add-link"
+        ><el-button type="primary" icon="el-icon-edit" circle></el-button
+      ></router-link>
     </div>
     <!-- 悬浮按钮结束 -->
     <FootBar />
   </div>
+  <!-- <div class="loadding" v-else>
+    <div  v-loading="loading"></div>
+  </div> -->
 </template>
  
 <script>
@@ -121,30 +140,32 @@ export default {
   },
   data: function () {
     return {
+      show: false,
+      loading: true,
       searchVal: "",
       activeIndex: "1",
       navs: [],
       cates: [],
       quikList: [
         {
-          href:'https://wennmu.github.io/',
-          name:'我的博客'
+          href: "https://wennmu.github.io/",
+          name: "我的博客",
         },
         {
-          href:'https://www.baidu.com',
-          name:'百度'
+          href: "https://www.baidu.com",
+          name: "百度",
         },
         {
-          href:'https://fanyi.baidu.com/',
-          name:'百度翻译'
+          href: "https://fanyi.baidu.com/",
+          name: "百度翻译",
         },
         {
-          href:'https://note.youdao.com/',
-          name:'有道云笔记'
+          href: "https://note.youdao.com/",
+          name: "有道云笔记",
         },
         {
-          href:'https://mail.google.com/',
-          name:'Gmail'
+          href: "https://mail.google.com/",
+          name: "Gmail",
         },
       ],
     };
@@ -182,6 +203,11 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+
+    var t = setTimeout(function () {
+      self.show = true
+      self.loading = false
+    }, 500);
   },
 };
 </script>
@@ -211,10 +237,11 @@ export default {
   padding: 0;
   float: right;
 }
-		.linked-title {
-			overflow: hidden;
-			white-space: nowrap;
-		}
+.linked-title {
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
 .image {
   width: 100%;
@@ -235,10 +262,26 @@ export default {
   margin: 0px;
   padding: 0px;
 }
-	.bg-banner {
-			width: 100%;
-			height: 20rem;
-			background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg") no-repeat center center;
-			background-size: cover;
-		}
+.bg-banner {
+  width: 100%;
+  height: 20rem;
+  background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg")
+    no-repeat center center;
+  background-size: cover;
+}
+
+/* .loadding{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadding > div{
+  width: 100%;
+  height: 200px;
+  flex-direction: column;
+  align-items: center;
+} */
 </style>
