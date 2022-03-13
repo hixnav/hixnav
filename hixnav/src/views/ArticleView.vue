@@ -3,6 +3,7 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <div class="bg-banner">
       <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
@@ -12,7 +13,9 @@
     <div class="main">
       <el-row class="el-row" :gutter="20">
         <section style="">
-          <h3>文档</h3>
+          <section style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center;">
+          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">文档</div>
+        </section>
         </section>
         <!-- <el-col :span="24" style="padding: 20px 0">
           <el-link href="https://element.eleme.io" target="_blank"
@@ -21,8 +24,7 @@
         </el-col> -->
       </el-row>
       <el-row :gutter="20">
-        <div
-          style="box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.12); padding: 20px"
+        <div class="main_card"
         >
           <el-descriptions
             class="margin-top"
@@ -51,7 +53,9 @@
       </el-row>
       <el-row class="el-row" :gutter="20">
         <el-col :span="2" style="">
-          <h3>链接</h3>
+          <section style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center; padding-top:2rem">
+          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">链接</div>
+        </section>
         </el-col>
         <el-col :span="20" style="padding: 20px 0">
           <el-row :gutter="20">
@@ -67,9 +71,7 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <div
-          style="box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.12); padding: 20px"
-        >
+        <div class="main_card">
           <el-descriptions
             class="margin-top"
             title=""
@@ -152,7 +154,7 @@
     </div>
     <!-- 这里弹出层结束 -->
 
-    <!-- <FootBar /> -->
+    <FootBar />
   </div>
 </template>
 
@@ -168,6 +170,7 @@ export default {
   data: function () {
     return {
       searchVal: "",
+      activeIndex: "2",
       // 链接
       linkCates: [
         // {
@@ -260,12 +263,11 @@ export default {
   height: 20rem;
   background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t01fce1f99b60abfba6.jpg")
     no-repeat center center;
-  background-color: #56ccf2;
-  /* fallback for old browsers */
-  background-color: -webkit-linear-gradient(to right, #2f80ed, #56ccf2);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background-color: linear-gradient(to right, #2f80ed, #56ccf2);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-size: cover;
+}
+
+.main_card{
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.12); 
+  padding: 20px;
 }
 </style>

@@ -3,6 +3,7 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <div style="padding-top: 20px">
       <el-form
@@ -114,6 +115,7 @@ export default {
     };
     return {
       searchVal: "",
+      activeIndex: "1s",
       ruleForm: {
         name: "",
         desc: "",

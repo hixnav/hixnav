@@ -5,7 +5,7 @@
       :searchVal="searchVal"
       :activeIndex="activeIndex"
     />
-    <el-container>
+    <el-container class="el-container">
       <el-aside width="200px">
         <el-menu
           :default-active="param.active"
@@ -38,7 +38,7 @@
           </el-menu-item> -->
         </el-menu>
       </el-aside>
-      <el-container>
+      <el-container class="main">
         <el-header>
           <el-upload
             class="upload-file"
@@ -59,7 +59,7 @@
           <!-- 内容 -->
           <el-card class="box-card" shadow="never">
             <template>
-              <el-table :data="fileLists" style="width: 100%">
+              <el-table :data="fileLists" style="width: 100%;height:100%">
                 <el-table-column prop="key" label="文件名" width="280">
                 </el-table-column>
                 <el-table-column prop="size" label="文件大小">
@@ -82,6 +82,8 @@
                 </el-table-column>
               </el-table>
             </template>
+            <el-pagination class="main-page" background layout="prev, pager, next" :total="120">
+            </el-pagination>
           </el-card>
         </el-main>
       </el-container>
@@ -228,8 +230,29 @@ export default {
 </script>
 
 <style scoped>
-.cloud-hos {
-  min-height: 100vh;
+#cloud-hos {
+  height: calc(100% - 62px);
+  width: 100%;
+}
+
+.el-container {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.main{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.main-page{
+  text-align:right;
+  padding-top:20px;
+  justify-content: flex-end;
 }
 
 .upload-file {
@@ -246,5 +269,9 @@ export default {
 
 .box-card {
   width: 98%;
+}
+.el-menu-vertical-demo {
+  height: 100%;
+  text-align: center;
 }
 </style>

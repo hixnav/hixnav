@@ -39,7 +39,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.foot_bar {
+.foot_bar, .footer-section {
   margin: 0;
   padding: 0;
 }
@@ -54,6 +54,7 @@ export default {
   background: #212930;
   box-sizing: border-box;
   color: #6c7d8f;
+  overflow: hidden;
   z-index: 9999;
 }
 .footer-section-middle {

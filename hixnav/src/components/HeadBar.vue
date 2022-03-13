@@ -28,25 +28,25 @@
         <el-button slot="append" icon="el-icon-search"></el-button> -->
       </el-col>
       <el-menu
-        :default-active="this.$store.state.nav.activeIndex"
+        :default-active="activeIndex"
         class="el-menu-demo"
         mode="horizontal"
         style="float: right; text-decoration: none"
         text-color="#303133"
-        active-text-color="#909399"
+        active-text-color="#409EFF"
         @select="handleSelect"
       >
         <el-menu-item index="1">
-          <router-link to="/">导航</router-link>
+          导航
         </el-menu-item>
         <el-menu-item index="2">
-          <router-link to="/article">快链</router-link>
+          快链
         </el-menu-item>
         <el-menu-item index="3">
-          <router-link to="/cloud-HOS">云存储</router-link>
+          云存储
         </el-menu-item>
         <el-menu-item index="4">
-          <router-link to="/cloud-image">云图</router-link>
+          云图
         </el-menu-item>
         <!-- <el-menu-item index="4">
           <router-link to="/docs">云笔记</router-link>
@@ -63,8 +63,8 @@
             ></el-menu-item
           > -->
         <!-- </el-submenu> -->
-        <el-menu-item v-if="!this.$store.state.user.signin"> <router-link to="/signin">登陆</router-link>  </el-menu-item>
-        <el-menu-item v-else> <div @click="logout">退出</div>  </el-menu-item>
+        <el-menu-item v-if="!this.$store.state.user.signin" index="9">登陆</el-menu-item>
+        <el-menu-item v-else index="10"> 退出 </el-menu-item>
       </el-menu>
     </el-row>
   </div>
@@ -81,20 +81,20 @@ export default {
   },
   methods: {
     handleSelect: function (key, keyPath) {
-      this.$store.state.nav.activeIndex = key
+      this.activeIndex = key
       // console.log(keyPath);
-      // if (key == 1) {
-      //   location.href = "./article";
-      // }
-      // if (key == 2) {
-      //   location.href = "./cloud-HOS";
-      // }
-      // if (key == 3) {
-      //   location.href = "./cloud-image";
-      // }
-      // if (key == 4) {
-      //   location.href = "./docs";
-      // }
+      if (key == 1) {
+        this.$router.push("/")
+      }
+      if (key == 2) {
+        this.$router.push("/article")
+      }
+      if (key == 3) {
+        this.$router.push("/cloud-HOS")
+      }
+      if (key == 4) {
+        this.$router.push("/cloud-image")
+      }
       // if (key == "2-0") {
       //   location.href = "https://wennmu.github.io";
       // }
@@ -104,6 +104,12 @@ export default {
       // if (key == "2-2") {
       //   location.href = "./article?dialog";
       // }
+       if (key == 9) {
+        this.$router.push("/signin")
+      }
+       if (key == 10) {
+        this.logout()
+      }
     },
     logout: function() {
       this.$store

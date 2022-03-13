@@ -3,6 +3,7 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <!-- 云图上传部分 -->
     <section class="ci-main">
@@ -71,6 +72,7 @@ export default {
   data: function () {
     return {
       searchVal:"",
+      activeIndex: "4",
       fileList: [],
       cloudImages: [],
     };

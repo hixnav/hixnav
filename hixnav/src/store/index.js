@@ -31,7 +31,7 @@ const store = new Vuex.Store({
       return {
         // 只保存module user内部所有变量持久化
         user: val.user,
-        nav: val.nav
+        // nav: val.nav
       }
     }
   })],

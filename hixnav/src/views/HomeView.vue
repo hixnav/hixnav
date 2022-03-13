@@ -3,6 +3,7 @@
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <div class="bg-banner">
       <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
@@ -55,8 +56,8 @@
       </el-row>
     <div>
       <el-row v-for="c in cates" :key="c">
-        <section :id="'anchor' + c.Cate" style="padding-left: 30px">
-          <h3>{{ c.Catename }}</h3>
+        <section :id="'anchor' + c.Cate" style="display:flex;flex-direction: row ; justify-content: flex-start; align-items:center; padding-left: 30px;padding-top:2rem">
+          <img src="../assets/tag-blue.png" alt="" style="display:inline-block;width:10px;height:20px;padding:0 10px 0;margin-top:2px;"><div style="font-weight:700;font-size:18px;">{{ c.Catename }}</div>
         </section>
         <el-col
           :span="6"
@@ -121,6 +122,7 @@ export default {
   data: function () {
     return {
       searchVal: "",
+      activeIndex: "1",
       navs: [],
       cates: [],
       quikList: [
@@ -237,12 +239,6 @@ export default {
 			width: 100%;
 			height: 20rem;
 			background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg") no-repeat center center;
-			background-color: #56CCF2;
-			/* fallback for old browsers */
-			background-color: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);
-			/* Chrome 10-25, Safari 5.1-6 */
-			background-color: linear-gradient(to right, #2F80ED, #56CCF2);
-			/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 			background-size: cover;
 		}
 </style>
