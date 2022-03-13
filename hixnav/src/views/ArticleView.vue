@@ -1,5 +1,5 @@
 <template>
-  <div id="article"  v-if="show">
+  <div id="article" v-if="show">
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
