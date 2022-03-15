@@ -81,13 +81,14 @@
             flex-wrap: wrap;
             justify-content: flex-start;
             align-items: center;
+            padding: 0 30px;
           "
         >
-          <div v-for="o in navs[c.Cate]" :key="o" style="margin: 30px 22px">
+          <div v-for="o in navs[c.Cate]" :key="o" style="margin: 30px 20px">
             <el-card :body-style="{ padding: '0px', width: '16rem' }">
               <div style="padding: 14px">
-                <el-row :gutter="20">
-                  <el-col :span="5">
+                <el-row :gutter="24">
+                  <el-col :span="4">
                     <el-avatar
                       style="background-color: #fff"
                       :src="o.Logo"
@@ -97,15 +98,18 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="linked-title">{{ o.Name }}</div>
-                    <div class="bottom clearfix">
+                    <div class="bottom">
                       <time class="time">{{ o.Desc }}</time>
                     </div>
                   </el-col>
-                  <el-col :span="7">
+                  <el-col
+                    :span="8"
+                    style="padding: 10px 0 0; text-align: center"
+                  >
                     <div class="bottom clearfix">
                       <el-button
                         icon=""
-                        size="small"
+                        size="mini"
                         round
                         class="button"
                         @click="jumpTo(o.Url)"
@@ -240,6 +244,7 @@ export default {
   line-height: 12px;
   white-space: nowrap;
   overflow: hidden;
+  padding-left: 6px;
 }
 
 .bottom time {
@@ -251,11 +256,10 @@ export default {
 }
 
 .button {
-  padding: 0;
-  float: right;
 }
 .linked-title {
   font-weight: 600;
+  padding-left: 6px;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -263,16 +267,6 @@ export default {
 .image {
   width: 100%;
   display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both;
 }
 
 .home {
