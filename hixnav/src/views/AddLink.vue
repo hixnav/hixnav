@@ -60,6 +60,9 @@
           <el-button type="primary" @click="submitForm('ruleForm')"
             >提交</el-button
           >
+          <el-button type="primary" @click="submitFormWd('ruleForm')"
+            >提交并查看</el-button
+          >
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -133,7 +136,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      self = this
+      self = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
@@ -141,7 +144,7 @@ export default {
           this.$store
             .dispatch("nav/addLink", JSON.stringify(this.ruleForm))
             .then((response) => {
-             console.log(response);
+              console.log(response);
               self.$notify({
                 title: "成功",
                 message: "手动刷新页面查看",
@@ -149,7 +152,7 @@ export default {
               });
             })
             .catch((res) => {
-               console.log(res);
+              console.log(res);
               this.$message.error("失败");
             });
         } else {
@@ -157,6 +160,10 @@ export default {
           return false;
         }
       });
+    },
+    submitFormWd(formName) {
+      this.submitForm(formName);
+      this.$router.push("/");
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -166,7 +173,7 @@ export default {
 </script>
 
 <style scoped>
-.add-link{
+.add-link {
   /* height: 1000px; */
 }
 </style>

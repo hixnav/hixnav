@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="show" >
+  <div class="home" v-if="show">
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
@@ -73,44 +73,52 @@
           />
           <div style="font-weight: 700; font-size: 18px">{{ c.Catename }}</div>
         </section>
-        <el-col
-          :span="6"
-          v-for="o in navs[c.Cate]"
-          :key="o"
-          style="padding: 30px"
+        <el-row
+          style="
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+          "
         >
-          <el-card :body-style="{ padding: '0px' }">
-            <div style="padding: 14px">
-              <el-row :gutter="20">
-                <el-col :span="5">
-                  <el-avatar
-                    style="background-color: #fff"
-                    :src="o.Logo"
-                  ></el-avatar>
-                </el-col>
-                <el-col :span="12">
-                  <div class="linked-title">{{ o.Name }}</div>
-                  <div class="bottom clearfix">
-                    <time class="time">{{ o.Desc }}</time>
-                  </div>
-                </el-col>
-                <el-col :span="7">
-                  <div class="bottom clearfix">
-                    <el-button
-                      icon=""
-                      size="small"
-                      round
-                      class="button"
-                      @click="jumpTo(o.Url)"
-                    >
-                      访问</el-button
-                    >
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-          </el-card>
-        </el-col>
+          <div v-for="o in navs[c.Cate]" :key="o" style="margin: 30px 22px">
+            <el-card :body-style="{ padding: '0px', width: '16rem' }">
+              <div style="padding: 14px">
+                <el-row :gutter="20">
+                  <el-col :span="5">
+                    <el-avatar
+                      style="background-color: #fff"
+                      :src="o.Logo"
+                      fit="cover"
+                      shape="square"
+                    ></el-avatar>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="linked-title">{{ o.Name }}</div>
+                    <div class="bottom clearfix">
+                      <time class="time">{{ o.Desc }}</time>
+                    </div>
+                  </el-col>
+                  <el-col :span="7">
+                    <div class="bottom clearfix">
+                      <el-button
+                        icon=""
+                        size="small"
+                        round
+                        class="button"
+                        @click="jumpTo(o.Url)"
+                      >
+                        访问</el-button
+                      >
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-card>
+          </div>
+        </el-row>
       </el-row>
     </div>
     <!-- 悬浮按钮 -->
@@ -182,32 +190,41 @@ export default {
         inline: "nearest",
       });
     },
+    getData() {
+      let self = this;
+      this.axios
+        .post("/api/home")
+        .then(function (response) {
+          // console.log(response);
+          self.navs = response.data.navs;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      this.axios
+        .post("/api/cates")
+        .then(function (response) {
+          // console.log(response);
+          self.cates = response.data.cates;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   created: function () {
     let self = this;
-    this.axios
-      .post("/api/home")
-      .then(function (response) {
-        // console.log(response);
-        self.navs = response.data.navs;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    this.axios
-      .post("/api/cates")
-      .then(function (response) {
-        // console.log(response);
-        self.cates = response.data.cates;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
+    this.getData();
     var t = setTimeout(function () {
-      self.show = true
-      self.loading = false
+      self.show = true;
+      self.loading = false;
     }, 500);
+  },
+  mounted: function () {
+    this.getData();
+    // this.$nextTick(function () {
+    //   // 仅在整个视图都被渲染之后才会运行的代码
+    // });
   },
 };
 </script>
