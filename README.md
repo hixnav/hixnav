@@ -1,5 +1,5 @@
-# HaiXinNav
+# HixNav
  
 #### 介绍
-海芯导航，把所有有用的资源收集起来，更加方便的使用，尝试把它作为一个本地工具，使用云数据库和云储存等
+You can use it as a convenient tool, or you can deploy it to the cloud and access your services anytime, anywhere, so start trying
 
