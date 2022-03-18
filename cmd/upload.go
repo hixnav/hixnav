@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/gin-gonic/gin"
-	"github.com/tencentyun/cos-go-sdk-v5"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
+
+	"github.com/gin-gonic/gin"
+	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
 var bcketMap = map[string]string{
@@ -36,12 +37,12 @@ func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
 	// 将 examplebucket-1250000000 和 COS_REGION 修改为真实的信息
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。https://console.cloud.tencent.com/cos5/bucket
 	// COS_REGION 可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket, 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
-	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
 	b := &cos.BaseURL{BucketURL: u}
 	cli := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
-			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretID:  GlobalCOSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: GlobalCOSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
 		},
 	})
 	// 对象键（Key）是对象在存储桶中的唯一标识。
@@ -81,12 +82,12 @@ func tencentCOSListObj(c *gin.Context, bucket string) {
 	// 将 examplebucket-1250000000 和 COS_REGION 修改为真实的信息
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。https://console.cloud.tencent.com/cos5/bucket
 	// COS_REGION 可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket, 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
-	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
 	b := &cos.BaseURL{BucketURL: u}
 	cli := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
-			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretID:  GlobalCOSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: GlobalCOSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
 		},
 	})
 
@@ -127,12 +128,12 @@ func DownFileIO(c *gin.Context) {
 func tencentCOSDownObj(c *gin.Context, bucket, key string) {
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
 	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
-	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
 	b := &cos.BaseURL{BucketURL: u}
 	cli := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
-			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretID:  GlobalCOSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: GlobalCOSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
 		},
 	})
 
@@ -173,12 +174,12 @@ func DelFileIO(c *gin.Context) {
 func tencentCOSDelObj(c *gin.Context, bucket, key string) {
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
 	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
-	u, _ := url.Parse(fmt.Sprintf(COS, bucket))
+	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
 	b := &cos.BaseURL{BucketURL: u}
 	cli := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  COSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
-			SecretKey: COSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretID:  GlobalCOSSecretID,  // 替换为用户的 SecretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+			SecretKey: GlobalCOSSecretKey, // 替换为用户的 SecretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
 		},
 	})
 

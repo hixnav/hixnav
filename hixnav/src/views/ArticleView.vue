@@ -1,5 +1,5 @@
 <template>
-  <div id="article" v-if="show">
+  <div id="article">
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
@@ -205,8 +205,6 @@ export default {
   },
   data: function () {
     return {
-      show: false,
-      loading: true,
       searchVal: "",
       activeIndex: "2",
       // 链接
@@ -284,11 +282,6 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
-
-    var t = setTimeout(function () {
-      self.show = true;
-      self.loading = false;
-    }, 500);
   },
 };
 </script>

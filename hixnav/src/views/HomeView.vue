@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="show">
+  <div class="home">
     <HeadBar
       title="海芯导航"
       :searchVal="searchVal"
@@ -152,8 +152,6 @@ export default {
   },
   data: function () {
     return {
-      show: false,
-      loading: true,
       searchVal: "",
       activeIndex: "1",
       navs: [],
@@ -219,10 +217,6 @@ export default {
   created: function () {
     let self = this;
     this.getData();
-    var t = setTimeout(function () {
-      self.show = true;
-      self.loading = false;
-    }, 500);
   },
   mounted: function () {
     this.getData();

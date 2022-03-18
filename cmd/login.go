@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"log"
+	"time"
+
+	"gitee.com/wennmu/haixinnav.git/internal/e"
 	"gitee.com/wennmu/haixinnav.git/internal/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"time"
-	"gitee.com/wennmu/haixinnav.git/internal/e"
 )
 
 type LoginRequest struct {
@@ -35,11 +36,10 @@ func Login(c *gin.Context) (interface{}, error) {
 	atCliams["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atCliams)
-	token, err := at.SignedString([]byte(APP_SECRET))
+	token, err := at.SignedString([]byte(GlobalAppSecret))
 	if err != nil {
 		return nil, e.AppError{Code: -1, Msg: err.Error()}
 	}
-
 
 	return map[string]interface{}{
 		"token":  token,

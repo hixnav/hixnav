@@ -17,6 +17,7 @@ var (
 )
 
 func main() {
+	cmd.Init()
 	r := gin.Default()
 	// r.Delims("{[{", "}]}")
 	//  r.Static("/statics", "./statics")
@@ -79,7 +80,7 @@ func main() {
 		api.POST("/upload", cmd.UploadFile)
 
 	}
-	db, _ = gorm.Open(mysql.Open(cmd.DNS), &gorm.Config{})
+	db, _ = gorm.Open(mysql.Open(cmd.GlobalMysqlDNS), &gorm.Config{})
 	if err := r.Run("0.0.0.0:8543"); err != nil {
 		log.Fatal(err)
 	}
