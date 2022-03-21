@@ -153,7 +153,7 @@ export default {
   data: function () {
     return {
       searchVal: "",
-      activeIndex: "1",
+      activeIndex: "99",
       navs: [],
       cates: [],
       quikList: [

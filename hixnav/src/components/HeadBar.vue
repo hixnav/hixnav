@@ -58,7 +58,15 @@
         <el-menu-item v-if="!this.$store.state.user.signin" index="9"
           >登陆</el-menu-item
         >
-        <el-menu-item v-else index="10"> 退出 </el-menu-item>
+        <el-menu-item v-else index="99">
+          <el-submenu>
+            <template slot="title">我的</template>
+            <el-menu-item index="2-0"
+              ><router-link to="/setting">设置中心</router-link></el-menu-item
+            >
+            <el-menu-item index="10">退出</el-menu-item>
+          </el-submenu>
+        </el-menu-item>
       </el-menu>
     </el-row>
   </div>
