@@ -36,34 +36,28 @@
         active-text-color="#409EFF"
         @select="handleSelect"
       >
-        <el-menu-item index="1">
-          导航
-        </el-menu-item>
-        <el-menu-item index="2">
-          快链
-        </el-menu-item>
-        <el-menu-item index="3">
-          云存储
-        </el-menu-item>
-        <el-menu-item index="4">
-          云图
-        </el-menu-item>
+        <el-menu-item index="1"> 导航 </el-menu-item>
+        <el-menu-item index="2"> 快链 </el-menu-item>
+        <el-menu-item index="3"> 云存储 </el-menu-item>
+        <el-menu-item index="4"> 云图 </el-menu-item>
         <!-- <el-menu-item index="4">
           <router-link to="/docs">云笔记</router-link>
         </el-menu-item> -->
         <!-- <el-submenu index="10"> -->
-          <!-- <template slot="title">我的</template> -->
-          <!-- <el-menu-item index="2-0">博客</el-menu-item> -->
-          <!-- <el-menu-item index="2-1"
+        <!-- <template slot="title">我的</template> -->
+        <!-- <el-menu-item index="2-0">博客</el-menu-item> -->
+        <!-- <el-menu-item index="2-1"
             ><router-link to="/add-link">添加导航</router-link></el-menu-item
           > -->
-          <!-- <el-menu-item index="2-2"
+        <!-- <el-menu-item index="2-2"
             ><router-link to="/settting"
               >设置中心</router-link
             ></el-menu-item
           > -->
         <!-- </el-submenu> -->
-        <el-menu-item v-if="!this.$store.state.user.signin" index="9">登陆</el-menu-item>
+        <el-menu-item v-if="!this.$store.state.user.signin" index="9"
+          >登陆</el-menu-item
+        >
         <el-menu-item v-else index="10"> 退出 </el-menu-item>
       </el-menu>
     </el-row>
@@ -81,19 +75,19 @@ export default {
   },
   methods: {
     handleSelect: function (key, keyPath) {
-      this.activeIndex = key
+      this.activeIndex = key;
       // console.log(keyPath);
       if (key == 1) {
-        this.$router.push("/")
+        this.$router.push("/");
       }
       if (key == 2) {
-        this.$router.push("/article")
+        this.$router.push("/article");
       }
       if (key == 3) {
-        this.$router.push("/cloud-HOS")
+        this.$router.push("/cloud-HOS");
       }
       if (key == 4) {
-        this.$router.push("/cloud-image")
+        this.$router.push("/cloud-image");
       }
       // if (key == "2-0") {
       //   location.href = "https://wennmu.github.io";
@@ -104,27 +98,27 @@ export default {
       // if (key == "2-2") {
       //   location.href = "./article?dialog";
       // }
-       if (key == 9) {
-        this.$router.push("/signin")
+      if (key == 9) {
+        this.$router.push("/signin");
       }
-       if (key == 10) {
-        this.logout()
+      if (key == 10) {
+        this.logout();
       }
     },
-    logout: function() {
+    logout: function () {
       this.$store
-            .dispatch("user/logout")
-            .then((response) => {
-              this.$router.go(0)
-            })
-            .catch((res) => {
-               console.log(res);
-            });
-    }
+        .dispatch("user/logout")
+        .then((response) => {
+          this.$router.go(0);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    },
   },
-  created:function(){
-    console.log(this.$store.state.nav.activeIndex)
-  }
+  created: function () {
+    console.log(this.$store.state.nav.activeIndex);
+  },
 };
 </script>
 
@@ -146,5 +140,4 @@ export default {
 a {
   text-decoration: none;
 }
-
 </style>
