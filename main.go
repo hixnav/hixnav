@@ -81,7 +81,7 @@ func main() {
 
 	}
 	db, _ = gorm.Open(mysql.Open(cmd.GlobalMysqlDNS), &gorm.Config{})
-	if err := r.Run("0.0.0.0:8543"); err != nil {
+	if err := r.Run("0.0.0.0:80"); err != nil {
 		log.Fatal(err)
 	}
 }

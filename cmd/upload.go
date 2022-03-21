@@ -60,7 +60,7 @@ func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,
 		"data": map[string]interface{}{
-			"file": fmt.Sprintf(COS, "hixnav") + file.Filename,
+			"file": fmt.Sprintf(GlobalCOS, "hixnav") + file.Filename,
 		},
 		"msg": "",
 	})
