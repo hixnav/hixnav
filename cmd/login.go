@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"gitee.com/wennmu/haixinnav.git/internal/e"
-	"gitee.com/wennmu/haixinnav.git/internal/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +22,7 @@ func Login(c *gin.Context) (interface{}, error) {
 		return nil, e.AppError{Code: -1, Msg: err.Error()}
 	}
 
-	uid := (model.Admin{}).UserInfo(req.Username, req.Password)
+	uid := (Admin{}).UserInfo(req.Username, req.Password)
 	if uid <= 0 {
 		return nil, e.AppError{Code: -1, Msg: "user not found"}
 

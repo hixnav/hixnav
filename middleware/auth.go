@@ -3,6 +3,7 @@ package middleware
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -44,7 +45,7 @@ func Check() gin.HandlerFunc {
 			}
 		}
 		c.Set("uid", uid)
-
+		log.Println("uid:", uid)
 		c.Next()
 	}
 }

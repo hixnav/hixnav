@@ -264,23 +264,21 @@ export default {
   },
   created() {
     self = this;
-    this.axios
-      .post("/api/article", { Type: 2 })
-      .then(function (response) {
-        console.log(response);
+    this.$store
+      .dispatch("link/article", { Type: 2 })
+      .then((response) => {
         self.docLinks = response.data.links;
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((res) => {
+        console.log(res);
       });
-    this.axios
-      .post("/api/article", { Type: 1, Catename: "" })
-      .then(function (response) {
-        console.log(response);
+    this.$store
+      .dispatch("link/article", { Type: 1, Catename: "" })
+      .then((response) => {
         self.commonLinks = response.data.links;
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((res) => {
+        console.log(res);
       });
   },
 };

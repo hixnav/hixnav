@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"io/ioutil"
 	"log"
@@ -14,7 +15,10 @@ import (
 	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
+type Upload struct{}
+
 var bcketMap = map[string]string{
+	"0": "hixnav",
 	"1": "hixnavfile",
 	"2": "hixnavnote",
 	"3": "hixnavmind",
@@ -22,15 +26,25 @@ var bcketMap = map[string]string{
 	"5": "hixnavmusic",
 }
 
-func UploadFile(c *gin.Context) {
-	file, _ := c.FormFile("file")
-	tencentCOS(c, "hixnav", file)
+func bucket(c *gin.Context, bucketId string) (b string) {
+	uid, _ := c.Get("uid")
+	log.Println("upload uid: ", uid)
+	b = bcketMap[bucketId]
+	if uid != "1" {
+		b = bcketMap[bucketId] + strconv.Itoa(int(uid.(int64)))
+	}
+	return b
 }
 
-func UploadIO(c *gin.Context) {
+func (s *Upload) UploadFile(c *gin.Context) {
+	file, _ := c.FormFile("file")
+	tencentCOS(c, bucket(c, "0"), file)
+}
+
+func (s *Upload) UploadIO(c *gin.Context) {
 	bucketId := c.PostForm("active")
 	file, _ := c.FormFile("file")
-	tencentCOS(c, bcketMap[bucketId], file)
+	tencentCOS(c, bucket(c, bucketId), file)
 }
 
 func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
@@ -71,11 +85,11 @@ type Bucket struct {
 	Key    string `form:"key" json:"key"`
 }
 
-func GetFileIO(c *gin.Context) {
+func (s *Upload) GetFileIO(c *gin.Context) {
 	var req Bucket
 	_ = c.ShouldBindJSON(&req)
 	log.Println("bucketId:", req.Active)
-	tencentCOSListObj(c, bcketMap[req.Active])
+	tencentCOSListObj(c, bucket(c, req.Active))
 }
 
 func tencentCOSListObj(c *gin.Context, bucket string) {
@@ -118,11 +132,11 @@ func tencentCOSListObj(c *gin.Context, bucket string) {
 	})
 }
 
-func DownFileIO(c *gin.Context) {
+func (s *Upload) DownFileIO(c *gin.Context) {
 	var req Bucket
 	_ = c.ShouldBindJSON(&req)
 	log.Println("bucketId:", req.Active)
-	tencentCOSDownObj(c, bcketMap[req.Active], req.Key)
+	tencentCOSDownObj(c, bucket(c, req.Active), req.Key)
 }
 
 func tencentCOSDownObj(c *gin.Context, bucket, key string) {
@@ -164,11 +178,11 @@ func tencentCOSDownObj(c *gin.Context, bucket, key string) {
 
 }
 
-func DelFileIO(c *gin.Context) {
+func (s *Upload) DelFileIO(c *gin.Context) {
 	var req Bucket
 	_ = c.ShouldBindJSON(&req)
 	log.Println("bucketId:", req.Active)
-	tencentCOSDelObj(c, bcketMap[req.Active], req.Key)
+	tencentCOSDelObj(c, bucket(c, req.Active), req.Key)
 }
 
 func tencentCOSDelObj(c *gin.Context, bucket, key string) {
