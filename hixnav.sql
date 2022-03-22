@@ -9,11 +9,13 @@ CREATE TABLE `navs` (
 	`desc` VARCHAR(255) NOT NULL COLLATE 'utf8_general_ci',
 	`url` VARCHAR(255) NOT NULL COLLATE 'utf8_general_ci',
 	`logo` VARCHAR(1024) NOT NULL COLLATE 'utf8_general_ci',
+	`uid` BIGINT(20) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
 
 -- 链接
 CREATE TABLE `links` (
@@ -37,4 +39,5 @@ CREATE TABLE `users` (
 	PRIMARY KEY (`id`) USING BTREE
 )
 COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB;
+ENGINE=InnoDB
+;
