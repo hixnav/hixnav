@@ -30,7 +30,7 @@ func bucket(c *gin.Context, bucketId string) (b string) {
 	uid, _ := c.Get("uid")
 	log.Println("upload uid: ", uid)
 	b = bcketMap[bucketId]
-	if uid != "1" {
+	if uid != int64(1) {
 		b = bcketMap[bucketId] + strconv.Itoa(int(uid.(int64)))
 	}
 	return b
