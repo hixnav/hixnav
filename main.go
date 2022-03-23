@@ -21,8 +21,8 @@ func main() {
 	r := gin.Default()
 	// r.Delims("{[{", "}]}")
 	//  r.Static("/statics", "./statics")
-	r.Static("/assets", "./hixnav/dist/assets")
-	r.LoadHTMLGlob("hixnav/dist/index.html")
+	r.Static("/assets", "./web/dist/assets")
+	r.LoadHTMLGlob("web/dist/index.html")
 	// r.LoadHTMLGlob("views/*")
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
