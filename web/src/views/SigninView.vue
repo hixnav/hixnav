@@ -35,6 +35,7 @@
               name="password"
               :type="passwordType"
               v-model="loginForm.password"
+              @keyup.enter.native="handleLogin"
               placeholder="请输入密码"
             >
               <template slot="suffix"

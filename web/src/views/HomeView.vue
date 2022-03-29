@@ -45,10 +45,12 @@
         margin: 0 auto;
         margin-top: 2rem;
         display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
       "
     >
       <div style="margin: 20px 20px; flex: 3">
-        <el-row style="padding: 14px 50px 20px">
+        <el-row style="min-width: 400px; padding: 14px 50px 20px">
           <el-input
             placeholder="搜索关键词"
             :value="searchVal"
