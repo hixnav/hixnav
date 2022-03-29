@@ -294,9 +294,9 @@ export default {
 }
 .bg-banner {
   width: 100%;
-  height: 20rem;
-  background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t01fce1f99b60abfba6.jpg")
-    no-repeat center center;
+  height: 400px;
+  background: url("https://i.im.ge/2022/03/29/lb9KM0.jpg") no-repeat center
+    center;
   background-size: cover;
 }
 

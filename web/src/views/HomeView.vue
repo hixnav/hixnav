@@ -6,7 +6,7 @@
       :activeIndex="activeIndex"
     />
     <div class="bg-banner">
-      <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
+      <!-- <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
         <el-col :span="6" style="padding: 0 30px">
           <div
             style="
@@ -33,18 +33,55 @@
             </el-row>
           </div>
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
     <div class="line"></div>
-    <el-row :gutter="16" style="margin: 0; width: 98%; margin: 0 auto">
-      <div style="margin: 20px 20px; padding: 20px">
-        <el-descriptions class="margin-top" title="" :colon="false" column="10">
-          <template slot="extra"> </template>
-          <el-descriptions-item v-for="o in quikList" :key="o">
-            <!-- <i class="el-icon-search"></i> -->
-            <el-link :href="o.href" target="_blank">{{ o.name }}</el-link>
-          </el-descriptions-item>
-        </el-descriptions>
+    <el-row
+      :gutter="16"
+      style="
+        margin: 0;
+        padding-right: 3rem;
+        width: 98%;
+        margin: 0 auto;
+        margin-top: 2rem;
+        display: flex;
+      "
+    >
+      <div style="margin: 20px 20px; flex: 3">
+        <el-row style="padding: 14px 50px 20px">
+          <el-input
+            placeholder="搜索关键词"
+            :value="searchVal"
+            class="input-with-select"
+            suffix-icon="el-icon-search"
+            size="large"
+          />
+          <el-descriptions
+            class="margin-top"
+            title=""
+            :colon="false"
+            column="10"
+          >
+            <template slot="extra"> </template>
+            <el-descriptions-item v-for="o in quikList" :key="o">
+              <!-- <i class="el-icon-search"></i> -->
+              <el-link :href="o.href" target="_blank" style="font-size: 10px">{{
+                o.name
+              }}</el-link>
+            </el-descriptions-item>
+          </el-descriptions>
+        </el-row>
+      </div>
+      <div style="flex: 1; border-left: 1px solid #ccc; padding-left: 20px">
+        <h3 style="margin-left: 10px">标签</h3>
+        <el-tag
+          size="mini"
+          v-for="c in cates"
+          :key="c"
+          @click="goAnchor('#anchor' + c.Cate)"
+          style="margin: 0.4rem 0.6rem"
+          >{{ c.Catename }}</el-tag
+        >
       </div>
     </el-row>
     <div>
@@ -166,6 +203,10 @@ export default {
           name: "百度",
         },
         {
+          href: "https://cn.bing.com/",
+          name: "必应",
+        },
+        {
           href: "https://fanyi.baidu.com/",
           name: "百度翻译",
         },
@@ -269,9 +310,9 @@ export default {
 }
 .bg-banner {
   width: 100%;
-  height: 20rem;
-  background: url("https://haixin-1300602599.cos.ap-guangzhou.myqcloud.com/t0122b0e1af805d3679.jpg")
-    no-repeat center center;
+  height: 400px;
+  background: url("https://i.im.ge/2022/03/29/lb9pNx.jpg") no-repeat center
+    center;
   background-size: cover;
 }
 
