@@ -40,6 +40,7 @@
         <el-menu-item index="2"> 快链 </el-menu-item>
         <el-menu-item index="3"> 云存储 </el-menu-item>
         <el-menu-item index="4"> 云图 </el-menu-item>
+        <el-menu-item index="5"> 云账号 </el-menu-item>
         <!-- <el-menu-item index="4">
           <router-link to="/docs">云笔记</router-link>
         </el-menu-item> -->
