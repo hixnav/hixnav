@@ -124,7 +124,7 @@
           "
         >
           <div v-for="o in navs[c.Cate]" :key="o" style="margin: 30px 20px">
-            <el-card :body-style="{ padding: '0px', width: '16rem' }">
+            <el-card :body-style="{ padding: '0px', width: '20rem' }">
               <div style="padding: 14px">
                 <el-row :gutter="24">
                   <el-col :span="4">
@@ -192,7 +192,7 @@ export default {
   data: function () {
     return {
       searchVal: "",
-      activeIndex: "99",
+      activeIndex: "1",
       navs: [],
       cates: [],
       quikList: [

@@ -62,9 +62,7 @@
         <el-menu-item v-else index="99">
           <el-submenu>
             <template slot="title">我的</template>
-            <el-menu-item index="2-0"
-              ><router-link to="/setting">设置中心</router-link></el-menu-item
-            >
+            <el-menu-item index="99-0">设置中心</el-menu-item>
             <el-menu-item index="10">退出</el-menu-item>
           </el-submenu>
         </el-menu-item>
@@ -101,9 +99,9 @@ export default {
       if (key == 5) {
         this.$router.push("/cloud-account");
       }
-      // if (key == "2-0") {
-      //   location.href = "https://wennmu.github.io";
-      // }
+      if (key == "99-0") {
+        this.$router.push("/setting");
+      }
       // if (key == "2-1") {
       //   location.href = "./add-link";
       // }
