@@ -98,6 +98,9 @@ export default {
       if (key == 4) {
         this.$router.push("/cloud-image");
       }
+      if (key == 5) {
+        this.$router.push("/cloud-account");
+      }
       // if (key == "2-0") {
       //   location.href = "https://wennmu.github.io";
       // }
