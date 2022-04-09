@@ -3,6 +3,7 @@ package middleware
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -24,7 +25,7 @@ func Check() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, errors.New("unexpected signing method")
 			}
-			return []byte(cmd.APP_SECRET), nil
+			return []byte(cmd.GlobalAppSecret), nil
 		})
 		if err != nil {
 			c.JSON(http.StatusOK, map[string]interface{}{
@@ -44,7 +45,7 @@ func Check() gin.HandlerFunc {
 			}
 		}
 		c.Set("uid", uid)
-
+		log.Println("uid:", uid)
 		c.Next()
 	}
 }

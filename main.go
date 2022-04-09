@@ -17,11 +17,12 @@ var (
 )
 
 func main() {
+	cmd.Init()
 	r := gin.Default()
 	// r.Delims("{[{", "}]}")
 	//  r.Static("/statics", "./statics")
-	r.Static("/assets", "./hixnav/dist/assets")
-	r.LoadHTMLGlob("hixnav/dist/index.html")
+	r.Static("/assets", "./web/dist/assets")
+	r.LoadHTMLGlob("web/dist/index.html")
 	// r.LoadHTMLGlob("views/*")
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
@@ -61,25 +62,25 @@ func main() {
 
 		api.POST("/home", new(Nav).home)
 		api.POST("/cates", new(Cate).list)
-
-		// 文链
-		api.POST("/article", new(Article).list)
 	}
 	api.Use(middleware.Check())
 	{
 		api.POST("/addLink", new(Nav).addLink)
+		// 文链
+		api.POST("/article", new(Article).list)
 		api.POST("/addArticleLink", new(Article).addArticleLink)
 		// 云存储
-		api.POST("/uploadIO", cmd.UploadIO)
-		api.POST("/listIO", cmd.GetFileIO)
-		api.POST("/downIO", cmd.DownFileIO)
-		api.POST("/delIO", cmd.DelFileIO)
+		api.POST("/uploadIO", new(cmd.Upload).UploadIO)
+		api.POST("/listIO", new(cmd.Upload).GetFileIO)
+		api.POST("/downIO", new(cmd.Upload).DownFileIO)
+		api.POST("/delIO", new(cmd.Upload).DelFileIO)
 
 		// 云图
-		api.POST("/upload", cmd.UploadFile)
+		api.POST("/upload", new(cmd.Upload).UploadFile)
 
 	}
-	db, _ = gorm.Open(mysql.Open(cmd.DNS), &gorm.Config{})
+	db, _ = gorm.Open(mysql.Open(cmd.GlobalMysqlDNS), &gorm.Config{})
+	cmd.GlobalDB = db
 	if err := r.Run("0.0.0.0:8543"); err != nil {
 		log.Fatal(err)
 	}
@@ -99,11 +100,17 @@ type Nav struct {
 	Logo     string
 	Desc     string
 	Url      string
+	Uid      int64
 }
 
 func (s *Nav) home(c *gin.Context) {
 	var cates []Cate
-	_ = db.Table("navs").Select("cate as cate, catename as catename").Group("cate,catename").Scan(&cates)
+	uid := c.GetString("uid")
+	var uids = []string{"1"}
+	if uid != "" {
+		uids = append(uids, uid)
+	}
+	_ = db.Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 	var data []Nav
 
 	res := make(map[int64]interface{}, len(cates))
@@ -123,7 +130,7 @@ func (s *Nav) addLink(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
 		return
 	}
-
+	nav.Uid = c.GetInt64("uid")
 	result := db.Table("navs").Create(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
@@ -141,7 +148,12 @@ type Cate struct {
 
 func (s *Cate) list(c *gin.Context) {
 	var cates []Cate
-	res := db.Table("navs").Select("cate as cate, catename as catename").Group("cate,catename").Scan(&cates)
+	uid := c.GetString("uid")
+	var uids = []string{"1"}
+	if uid != "" {
+		uids = append(uids, uid)
+	}
+	res := db.Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 	if res.Error != nil {
 		log.Println(res.Error)
 	}
@@ -158,23 +170,29 @@ type Article struct {
 	Name     string
 	Logo     string
 	Url      string
+	Uid      int64
 }
 
 func (s *Article) list(c *gin.Context) {
 	var req Article
+	uid := c.GetInt64("uid")
+	log.Println("ids: ", uid)
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
 		return
 	}
 	var articles []Article
-	dbimpl := db.Table("links").Where("type = ?", req.Type).Find(&articles)
+	dbimpl := db.Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
 	if req.Catename != "" {
 		dbimpl = dbimpl.Where("catename = ?", req.Catename)
 	}
 	dbimpl.Find(&articles)
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"links": articles,
+		"code": 0,
+		"data": map[string]interface{}{
+			"links": articles,
+		},
 	})
 }
 
@@ -191,6 +209,7 @@ func (s *Article) addArticleLink(c *gin.Context) {
 		Name:     req.Name,
 		Logo:     req.Logo,
 		Url:      req.Url,
+		Uid:      c.GetInt64("uid"),
 	}
 	result := db.Table("links").Create(&data)
 	if result.Error != nil {
