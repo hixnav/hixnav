@@ -19,42 +19,15 @@ var (
 func main() {
 	cmd.Init()
 	r := gin.Default()
-	// r.Delims("{[{", "}]}")
-	//  r.Static("/statics", "./statics")
 	r.Static("/assets", "./web/dist/assets")
 	r.LoadHTMLGlob("web/dist/index.html")
-	// r.LoadHTMLGlob("views/*")
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": "海芯导航",
 		})
 	})
-	// r.GET("/add-link", func(c *gin.Context){
-	// 	c.HTML(http.StatusOK, "add-link.html", gin.H{
-	// 		"title": "海芯导航",
-	// 	})
-	// })
-	// r.GET("/cloud-image", func(c *gin.Context){
-	// 	c.HTML(http.StatusOK, "cloud-image.html", gin.H{
-	// 		"title": "海芯云图",
-	// 	})
-	// })
-	// r.GET("/cloud-HOS", func(c *gin.Context){
-	// 	c.HTML(http.StatusOK, "cloud-HOS.html", gin.H{
-	// 		"title": "海芯存储",
-	// 	})
-	// })
-	// r.GET("/article", func(c *gin.Context){
-	// 	c.HTML(http.StatusOK, "article.html", gin.H{
-	// 		"title": "海芯文链",
-	// 	})
-	// })
-	// r.GET("/docs", func(c *gin.Context){
-	// 	c.HTML(http.StatusOK, "docs.html", gin.H{
-	// 		"title": "海芯笔记",
-	// 	})
-	// })
+
 	api := r.Group("/api")
 	{
 		api.POST("/login", e.ErrorWrapper(cmd.Login))
