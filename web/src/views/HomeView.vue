@@ -140,6 +140,7 @@
                           icon="el-icon-edit"
                           size="mini"
                           circle
+                          @click="openDrawer(o)"
                         ></el-button>
                         <el-button
                           icon="el-icon-delete"
@@ -173,6 +174,75 @@
       ></el-button>
     </div>
     <!-- 悬浮按钮结束 -->
+    <!-- 这里是弹出层 -->
+    <div class="drawer">
+      <el-drawer
+          title="修改导航"
+          :visible.sync="dialog"
+          direction="rtl"
+          custom-class="demo-drawer"
+          ref="drawer"
+      >
+        <div class="demo-drawer__content" style="padding: 30px">
+          <el-form
+              :model="ruleForm"
+              status-icon
+              :rules="rules"
+              ref="ruleForm"
+              label-width="100px"
+              class="demo-ruleForm"
+          >
+            <el-form-item label="标题" prop="name">
+              <el-input
+                  type="input"
+                  v-model="ruleForm.name"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="图标" prop="logo">
+              <el-input
+                  type="input"
+                  v-model="ruleForm.logo"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="简述" prop="desc">
+              <el-input
+                  type="input"
+                  v-model="ruleForm.desc"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="地址" prop="url">
+              <el-input
+                  type="input"
+                  v-model="ruleForm.url"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="分类ID" prop="cate">
+              <el-input
+                  type="number"
+                  v-model="ruleForm.cate"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="分类名称" prop="catename">
+              <el-input
+                  type="input"
+                  v-model="ruleForm.catename"
+                  autocomplete="off"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <div class="demo-drawer__footer" style="float: right">
+            <el-button @click="cancelForm">取 消</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+          </div>
+        </div>
+      </el-drawer>
+    </div>
+    <!-- 这里弹出层结束 -->
     <FootBar />
   </div>
   <!-- <div class="loadding" v-else>
@@ -196,6 +266,17 @@ export default {
       searchVal: "",
       activeIndex: "1",
       showBtn: false,
+      // 弹出层控制
+      dialog: false,
+      ruleForm: {
+        id:0,
+        name: "",
+        desc: "",
+        url: "",
+        logo: "",
+        cate: 0,
+        catename: "",
+      },
       navs: [],
       cates: [],
       quikList: [
@@ -227,6 +308,47 @@ export default {
     };
   },
   methods: {
+    openDrawer(navInfo) {
+      this.ruleForm.id = navInfo.Id
+      this.ruleForm.name = navInfo.Name
+      this.ruleForm.desc = navInfo.Desc
+      this.ruleForm.url = navInfo.Url
+      this.ruleForm.logo = navInfo.Logo
+      this.ruleForm.cate = navInfo.Cate
+      this.ruleForm.catename = navInfo.Catename
+      this.dialog = true;
+    },
+    cancelForm() {
+      this.dialog = false;
+    },
+    submitForm(formName) {
+      self = this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(this.ruleForm);
+          this.ruleForm.cate = parseInt(this.ruleForm.cate);
+          this.$store
+              .dispatch("nav/editLink", JSON.stringify(this.ruleForm))
+              .then((response) => {
+                console.log(response);
+                self.$notify({
+                  title: "成功",
+                  message: "手动刷新页面查看",
+                  type: "success",
+                });
+                self.cancelForm()
+                self.getData()
+              })
+              .catch((res) => {
+                console.log(res);
+                this.$message.error("失败");
+              });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     handOffBtn() {
       console.log("打开操作" + this.showBtn);
       if (this.showBtn == false) {
@@ -236,8 +358,7 @@ export default {
       }
     },
     jumpTo(url) {
-      //this.$router.push({path:url});
-      location.href = url;
+      window.open(url);
     },
     goAnchor(selector) {
       document.querySelector(selector).scrollIntoView({

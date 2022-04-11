@@ -7,3 +7,11 @@ export function addLink(data) {
     data
   })
 }
+
+export function editLink(data) {
+  return request({
+    url: '/api/editLink',
+    method: 'post',
+    data
+  })
+}

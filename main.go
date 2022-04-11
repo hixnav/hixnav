@@ -39,6 +39,7 @@ func main() {
 	api.Use(middleware.Check())
 	{
 		api.POST("/addLink", new(Nav).addLink)
+		api.POST("/editLink", new(Nav).editLink)
 		// 文链
 		api.POST("/article", new(Article).list)
 		api.POST("/addArticleLink", new(Article).addArticleLink)
@@ -105,6 +106,24 @@ func (s *Nav) addLink(c *gin.Context) {
 	}
 	nav.Uid = c.GetInt64("uid")
 	result := db.Table("navs").Create(&nav)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
+	})
+}
+
+func (s *Nav) editLink(c *gin.Context) {
+	var nav Nav
+	if err := c.ShouldBindJSON(&nav); err != nil {
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+		return
+	}
+	nav.Uid = c.GetInt64("uid")
+	result := db.Table("navs").Updates(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return

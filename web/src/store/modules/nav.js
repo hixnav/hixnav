@@ -1,4 +1,4 @@
-import { addLink } from '@/api/nav'
+import { addLink, editLink } from '@/api/nav'
 
 const getDefaultState = () => {
   return {
@@ -15,6 +15,16 @@ const actions = {
   addLink({ commit }, data) {
     return new Promise((resolve, reject) => {
         addLink(data).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  editLink({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      editLink(data).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
