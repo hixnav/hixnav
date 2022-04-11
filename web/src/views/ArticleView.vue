@@ -295,8 +295,8 @@ export default {
 .bg-banner {
   width: 100%;
   height: 400px;
-  background: url("https://i.im.ge/2022/03/29/lb9KM0.jpg") no-repeat center
-    center;
+  background: url("https://cdn.jsdelivr.net/gh/hututu-tech/IMG-gongfeng@main/2022/04/11/6253f8cf04baa.jpg")
+    no-repeat center center;
   background-size: cover;
 }
 
