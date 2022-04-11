@@ -1,4 +1,4 @@
-# hixnav1
+# hixnav
 
 ## Project setup
 ```
