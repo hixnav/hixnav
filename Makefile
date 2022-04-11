@@ -22,5 +22,11 @@ build-win:
 
 build: build-linux build-mac build-win
 
+build-web:
+	cd web && npm run build
+
+serve:
+	cd web && npm run serve
+
 run:
 	go run main.go

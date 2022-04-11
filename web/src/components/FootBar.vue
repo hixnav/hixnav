@@ -11,13 +11,13 @@
         <div class="copy">
           Power By
           <a
-            href="https://hixnav.github.io/"
+            href="https://hixnav.github.io/hixnav"
             style="text-decoration: none; color: #c0c0c0"
             >HixNav</a
           >
           ©2202 海芯导航 v1.10.2
           <a
-            href="https://github.com/hixnav/hixnav.github.com/blob/main/README.md"
+            href="https://github.com/hixnav/hixnav/blob/gh-pages/README.md"
             style="text-decoration: none; color: #c0c0c0"
             target="_blank"
             >捐赠</a
@@ -39,7 +39,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.foot_bar, .footer-section {
+.foot_bar,
+.footer-section {
   margin: 0;
   padding: 0;
 }
@@ -74,7 +75,7 @@ export default {
   height: 1rem;
 }
 
-.suspend{
+.suspend {
   margin-bottom: 120px;
 }
 
