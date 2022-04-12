@@ -40,6 +40,7 @@ func main() {
 	{
 		api.POST("/addLink", new(Nav).addLink)
 		api.POST("/editLink", new(Nav).editLink)
+		api.POST("/delLink", new(Nav).delLink)
 		// 文链
 		api.POST("/article", new(Article).list)
 		api.POST("/addArticleLink", new(Article).addArticleLink)
@@ -126,6 +127,23 @@ func (s *Nav) editLink(c *gin.Context) {
 	result := db.Table("navs").Updates(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
+	})
+}
+
+func (s *Nav) delLink(c *gin.Context) {
+	var nav Nav
+	id := c.PostForm("id")
+	uid := c.GetInt64("uid")
+	result := db.Table("navs").Where("id = ? and uid = ?", id, uid).Delete(&nav)
+	if result.Error != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"code": -1,
+			"msg":  result.Error.Error(),
+		})
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{

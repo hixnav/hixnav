@@ -146,6 +146,7 @@
                           icon="el-icon-delete"
                           size="mini"
                           circle
+                          @click="deleteNav(o.Id)"
                         ></el-button>
                       </el-button-group>
                     </div>
@@ -177,67 +178,69 @@
     <!-- 这里是弹出层 -->
     <div class="drawer">
       <el-drawer
-          title="修改导航"
-          :visible.sync="dialog"
-          direction="rtl"
-          custom-class="demo-drawer"
-          ref="drawer"
+        title="修改导航"
+        :visible.sync="dialog"
+        direction="rtl"
+        custom-class="demo-drawer"
+        ref="drawer"
       >
         <div class="demo-drawer__content" style="padding: 30px">
           <el-form
-              :model="ruleForm"
-              status-icon
-              :rules="rules"
-              ref="ruleForm"
-              label-width="100px"
-              class="demo-ruleForm"
+            :model="ruleForm"
+            status-icon
+            :rules="rules"
+            ref="ruleForm"
+            label-width="100px"
+            class="demo-ruleForm"
           >
             <el-form-item label="标题" prop="name">
               <el-input
-                  type="input"
-                  v-model="ruleForm.name"
-                  autocomplete="off"
+                type="input"
+                v-model="ruleForm.name"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="图标" prop="logo">
               <el-input
-                  type="input"
-                  v-model="ruleForm.logo"
-                  autocomplete="off"
+                type="input"
+                v-model="ruleForm.logo"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="简述" prop="desc">
               <el-input
-                  type="input"
-                  v-model="ruleForm.desc"
-                  autocomplete="off"
+                type="input"
+                v-model="ruleForm.desc"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="地址" prop="url">
               <el-input
-                  type="input"
-                  v-model="ruleForm.url"
-                  autocomplete="off"
+                type="input"
+                v-model="ruleForm.url"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="分类ID" prop="cate">
               <el-input
-                  type="number"
-                  v-model="ruleForm.cate"
-                  autocomplete="off"
+                type="number"
+                v-model="ruleForm.cate"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="分类名称" prop="catename">
               <el-input
-                  type="input"
-                  v-model="ruleForm.catename"
-                  autocomplete="off"
+                type="input"
+                v-model="ruleForm.catename"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
           </el-form>
           <div class="demo-drawer__footer" style="float: right">
             <el-button @click="cancelForm">取 消</el-button>
-            <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')"
+              >确 定</el-button
+            >
           </div>
         </div>
       </el-drawer>
@@ -269,7 +272,7 @@ export default {
       // 弹出层控制
       dialog: false,
       ruleForm: {
-        id:0,
+        id: 0,
         name: "",
         desc: "",
         url: "",
@@ -309,13 +312,13 @@ export default {
   },
   methods: {
     openDrawer(navInfo) {
-      this.ruleForm.id = navInfo.Id
-      this.ruleForm.name = navInfo.Name
-      this.ruleForm.desc = navInfo.Desc
-      this.ruleForm.url = navInfo.Url
-      this.ruleForm.logo = navInfo.Logo
-      this.ruleForm.cate = navInfo.Cate
-      this.ruleForm.catename = navInfo.Catename
+      this.ruleForm.id = navInfo.Id;
+      this.ruleForm.name = navInfo.Name;
+      this.ruleForm.desc = navInfo.Desc;
+      this.ruleForm.url = navInfo.Url;
+      this.ruleForm.logo = navInfo.Logo;
+      this.ruleForm.cate = navInfo.Cate;
+      this.ruleForm.catename = navInfo.Catename;
       this.dialog = true;
     },
     cancelForm() {
@@ -328,26 +331,55 @@ export default {
           console.log(this.ruleForm);
           this.ruleForm.cate = parseInt(this.ruleForm.cate);
           this.$store
-              .dispatch("nav/editLink", JSON.stringify(this.ruleForm))
-              .then((response) => {
-                console.log(response);
-                self.$notify({
-                  title: "成功",
-                  message: "手动刷新页面查看",
-                  type: "success",
-                });
-                self.cancelForm()
-                self.getData()
-              })
-              .catch((res) => {
-                console.log(res);
-                this.$message.error("失败");
+            .dispatch("nav/editLink", JSON.stringify(this.ruleForm))
+            .then((response) => {
+              console.log(response);
+              self.$notify({
+                title: "成功",
+                message: "手动刷新页面查看",
+                type: "success",
               });
+              self.cancelForm();
+              self.getData();
+            })
+            .catch((res) => {
+              console.log(res);
+              this.$message.error("失败");
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
+    },
+    deleteNav(id) {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.deleteNavData(id);
+        })
+        .catch(() => {});
+    },
+    deleteNavData(id) {
+      self = this;
+      this.$store
+        .dispatch("nav/delLink", "id=" + id)
+        .then((response) => {
+          console.log(response);
+          self.$notify({
+            title: "成功",
+            message: "",
+            type: "success",
+          });
+          self.getData();
+        })
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("失败");
+        });
     },
     handOffBtn() {
       console.log("打开操作" + this.showBtn);
