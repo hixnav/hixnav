@@ -27,10 +27,6 @@
               <i class="el-icon-user-solid"></i>
               <span slot="title">存储配置</span>
             </el-menu-item>
-            <el-menu-item index="4">
-              <i class="el-icon-user-solid"></i>
-              <span slot="title">数据迁移</span>
-            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-container>
