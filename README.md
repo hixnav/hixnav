@@ -7,11 +7,11 @@ You can use it as a convenient tool, or you can deploy it to the cloud and acces
 ## 开始使用
 ### 获取HixNav
 
-获取windows版本，点击<a href="https://github.com/hixnav/hixnav/blob/master/release/hixnav-winx64.exe">下载</a>
+获取windows版本，点击<a href="https://github.com/hixnav/hixnav/raw/master/release/hixnav-winx64.exe">下载</a>
 
-获取Max版本，点击<a href="https://github.com/hixnav/hixnav/blob/master/release/hixnav-mac-amd64">下载</a>
+获取Max版本，点击<a href="https://github.com/hixnav/hixnav/raw/master/release/hixnav-mac-amd64">下载</a>
 
-获取Linux版本，点击<a href="https://github.com/hixnav/hixnav/blob/master/release/hixnav-linux-amd64">下载</a>
+获取Linux版本，点击<a href="https://github.com/hixnav/hixnav/raw/master/release/hixnav-linux-amd64">下载</a>
 
 查看源码，请访问仓库<a href="https://github.com/hixnav/hixnav">HixNav</a>
 
