@@ -1,4 +1,3 @@
-# HixNav
 HixNav ：http://www.hixnav.xyz/hixnav/
 
 Instructions 
