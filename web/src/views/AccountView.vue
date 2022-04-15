@@ -55,34 +55,34 @@ export default {
   data: function () {
     return {
       searchVal: "",
-      activeIndex: "99",
+      activeIndex: "5",
       tableData: [
         {
           date: "2016-05-02",
           site: "百度一下",
           account: "wangxiaohu",
-          password:"······",
+          password: "······",
           uid: "1",
         },
         {
           date: "2016-05-04",
           site: "百度一下",
           account: "wangxiaohu",
-          password:"······",
+          password: "······",
           uid: "2",
         },
         {
           date: "2016-05-01",
           site: "百度一下",
           account: "wangxiaohu",
-          password:"······",
+          password: "······",
           uid: "3",
         },
         {
           date: "2016-05-03",
           site: "百度一下",
           account: "wangxiaohu",
-          password:"······",
+          password: "······",
           uid: "4",
         },
       ],
