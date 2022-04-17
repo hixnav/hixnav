@@ -20,7 +20,8 @@
         flex-wrap: wrap;
       "
     >
-      <div style="margin: 20px 20px; flex: 3">
+      <!-- 搜索 -->
+      <div class="main-search">
         <el-row style="min-width: 400px; padding: 14px 50px 20px">
           <el-input
             placeholder="搜索关键词"
@@ -28,31 +29,49 @@
             class="input-with-select"
             suffix-icon="el-icon-search"
             size="large"
+            style="border: none"
           />
-          <el-descriptions
-            class="margin-top"
-            title=""
-            :colon="false"
-            column="10"
-          >
-            <template slot="extra"></template>
-            <el-descriptions-item v-for="o in quikList" :key="o">
+          <div class="history">
+            <div v-for="o in quikList" :key="o">
               <!-- <i class="el-icon-search"></i> -->
               <el-link :href="o.href" target="_blank" style="font-size: 10px"
                 >{{ o.name }}
               </el-link>
-            </el-descriptions-item>
-          </el-descriptions>
+            </div>
+          </div>
         </el-row>
       </div>
+      <!-- 标签 -->
       <div style="flex: 1; border-left: 1px solid #ccc; padding-left: 20px">
-        <h3 style="margin-left: 10px">标签</h3>
+        <h3 style="margin-left: 10px">
+          <svg
+            t="1650003512498"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="2554"
+            width="20"
+            height="20"
+            style="position: relative; top: 4px"
+          >
+            <path
+              d="M194.889274 0v1024l317.082033-224.864391 317.139419 224.864391V0z"
+              p-id="2555"
+              fill="#1296db"
+            ></path>
+          </svg>
+          标签
+        </h3>
         <el-tag
-          size="mini"
+          size="small"
           v-for="c in cates"
           :key="c"
           @click="goAnchor('#anchor' + c.Cate)"
-          style="margin: 0.4rem 0.6rem"
+          style="margin: 0.4rem 0.6rem; color: #fff; font-weight: 700"
+          :style="{
+            'background-color': colorlists[Math.floor(Math.random() * 10)],
+          }"
           >{{ c.Catename }}
         </el-tag>
       </div>
@@ -282,6 +301,23 @@ export default {
       },
       navs: [],
       cates: [],
+      colorlists: [
+        "rgb(229, 0, 19)",
+        "rgb(206,194,28)",
+        "rgb(0,161,233)",
+        "rgb(109,185,45)",
+        "rgb(166,0,130)",
+        "rgb(237,108,0)",
+        "rgb(240, 28, 131)",
+        "rgb(84, 21, 226)",
+        "rgb( 0,128,0)",
+        "rgb( 255,69,0)",
+        "rgb( 255,165,0)",
+        "rgb( 178,34,34)",
+        "rgb( 255,0,255)",
+        "rgb(65,105,225)",
+        "blueviolet",
+      ],
       quikList: [
         {
           href: "https://wennmu.github.io/",
@@ -484,6 +520,26 @@ export default {
   background-size: cover;
 }
 
+.main-search {
+  width: 100%;
+  height: 150px;
+  margin: 20px 20px;
+  flex: 3;
+  background: url("http://pic.5tu.cn/uploads/allimg/2111/pic_5tu_big_6320187_7f6b7f0c6f9205bbc7fa6a1616b67864.jpg")
+    no-repeat left bottom;
+  background-size: cover;
+  /* background-color: #fff; */
+  border-radius: 5px;
+}
+.history {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+}
+.history > div {
+  /* width: 80px; */
+  margin: 10px 20px 0 0;
+}
 /* .loadding{
   width: 100%;
   height: 100%;
