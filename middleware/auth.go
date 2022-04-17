@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gitee.com/wennmu/haixinnav.git/cmd"
+	"gitee.com/hixnav/hixnav.git/cmd"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

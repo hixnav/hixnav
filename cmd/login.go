@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"gitee.com/wennmu/haixinnav.git/internal/e"
+	"gitee.com/hixnav/hixnav.git/internal/e"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

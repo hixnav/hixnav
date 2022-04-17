@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      self = this;
+      let self = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);

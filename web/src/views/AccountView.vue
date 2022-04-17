@@ -1,5 +1,5 @@
 <template>
-  <div id="setting">
+  <div id="account">
     <HeadBar
         title="海芯导航"
         :searchVal="searchVal"
@@ -10,31 +10,37 @@
         <el-container>
           <el-main>
             <!-- 主要内容 -->
-            <el-button type="primary"
+            <el-button type="primary" @click="addAccount"
             ><i class="el-icon-edit"></i>添加账号</el-button
             >
             <el-table
-                :data="tableData"
+                :data="accountList"
                 style="width: 100%; margin-top: 20px"
                 :row-class-name="tableRowClassName"
             >
-              <el-table-column prop="site" label="站点" width="180">
+              <el-table-column prop="Sitename" label="站点" width="180">
+                <template slot-scope="scope">
+                  <a href="" target="_blank">{{ scope.row.Sitename }}</a>
+                </template>
               </el-table-column>
-              <el-table-column prop="account" label="账号" width="180">
+              <el-table-column prop="Name" label="账号" width="180">
               </el-table-column>
-              <el-table-column prop="password" label="密码" width="180">
+              <el-table-column prop="Password" label="密码" width="180">
+                <template slot-scope="scope">
+                  <span>······</span>
+                </template>
               </el-table-column>
 
-              <el-table-column prop="date" label="添加时间"> </el-table-column>
+              <el-table-column prop="Createat" label="添加时间"> </el-table-column>
               <el-table-column fixed="right" prop="" label="操作">
                 <template slot-scope="scope">
                   <el-button
                       size="mini"
-                      @click.native.prevent="deleteRow(scope.$index, tableData)""> <i class="el-icon-view"></i>查看密码</el-button>
+                      @click.native.prevent="deleteRow(scope.$index, tableData)"> <i class="el-icon-view"></i>查看密码</el-button>
                   <el-button
                       size="mini"
                       type="danger"
-                      @click.native.prevent="deleteRow(scope.$index, tableData)""><i class="el-icon-delete"></i>删除</el-button>
+                      @click.native.prevent="deleteRow(scope.$index, tableData)"><i class="el-icon-delete"></i>删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -48,7 +54,7 @@
 <script>
 import HeadBar from "@/components/HeadBar.vue";
 export default {
-  name: "SettingView",
+  name: "AccountView",
   components: {
     HeadBar,
   },
@@ -56,50 +62,35 @@ export default {
     return {
       searchVal: "",
       activeIndex: "5",
-      tableData: [
-        {
-          date: "2016-05-02",
-          site: "百度一下",
-          account: "wangxiaohu",
-          password: "······",
-          uid: "1",
-        },
-        {
-          date: "2016-05-04",
-          site: "百度一下",
-          account: "wangxiaohu",
-          password: "······",
-          uid: "2",
-        },
-        {
-          date: "2016-05-01",
-          site: "百度一下",
-          account: "wangxiaohu",
-          password: "······",
-          uid: "3",
-        },
-        {
-          date: "2016-05-03",
-          site: "百度一下",
-          account: "wangxiaohu",
-          password: "······",
-          uid: "4",
-        },
-      ],
+      accountList: [],
     };
   },
   methods: {
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return "warning-row";
-      } else if (rowIndex === 3) {
-        return "success-row";
-      }
-      return "";
-    },
+    // tableRowClassName({ row, rowIndex }) {
+    //   if (rowIndex === 1) {
+    //     return "warning-row";
+    //   } else if (rowIndex === 3) {
+    //     return "success-row";
+    //   }
+    //   return "";
+    // },
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
+    addAccount(){
+      // 添加
+    }
+  },
+  created() {
+    let self = this
+    this.$store.dispatch("account/account", JSON.stringify(this.ruleForm))
+        .then((response) => {
+          console.log(response);
+          self.accountList = response.data.accounts;
+        })
+        .catch((res) => {
+          console.log(res);
+        });
   },
 };
 </script>

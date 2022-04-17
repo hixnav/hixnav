@@ -41,3 +41,16 @@ CREATE TABLE `users` (
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 ;
+
+CREATE TABLE `accounts` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `uid` int(10) NOT NULL COMMENT 'UID',
+    `sitename` varchar(512) NOT NULL DEFAULT '' COMMENT '站点名称',
+    `siteurl` varchar(1024) DEFAULT '' COMMENT '站点地址',
+    `name` varchar(128) DEFAULT '' COMMENT '账号',
+    `password` varchar(512) DEFAULT '' COMMENT '秘钥',
+    `createat` bigint(20) DEFAULT NULL COMMENT '创建时间',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='云账户';
+
+

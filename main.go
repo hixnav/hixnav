@@ -1,19 +1,14 @@
 package main
 
 import (
+	"gitee.com/wennmu/pkg.git/doorm"
 	"log"
 	"net/http"
 
-	"gitee.com/wennmu/haixinnav.git/cmd"
-	"gitee.com/wennmu/haixinnav.git/internal/e"
-	"gitee.com/wennmu/haixinnav.git/middleware"
+	"gitee.com/hixnav/hixnav.git/cmd"
+	"gitee.com/hixnav/hixnav.git/internal/e"
+	"gitee.com/hixnav/hixnav.git/middleware"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-)
-
-var (
-	db *gorm.DB
 )
 
 func main() {
@@ -38,6 +33,7 @@ func main() {
 	}
 	api.Use(middleware.Check())
 	{
+		//导航
 		api.POST("/addLink", new(Nav).addLink)
 		api.POST("/editLink", new(Nav).editLink)
 		api.POST("/delLink", new(Nav).delLink)
@@ -52,10 +48,14 @@ func main() {
 
 		// 云图
 		api.POST("/upload", new(cmd.Upload).UploadFile)
+		//云账号
+		api.POST("/account", new(cmd.Account).List)
 
 	}
-	db, _ = gorm.Open(mysql.Open(cmd.GlobalMysqlDNS), &gorm.Config{})
-	cmd.GlobalDB = db
+	//初始化数据库
+	if err := doorm.InitMysqlDB(doorm.GlobalDBOptions{DSN: cmd.GlobalMysqlDNS}); err != nil {
+		log.Fatal(err)
+	}
 	if err := r.Run("0.0.0.0:8543"); err != nil {
 		log.Fatal(err)
 	}
@@ -85,12 +85,12 @@ func (s *Nav) home(c *gin.Context) {
 	if uid != "" {
 		uids = append(uids, uid)
 	}
-	_ = db.Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
+	_ = doorm.DB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 	var data []Nav
 
 	res := make(map[int64]interface{}, len(cates))
 	for _, cate := range cates {
-		_ = db.Table("navs").Where("cate = ?", cate.Cate).Find(&data)
+		_ = doorm.DB().Table("navs").Where("cate = ?", cate.Cate).Find(&data)
 		res[cate.Cate] = data
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -106,7 +106,7 @@ func (s *Nav) addLink(c *gin.Context) {
 		return
 	}
 	nav.Uid = c.GetInt64("uid")
-	result := db.Table("navs").Create(&nav)
+	result := doorm.DB().Table("navs").Create(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return
@@ -124,7 +124,7 @@ func (s *Nav) editLink(c *gin.Context) {
 		return
 	}
 	nav.Uid = c.GetInt64("uid")
-	result := db.Table("navs").Updates(&nav)
+	result := doorm.DB().Table("navs").Updates(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return
@@ -138,7 +138,7 @@ func (s *Nav) delLink(c *gin.Context) {
 	var nav Nav
 	id := c.PostForm("id")
 	uid := c.GetInt64("uid")
-	result := db.Table("navs").Where("id = ? and uid = ?", id, uid).Delete(&nav)
+	result := doorm.DB().Table("navs").Where("id = ? and uid = ?", id, uid).Delete(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"code": -1,
@@ -163,7 +163,7 @@ func (s *Cate) list(c *gin.Context) {
 	if uid != "" {
 		uids = append(uids, uid)
 	}
-	res := db.Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
+	res := doorm.DB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 	if res.Error != nil {
 		log.Println(res.Error)
 	}
@@ -193,7 +193,7 @@ func (s *Article) list(c *gin.Context) {
 		return
 	}
 	var articles []Article
-	dbimpl := db.Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
+	dbimpl := doorm.DB().Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
 	if req.Catename != "" {
 		dbimpl = dbimpl.Where("catename = ?", req.Catename)
 	}
@@ -221,7 +221,7 @@ func (s *Article) addArticleLink(c *gin.Context) {
 		Url:      req.Url,
 		Uid:      c.GetInt64("uid"),
 	}
-	result := db.Table("links").Create(&data)
+	result := doorm.DB().Table("links").Create(&data)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return
