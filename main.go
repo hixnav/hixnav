@@ -50,6 +50,8 @@ func main() {
 		api.POST("/upload", new(cmd.Upload).UploadFile)
 		//云账号
 		api.POST("/account", new(cmd.Account).List)
+		api.POST("/addAccount", new(cmd.Account).Add)
+		api.POST("/delAccount", new(cmd.Account).Del)
 
 	}
 	//初始化数据库

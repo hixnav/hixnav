@@ -7,3 +7,19 @@ export function account(data) {
         data
     })
 }
+
+export function addAccount(data) {
+    return request({
+        url: '/api/addAccount',
+        method: 'post',
+        data
+    })
+}
+
+export function delAccount(data) {
+    return request({
+        url: '/api/delAccount',
+        method: 'post',
+        data
+    })
+}
