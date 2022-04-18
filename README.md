@@ -1,4 +1,4 @@
-HixNav ：http://www.hixnav.xyz/hixnav/
+SiteUrl ：http://www.hixnav.xyz/hixnav/
 
 Instructions 
 
