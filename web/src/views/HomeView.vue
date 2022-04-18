@@ -525,10 +525,10 @@ export default {
   height: 150px;
   margin: 20px 20px;
   flex: 3;
-  background: url("http://pic.5tu.cn/uploads/allimg/2111/pic_5tu_big_6320187_7f6b7f0c6f9205bbc7fa6a1616b67864.jpg")
+  /* background: url("http://pic.5tu.cn/uploads/allimg/2111/pic_5tu_big_6320187_7f6b7f0c6f9205bbc7fa6a1616b67864.jpg")
     no-repeat left bottom;
-  background-size: cover;
-  /* background-color: #fff; */
+  background-size: cover; */
+  background-color: #fff;
   border-radius: 5px;
 }
 .history {
@@ -540,18 +540,4 @@ export default {
   /* width: 80px; */
   margin: 10px 20px 0 0;
 }
-/* .loadding{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.loadding > div{
-  width: 100%;
-  height: 200px;
-  flex-direction: column;
-  align-items: center;
-} */
 </style>

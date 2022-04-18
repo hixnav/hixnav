@@ -15,7 +15,7 @@
             style="text-decoration: none; color: #c0c0c0"
             >HixNav</a
           >
-          ©2202 海芯导航 v1.10.2
+          ©2202 海芯导航
           <a
             href="https://github.com/hixnav/hixnav/blob/gh-pages/README.md"
             style="text-decoration: none; color: #c0c0c0"
