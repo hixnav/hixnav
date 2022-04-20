@@ -2,9 +2,6 @@
 
 http://www.hixnav.xyz
 
-#### Mobile website
-![Mobile website](./images/mobile-website-qrcode.png)
-
 #### Instructions 
 
  - Direct Installation Instructions：[Hixnav使用说明](https://hixnav.github.io/)
