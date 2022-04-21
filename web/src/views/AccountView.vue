@@ -10,7 +10,7 @@
         <el-container>
           <el-main>
             <!-- 主要内容 -->
-            <el-button type="primary" @click="openAddDrawer"
+            <el-button type="primary" size="mini" @click="openAddDrawer"
               ><i class="el-icon-edit"></i>添加账号
             </el-button>
             <el-table
@@ -18,16 +18,16 @@
               style="width: 100%; margin-top: 20px"
               :row-class-name="tableRowClassName"
             >
-              <el-table-column prop="Sitename" label="站点" width="180">
+              <el-table-column prop="Sitename" label="站点" width="140">
                 <template slot-scope="scope">
                   <a :href="scope.row.Siteurl" target="_blank">{{
                     scope.row.Sitename
                   }}</a>
                 </template>
               </el-table-column>
-              <el-table-column prop="Name" label="账号" width="180">
+              <el-table-column prop="Name" label="账号" width="160">
               </el-table-column>
-              <el-table-column prop="Password" label="密码" width="180">
+              <el-table-column prop="Password" label="密码" width="140">
                 <template slot-scope="scope">
                   <span>······</span>
                 </template>
@@ -41,12 +41,12 @@
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
-                    @click.native.prevent="deleteRow(scope.$index, accountList)"
+                    @click.native.prevent="viewCode(scope.$index, accountList)"
                     ><i class="el-icon-view"></i>查看密码
                   </el-button>
                   <el-button
                     size="mini"
-                    @click.native.prevent="deleteRow(scope.$index, accountList)"
+                    @click.native.prevent="editRow(scope.$index, accountList)"
                     ><i class="el-icon-edit"></i>编辑
                   </el-button>
                   <el-button
