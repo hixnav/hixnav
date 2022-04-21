@@ -1,9 +1,9 @@
 <template>
   <div id="account">
     <HeadBar
-        title="海芯导航"
-        :searchVal="searchVal"
-        :activeIndex="activeIndex"
+      title="海芯导航"
+      :searchVal="searchVal"
+      :activeIndex="activeIndex"
     />
     <div class="content">
       <el-container>
@@ -11,17 +11,18 @@
           <el-main>
             <!-- 主要内容 -->
             <el-button type="primary" @click="openAddDrawer"
-            ><i class="el-icon-edit"></i>添加账号
-            </el-button
-            >
+              ><i class="el-icon-edit"></i>添加账号
+            </el-button>
             <el-table
-                :data="accountList"
-                style="width: 100%; margin-top: 20px"
-                :row-class-name="tableRowClassName"
+              :data="accountList"
+              style="width: 100%; margin-top: 20px"
+              :row-class-name="tableRowClassName"
             >
               <el-table-column prop="Sitename" label="站点" width="180">
                 <template slot-scope="scope">
-                  <a :href="scope.row.Siteurl" target="_blank">{{ scope.row.Sitename }}</a>
+                  <a :href="scope.row.Siteurl" target="_blank">{{
+                    scope.row.Sitename
+                  }}</a>
                 </template>
               </el-table-column>
               <el-table-column prop="Name" label="账号" width="180">
@@ -32,17 +33,27 @@
                 </template>
               </el-table-column>
 
-              <el-table-column prop="Createat" label="添加时间"></el-table-column>
+              <el-table-column
+                prop="Createat"
+                label="添加时间"
+              ></el-table-column>
               <el-table-column fixed="right" prop="" label="操作">
                 <template slot-scope="scope">
                   <el-button
-                      size="mini"
-                      @click.native.prevent="deleteRow(scope.$index, accountList)"><i class="el-icon-view"></i>查看密码
+                    size="mini"
+                    @click.native.prevent="deleteRow(scope.$index, accountList)"
+                    ><i class="el-icon-view"></i>查看密码
                   </el-button>
                   <el-button
-                      size="mini"
-                      type="danger"
-                      @click.native.prevent="deleteRow(scope.$index, accountList)"><i class="el-icon-delete"></i>删除
+                    size="mini"
+                    @click.native.prevent="deleteRow(scope.$index, accountList)"
+                    ><i class="el-icon-edit"></i>编辑
+                  </el-button>
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click.native.prevent="deleteRow(scope.$index, accountList)"
+                    ><i class="el-icon-delete"></i>删除
                   </el-button>
                 </template>
               </el-table-column>
@@ -55,37 +66,41 @@
     <!-- 这里是弹出层 -->
     <div class="drawer">
       <el-drawer
-          title="添加账号"
-          :visible.sync="dialog"
-          direction="rtl"
-          custom-class="demo-drawer"
-          ref="drawer"
+        title="添加账号"
+        :visible.sync="dialog"
+        direction="rtl"
+        custom-class="demo-drawer"
+        ref="drawer"
       >
         <div class="demo-drawer__content" style="padding: 30px">
           <el-form :model="form">
             <el-form-item label="名称" :label-width="formLabelWidth">
               <el-input
-                  id="linked_label"
-                  v-model="form.sitename"
-                  autocomplete="off"
+                id="linked_label"
+                v-model="form.sitename"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="地址" :label-width="formLabelWidth">
               <el-input
-                  id="linked_label"
-                  v-model="form.siteurl"
-                  autocomplete="off"
+                id="linked_label"
+                v-model="form.siteurl"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="账号" :label-width="formLabelWidth">
               <el-input
-                  id="linked_name"
-                  v-model="form.name"
-                  autocomplete="off"
+                id="linked_name"
+                v-model="form.name"
+                autocomplete="off"
               ></el-input>
             </el-form-item>
             <el-form-item label="秘钥" :label-width="formLabelWidth">
-              <el-input id="linked_url" type="password" v-model="form.password"></el-input>
+              <el-input
+                id="linked_url"
+                type="password"
+                v-model="form.password"
+              ></el-input>
             </el-form-item>
           </el-form>
           <div class="demo-drawer__footer" style="float: right">
@@ -96,7 +111,6 @@
       </el-drawer>
     </div>
     <!-- 这里弹出层结束 -->
-
   </div>
 </template>
 
@@ -132,71 +146,72 @@ export default {
       this.dialog = false;
     },
     deleteRow(index, rows) {
-      console.log(rows[index])
+      console.log(rows[index]);
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.deleteAccountData(rows[index].ID);
-            rows.splice(index, 1)
-          })
-          .catch(() => {});
+        .then(() => {
+          this.deleteAccountData(rows[index].ID);
+          rows.splice(index, 1);
+        })
+        .catch(() => {});
     },
     addAccount() {
       // 添加
       console.log(this.form);
       let self = this;
       this.$store
-          .dispatch("account/addAccount", JSON.stringify(this.form))
-          .then((response) => {
-            console.log(response);
-            self.dialog = false;
-            self.$notify({
-              title: "成功",
-              message: "",
-              type: "success",
-            });
-            this.getData()
-          })
-          .catch((res) => {
-            console.log(res);
-            this.$message.error("失败");
+        .dispatch("account/addAccount", JSON.stringify(this.form))
+        .then((response) => {
+          console.log(response);
+          self.dialog = false;
+          self.$notify({
+            title: "成功",
+            message: "",
+            type: "success",
           });
+          this.getData();
+        })
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("失败");
+        });
     },
     deleteAccountData(id) {
       let self = this;
       this.$store
-          .dispatch("account/delAccount", "id=" + id)
-          .then((response) => {
-            console.log(response);
-            self.$notify({
-              title: "成功",
-              message: "",
-              type: "success",
-            });
-            self.getData();
-          })
-          .catch((res) => {
-            console.log(res);
-            this.$message.error("失败");
+        .dispatch("account/delAccount", "id=" + id)
+        .then((response) => {
+          console.log(response);
+          self.$notify({
+            title: "成功",
+            message: "",
+            type: "success",
           });
+          self.getData();
+        })
+        .catch((res) => {
+          console.log(res);
+          this.$message.error("失败");
+        });
     },
     getData() {
-      let self = this
-      this.$store.dispatch("account/account", JSON.stringify(this.ruleForm))
-          .then((response) => {
-            console.log(response);
-            self.accountList = response.data.accounts;
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-    }
+      let self = this;
+      this.$store
+        .dispatch("account/account", JSON.stringify(this.ruleForm))
+        .then((response) => {
+          console.log(response);
+          self.accountList = response.data.accounts;
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    },
   },
   created() {
-    this.getData()
+    this.getData();
   },
 };
 </script>
