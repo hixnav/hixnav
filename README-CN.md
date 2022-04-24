@@ -17,7 +17,32 @@ COSSecretID
 COSSecretKey
 ``` 
 
-#### 编译
+#### 安装依赖
+```shell
+go get -u github.com/jteeuwen/go-bindata/...
+go get -u github.com/elazarl/go-bindata-assetfs/...
+```
+
+#### 前端编译
+
+###### 安装依赖
+```
+cd web
+npm install
+```
+
+###### 编译
+```
+npm run build
+```
+
+###### 打包前端
+
+```shell
+ go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
+```
+
+#### 整包编译
 
 ```shell
 # windows
