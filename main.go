@@ -35,7 +35,7 @@ func main() {
 
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
+		c.HTML(http.StatusOK, "web/dist/index.html", gin.H{
 			"title": "海芯导航",
 		})
 	})
