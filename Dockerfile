@@ -1,3 +1,3 @@
 From centos
-COPY hixnav /usr/local/bin
+COPY hixnav-linux-amd64 /usr/local/bin/hixnav
 ENTRYPOINT ["/usr/local/bin/hixnav"]
