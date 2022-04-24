@@ -1,5 +1,11 @@
 name = hixnav
 
+build-front:
+	cd front & npm run build
+
+front: build-front
+	go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
+
 
 build-linux:
 	set CGO_ENABLED=0

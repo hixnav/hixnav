@@ -1,21 +1,38 @@
 package main
 
 import (
-	"gitee.com/wennmu/pkg.git/doorm"
-	"log"
-	"net/http"
-
 	"gitee.com/hixnav/hixnav.git/cmd"
 	"gitee.com/hixnav/hixnav.git/internal/e"
 	"gitee.com/hixnav/hixnav.git/middleware"
+	"gitee.com/wennmu/pkg.git/doorm"
+	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+	"html/template"
+	"log"
+	"net/http"
+	"strings"
 )
 
 func main() {
 	cmd.Init()
 	r := gin.Default()
-	r.Static("/assets", "./web/dist/assets")
-	r.LoadHTMLGlob("web/dist/index.html")
+	//r.Static("/assets", "./web/dist/assets")
+	//r.LoadHTMLGlob("web/dist/index.html")
+
+	fs := assetfs.AssetFS{
+		Asset:     cmd.Asset,
+		AssetDir:  cmd.AssetDir,
+		AssetInfo: nil,
+		Prefix:    "web/dist/assets", //一定要加前缀
+	}
+	r.StaticFS("/assets", &fs)
+
+	t, err := loadTemplate()
+	if err != nil {
+		panic(err)
+	}
+	r.SetHTMLTemplate(t)
+
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
@@ -231,4 +248,23 @@ func (s *Article) addArticleLink(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,
 	})
+}
+
+func loadTemplate() (*template.Template, error) {
+	t := template.New("")
+	for _, name := range cmd.AssetNames() {
+		if !strings.HasSuffix(name, ".html") {
+			continue
+		}
+		asset, err := cmd.Asset(name)
+		if err != nil {
+			continue
+		}
+		// name := strings.Replace(name, "templates/", "", 1)
+		t, err = t.New(name).Parse(string(asset))
+		if err != nil {
+			return nil, err
+		}
+	}
+	return t, nil
 }
