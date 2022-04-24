@@ -3,12 +3,12 @@ package middleware
 import (
 	"errors"
 	"fmt"
+	"github.com/hixnav/hixnav.git/cmd"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"gitee.com/hixnav/hixnav.git/cmd"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

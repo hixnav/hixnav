@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"github.com/hixnav/hixnav.git/internal/e"
 	"log"
 	"time"
 
-	"gitee.com/hixnav/hixnav.git/internal/e"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

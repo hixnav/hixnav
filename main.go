@@ -1,12 +1,12 @@
 package main
 
 import (
-	"gitee.com/hixnav/hixnav.git/cmd"
-	"gitee.com/hixnav/hixnav.git/internal/e"
-	"gitee.com/hixnav/hixnav.git/middleware"
 	"gitee.com/wennmu/pkg.git/doorm"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+	"github.com/hixnav/hixnav.git/cmd"
+	"github.com/hixnav/hixnav.git/internal/e"
+	"github.com/hixnav/hixnav.git/middleware"
 	"html/template"
 	"log"
 	"net/http"

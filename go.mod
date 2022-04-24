@@ -1,4 +1,4 @@
-module gitee.com/hixnav/hixnav.git
+module github.com/hixnav/hixnav.git
 
 go 1.16
 
