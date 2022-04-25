@@ -35,7 +35,3 @@ serve:
 
 run:
 	go run main.go
-
-push:
-	git push origin master
-	git push coding master
