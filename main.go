@@ -1,19 +1,22 @@
 package main
 
 import (
+	"context"
+	"html/template"
+	"log"
+	"net/http"
+	"strings"
+
 	"gitee.com/wennmu/pkg.git/doorm"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/cmd"
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/middleware"
-	"html/template"
-	"log"
-	"net/http"
-	"strings"
 )
 
 func main() {
+	ctx, _ := context.WithCancel(context.Background())
 	cmd.Init()
 	r := gin.Default()
 	//r.Static("/assets", "./web/dist/assets")
@@ -78,6 +81,8 @@ func main() {
 	if err := r.Run("0.0.0.0:8543"); err != nil {
 		log.Fatal(err)
 	}
+
+	<-ctx.Done()
 }
 
 func index(c *gin.Context) {

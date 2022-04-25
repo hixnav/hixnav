@@ -1,7 +1,7 @@
 name = hixnav
 
 build-front:
-	cd front & npm run build
+	cd web & npm run build
 
 front: build-front
 	go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
