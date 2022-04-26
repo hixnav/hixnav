@@ -44,16 +44,16 @@ jobs:
         CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/hixnav-darwin-amd64 .
         CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/hixnav-windows-x64.exe .
         
-    - name: Create Draft Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO }}
-      with:
-        tag_name: release
-        release_name: release
-        draft: true
-        prerelease: false
+#     - name: Create Draft Release
+#       id: create_release
+#       uses: actions/create-release@v1
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.REPO }}
+#       with:
+#         tag_name: release
+#         release_name: release
+#         draft: true
+#         prerelease: false
         
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
