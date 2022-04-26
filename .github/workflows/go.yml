@@ -52,11 +52,14 @@ jobs:
         draft: true
         prerelease: false
         
-    - name: Upload release binaries
-      uses: djn24/add-asset-to-release@v1
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        token: ${{secrets.REPO}}
-        path: './bin/'
+        repo_token: ${{ secrets.REPO }}
+        file: bin/*
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
         
 #     - uses: actions/upload-release-asset@v1.0.1
 #       env:
