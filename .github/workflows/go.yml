@@ -1,0 +1,61 @@
+name: Hixnav Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17
+
+    - name: install
+      run: |
+        go get -u github.com/jteeuwen/go-bindata/...
+        go get -u github.com/elazarl/go-bindata-assetfs/...
+
+    - name: build
+      run: |
+        cd web & npm install & npm run build
+        cd ..
+        go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
+        
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o hixnav-linux-amd64 .
+        CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o hixnav-darwin-amd64 .
+        CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o hixnav-windows-x64 .
+        
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO }}
+      with:
+        tag_name: <tofill>
+        release_name: <tofill>
+        draft: true
+        prerelease: false
+
+    - uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./my-artifact.zip
+        asset_name: my-artifact.zip
+        asset_content_type: application/zip
+
+    - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+
