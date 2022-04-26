@@ -30,7 +30,7 @@ jobs:
 
     - name: build
       run: |
-        cd web & npm install & npm run build
+        cd web && npm install && npm run build
         cd ..
         go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
         
