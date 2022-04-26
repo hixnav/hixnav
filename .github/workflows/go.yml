@@ -34,9 +34,9 @@ jobs:
         cd ..
         go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
         
-        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o hixnav-linux-amd64 .
-        CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o hixnav-darwin-amd64 .
-        CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o hixnav-windows-x64 .
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/hixnav-linux-amd64 .
+        CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/hixnav-darwin-amd64 .
+        CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/hixnav-windows-x64.exe .
         
     - name: Create Draft Release
       id: create_release
@@ -48,15 +48,22 @@ jobs:
         release_name: <tofill>
         draft: true
         prerelease: false
-
-    - uses: actions/upload-release-asset@v1.0.1
+        
+    - name: Upload release binaries
+      uses: alexellis/upload-assets@0.2.2
       env:
         GITHUB_TOKEN: ${{ secrets.REPO }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./my-artifact.zip
-        asset_name: my-artifact.zip
-        asset_content_type: application/zip
+        asset_paths: '["./bin/hixnav*"]'
+        
+#     - uses: actions/upload-release-asset@v1.0.1
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.REPO }}
+#       with:
+#         upload_url: ${{ steps.create_release.outputs.upload_url }}
+#         asset_path: ./my-artifact.zip
+#         asset_name: my-artifact.zip
+#         asset_content_type: application/zip
 
     - uses: eregon/publish-release@v1
       env:
