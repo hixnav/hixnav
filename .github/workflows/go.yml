@@ -47,8 +47,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO }}
       with:
-        tag_name: <tofill>
-        release_name: <tofill>
+        tag_name: release
+        release_name: release
         draft: true
         prerelease: false
         
