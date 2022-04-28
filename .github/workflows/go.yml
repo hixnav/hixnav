@@ -60,7 +60,7 @@ jobs:
         cp bin/hixnav-linux-amd64 ./
         docker build . --file Dockerfile --tag hixnav:$(date +%s)
         docker images
-        docker login ghcr.io -u hixnav --password ${{ secrets.REPO }}
+        docker login ghcr.io -u hixnav --p ${{ secrets.REPO }}
         docker push ghcr.io/hixnav/hixnav:latest
       
     - name: Upload binaries to release
