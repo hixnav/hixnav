@@ -9,13 +9,14 @@ import (
 )
 
 type Account struct {
-	ID       int64
-	Sitename string
-	Siteurl  string
-	Name     string
-	Password string
-	Createat int64
-	Uid      int64 `json:"Cate, int"`
+	ID         int64
+	Sitename   string
+	Siteurl    string
+	Name       string
+	Password   string
+	Createat   int64
+	CreateTime string
+	Uid        int64 `json:"Cate, int"`
 }
 
 func (a *Account) List(c *gin.Context) {
@@ -25,11 +26,32 @@ func (a *Account) List(c *gin.Context) {
 	if res.Error != nil {
 		log.Println(res.Error)
 	}
+	for i, _ := range accounts {
+		accounts[i].CreateTime = time.Unix(accounts[i].Createat, 0).Format("2006-01-02")
+	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,
 		"data": map[string]interface{}{
 			"accounts": accounts,
 		},
+	})
+}
+
+func (s *Account) Edit(c *gin.Context) {
+	var acc Account
+	if err := c.ShouldBindJSON(&acc); err != nil {
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
+		return
+	}
+	acc.Uid = c.GetInt64("uid")
+	result := doorm.DB().Table("accounts").Where("uid = ?", acc.Uid).Where("id = ?", acc.ID).Updates(&acc)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"code": 0,
 	})
 }
 

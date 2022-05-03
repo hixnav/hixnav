@@ -29,12 +29,12 @@
               </el-table-column>
               <el-table-column prop="Password" label="密码" width="140">
                 <template slot-scope="scope">
-                  <span>······</span>
+                  <span>******</span>
                 </template>
               </el-table-column>
 
               <el-table-column
-                prop="Createat"
+                prop="CreateTime"
                 label="添加时间"
               ></el-table-column>
               <el-table-column fixed="right" prop="" label="操作">
@@ -46,7 +46,7 @@
                   </el-button>
                   <el-button
                     size="mini"
-                    @click.native.prevent="editRow(scope.$index, accountList)"
+                    @click.native.prevent="openEditDrawer(scope.$index, accountList)"
                     ><i class="el-icon-edit"></i>编辑
                   </el-button>
                   <el-button
@@ -66,7 +66,7 @@
     <!-- 这里是弹出层 -->
     <div class="drawer">
       <el-drawer
-        title="添加账号"
+        :title="addShow ? '添加账号':'编辑账号'"
         :visible.sync="dialog"
         direction="rtl"
         custom-class="demo-drawer"
@@ -105,7 +105,8 @@
           </el-form>
           <div class="demo-drawer__footer" style="float: right">
             <el-button @click="cancelForm">取 消</el-button>
-            <el-button type="primary" @click="addAccount">确 定</el-button>
+            <el-button type="primary" v-show="addShow" @click="addAccount">确 定</el-button>
+            <el-button type="primary" v-show="editShow" @click="editAccount">确 定</el-button>
           </div>
         </div>
       </el-drawer>
@@ -129,9 +130,12 @@ export default {
       accountList: [],
       // 弹出层控制
       dialog: false,
+      addShow: true,
+      editShow:false,
       form: {
+        id: 0,
         sitename: "",
-        Siteurl: "",
+        siteurl: "",
         name: "",
         password: "",
       },
@@ -140,7 +144,20 @@ export default {
   methods: {
     openAddDrawer() {
       console.log("drawer");
+      this.addShow = true
+      this.editShow = false
       this.dialog = true;
+      this.form = []
+    },
+    openEditDrawer(index, rows) {
+      console.log(rows[index]);
+      this.addShow = false
+      this.editShow = true
+      this.dialog = true;
+      this.form.id = rows[index].ID
+      this.form.sitename = rows[index].Sitename
+      this.form.siteurl = rows[index].Siteurl
+      this.form.name = rows[index].Name
     },
     cancelForm() {
       this.dialog = false;
@@ -157,6 +174,26 @@ export default {
           rows.splice(index, 1);
         })
         .catch(() => {});
+    },
+    editAccount() {
+      console.log(this.form);
+      let self = this;
+      this.$store
+          .dispatch("account/editAccount", JSON.stringify(this.form))
+          .then((response) => {
+            console.log(response);
+            self.dialog = false;
+            self.$notify({
+              title: "成功",
+              message: "",
+              type: "success",
+            });
+            this.getData();
+          })
+          .catch((res) => {
+            console.log(res);
+            this.$message.error("失败");
+          });
     },
     addAccount() {
       // 添加

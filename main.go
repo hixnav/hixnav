@@ -71,6 +71,7 @@ func main() {
 		//云账号
 		api.POST("/account", new(cmd.Account).List)
 		api.POST("/addAccount", new(cmd.Account).Add)
+		api.POST("/editAccount", new(cmd.Account).Edit)
 		api.POST("/delAccount", new(cmd.Account).Del)
 
 	}

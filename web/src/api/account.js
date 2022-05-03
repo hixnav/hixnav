@@ -16,6 +16,14 @@ export function addAccount(data) {
     })
 }
 
+export function editAccount(data) {
+    return request({
+        url: '/api/editAccount',
+        method: 'post',
+        data
+    })
+}
+
 export function delAccount(data) {
     return request({
         url: '/api/delAccount',
