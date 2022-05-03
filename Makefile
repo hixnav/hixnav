@@ -1,11 +1,13 @@
 name = hixnav
 
-build-front:
+build-web:
 	cd web & npm run build
 
-front: build-front
+web: build-web
 	go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
 
+serve:
+	cd web && npm run serve
 
 build-linux:
 	set CGO_ENABLED=0
@@ -26,12 +28,6 @@ build-win:
 	go build -o release/$(name)-winx64.exe main.go
 
 build: build-linux build-mac build-win
-
-build-web:
-	cd web && npm run build
-
-serve:
-	cd web && npm run serve
 
 run:
 	go run main.go
