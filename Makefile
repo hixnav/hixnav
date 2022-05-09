@@ -1,14 +1,5 @@
 name = hixnav
 
-build-web:
-	cd web & npm run build
-
-web: build-web
-	go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
-
-serve:
-	cd web && npm run serve
-
 build-linux:
 	set CGO_ENABLED=0
 	set GOOS=linux
