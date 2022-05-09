@@ -6,4 +6,4 @@
 
 - :computer: Compilation - [zh-CN](./README-CN.md) / [en](./README-EN.md)
 
-- :hearts: Donation - [Donation](./contribute.md)
+- :hearts: Donation - [Donation](./Donation.md)
