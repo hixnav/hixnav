@@ -10,6 +10,7 @@ import (
 	"gitee.com/wennmu/pkg.git/doorm"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+	"github.com/hixnav/hixnav-web/pkg"
 	"github.com/hixnav/hixnav.git/cmd"
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/middleware"
@@ -23,10 +24,10 @@ func main() {
 	//r.LoadHTMLGlob("web/dist/index.html")
 
 	fs := assetfs.AssetFS{
-		Asset:     cmd.Asset,
-		AssetDir:  cmd.AssetDir,
+		Asset:     pkg.Asset,
+		AssetDir:  pkg.AssetDir,
 		AssetInfo: nil,
-		Prefix:    "web/dist/assets", //一定要加前缀
+		Prefix:    "dist/assets", //一定要加前缀
 	}
 	r.StaticFS("/assets", &fs)
 
@@ -38,7 +39,7 @@ func main() {
 
 	r.Use(middleware.Request())
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "web/dist/index.html", gin.H{
+		c.HTML(http.StatusOK, "dist/index.html", gin.H{
 			"title": "海芯导航",
 		})
 	})
@@ -258,11 +259,11 @@ func (s *Article) addArticleLink(c *gin.Context) {
 
 func loadTemplate() (*template.Template, error) {
 	t := template.New("")
-	for _, name := range cmd.AssetNames() {
+	for _, name := range pkg.AssetNames() {
 		if !strings.HasSuffix(name, ".html") {
 			continue
 		}
-		asset, err := cmd.Asset(name)
+		asset, err := pkg.Asset(name)
 		if err != nil {
 			continue
 		}
