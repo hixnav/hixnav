@@ -6,4 +6,4 @@
 
 - Source code compilation instructions - [zh-CN](./README-CN.md) / [en](./README-EN.md)
 
-- contribute - [Donation](./contribute.md)
+- Donation - [Donation](./contribute.md)
