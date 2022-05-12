@@ -1,0 +1,58 @@
+version: '1.0'
+name: pipeline-20220512
+displayName: BranchPipeline
+triggers:
+  trigger: auto
+  push:
+    branches:
+      precise:
+        - master
+      include:
+        - .*
+    tags:
+      include:
+        - .*
+stages:
+  - name: stage-build
+    displayName: 编译
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: build@golang
+        name: build_golang
+        displayName: Golang 构建
+        golangVersion: '1.17'
+        commands:
+          - go mod tidy
+          - mkdir bin
+          - GOOS=linux GOARCH=amd64 go build -o output/hixnav-linux-amd64 main.go
+          - GOOS=linux GOARCH=386 go build -o output/hixnav-linux-x32 main.go
+          - GOOS=windows GOARCH=amd64 go build -o output/hixnav-windows-x64.exe main.go
+          - GOOS=windows GOARCH=386 go build -o output/hixnav-windows-x32.exe main.go
+          - GOOS=darwin GOARCH=amd64 go build -o output/hixnav-darwin-amd64 main.go
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./bin
+      - step: publish@general_artifacts
+        name: publish_general_artifacts
+        displayName: 上传制品
+        dependArtifact: BUILD_ARTIFACT
+        artifactName: bin
+        dependsOn: build_golang
+  - name: stage-289e924d
+    displayName: 发布
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: publish@release_artifacts
+        name: publish_release_artifacts
+        displayName: 发布
+        dependArtifact: bin
+        version: 1.2.10.0
+        autoIncrement: true
+permissions:
+  - role: admin
+    members: []
