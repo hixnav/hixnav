@@ -4,7 +4,16 @@
  
 海芯导航支持自定义导航、自定义链接、云盘、云图、云账号管理
 
-Github: https://github.com/hixnav/hixnav Gitee: https://gitee.com/hixnav/hixnav
+-  :house: 官网 - http://www.hixnav.xyz
+
+- :green_book: 说明文档 - [Hixnav Instructions](http://docs.hixnav.xyz/)
+
+- :computer: 编译 - [README-CN.md](./README-CN.md) / [README-EN.md](./README-EN.md)
+
+- :hearts: 捐赠 - [Donation](./Donation.md)
+
+Github: https://github.com/hixnav/hixnav
+Gitee: https://gitee.com/hixnav/hixnav
 
 ### 快速开始
 
