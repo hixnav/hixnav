@@ -1,7 +1,10 @@
 # HixNav 海芯导航
  
-#### 介绍 
 海芯导航支持自定义导航、自定义链接、云盘、云图、云账号管理
+
+Github: https://github.com/hixnav/hixnav Gitee: https://gitee.com/hixnav/hixnav
+
+### 快速开始
 
 #### 配置环境变量
 
