@@ -10,8 +10,9 @@
 
 - :hearts: 捐赠 - [Donation](./Donation.md)
 
-Github: https://github.com/hixnav/hixnav
-Gitee: https://gitee.com/hixnav/hixnav
+- Github: https://github.com/hixnav/hixnav
+
+- Gitee: https://gitee.com/hixnav/hixnav
 
 ### 快速开始
 
@@ -44,3 +45,7 @@ $ go build -o hixnav main.go
 ```shell
 $ hixnav
 ```
+
+### 提交问题
+
+> 请提交issue，并详细描述您的问题
