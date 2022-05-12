@@ -8,8 +8,6 @@
 
 - :green_book: 说明文档 - [Hixnav Instructions](http://docs.hixnav.xyz/)
 
-- :computer: 编译 - [README-CN.md](./README-CN.md) / [README-EN.md](./README-EN.md)
-
 - :hearts: 捐赠 - [Donation](./Donation.md)
 
 Github: https://github.com/hixnav/hixnav
