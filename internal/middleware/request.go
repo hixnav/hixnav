@@ -3,10 +3,19 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-basic/uuid"
+	"github.com/hixnav/hixnav.git/internal/errcode"
 	"net/http"
 )
 
 func Request() gin.HandlerFunc {
+	errorToString := func(r interface{}) string {
+		switch v := r.(type) {
+		case error:
+			return v.Error()
+		default:
+			return r.(string)
+		}
+	}
 	return func(c *gin.Context) {
 		method := c.Request.Method
 
@@ -20,10 +29,22 @@ func Request() gin.HandlerFunc {
 		if method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
 		}
+		reqid := uuid.New()
+		c.Set("requestId", reqid)
 
-		//生成请求ID
-		c.Set("reqid", uuid.New())
+		defer func() {
+			if r := recover(); r != nil {
+				c.JSON(http.StatusOK, gin.H{
+					"code":      errcode.ERROR,
+					"msg":       errorToString(r),
+					"data":      &map[string]string{},
+					"requestId": reqid,
+				})
+				c.Abort()
+			}
+		}()
 
 		c.Next()
 	}
+
 }

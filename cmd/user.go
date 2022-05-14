@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"encoding/base64"
-	"gitee.com/wennmu/pkg.git/doorm"
+	"gitee.com/wennmu/gopkg.git/doorm"
 )
 
 type Admin struct {

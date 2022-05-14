@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/hixnav/hixnav.git/internal/e"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -36,18 +37,18 @@ func bucket(c *gin.Context, bucketId string) (b string) {
 	return b
 }
 
-func (s *Upload) UploadFile(c *gin.Context) {
+func (s *Upload) UploadFile(c *gin.Context) (interface{}, error) {
 	file, _ := c.FormFile("file")
-	tencentCOS(c, bucket(c, "0"), file)
+	return tencentCOS(c, bucket(c, "0"), file)
 }
 
-func (s *Upload) UploadIO(c *gin.Context) {
+func (s *Upload) UploadIO(c *gin.Context) (interface{}, error) {
 	bucketId := c.PostForm("active")
 	file, _ := c.FormFile("file")
-	tencentCOS(c, bucket(c, bucketId), file)
+	return tencentCOS(c, bucket(c, bucketId), file)
 }
 
-func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
+func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) (interface{}, error) {
 	// 将 examplebucket-1250000000 和 COS_REGION 修改为真实的信息
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。https://console.cloud.tencent.com/cos5/bucket
 	// COS_REGION 可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket, 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
@@ -71,13 +72,9 @@ func tencentCOS(c *gin.Context, bucket string, file *multipart.FileHeader) {
 	if err != nil {
 		log.Println(err)
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"code": 0,
-		"data": map[string]interface{}{
-			"file": fmt.Sprintf(GlobalCOS, "hixnav") + file.Filename,
-		},
-		"msg": "",
-	})
+	return map[string]interface{}{
+		"file": fmt.Sprintf(GlobalCOS, "hixnav") + file.Filename,
+	}, nil
 }
 
 type Bucket struct {
@@ -85,14 +82,19 @@ type Bucket struct {
 	Key    string `form:"key" json:"key"`
 }
 
-func (s *Upload) GetFileIO(c *gin.Context) {
+func (s *Upload) GetFileIO(c *gin.Context) (interface{}, error) {
 	var req Bucket
-	_ = c.ShouldBindJSON(&req)
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		return "", e.AppError{Code: -1, Msg: err.Error()}
+	}
 	log.Println("bucketId:", req.Active)
-	tencentCOSListObj(c, bucket(c, req.Active))
+	return tencentCOSListObj(c, bucket(c, req.Active))
 }
 
-func tencentCOSListObj(c *gin.Context, bucket string) {
+type keyMap map[string]interface{}
+
+func tencentCOSListObj(c *gin.Context, bucket string) ([]keyMap, error) {
 	// 将 examplebucket-1250000000 和 COS_REGION 修改为真实的信息
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。https://console.cloud.tencent.com/cos5/bucket
 	// COS_REGION 可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket, 关于地域的详情见 https://cloud.tencent.com/document/product/436/6224
@@ -109,37 +111,29 @@ func tencentCOSListObj(c *gin.Context, bucket string) {
 		Prefix:  "",
 		MaxKeys: 10000,
 	}
+	var keyMaps []keyMap
 	v, _, err := cli.Bucket.Get(context.Background(), opt)
 	if err != nil {
 		log.Println(err)
+		return keyMaps, err
 	}
-
-	type keyMap map[string]interface{}
-	var keyMaps []keyMap
 	for _, item := range v.Contents {
 		keyMaps = append(keyMaps, keyMap{
 			"key":  item.Key,
 			"size": item.Size,
 		})
 	}
-
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"code": 0,
-		"data": map[string]interface{}{
-			"files": keyMaps,
-		},
-		"msg": "",
-	})
+	return keyMaps, nil
 }
 
-func (s *Upload) DownFileIO(c *gin.Context) {
+func (s *Upload) DownFileIO(c *gin.Context) (interface{}, error) {
 	var req Bucket
 	_ = c.ShouldBindJSON(&req)
 	log.Println("bucketId:", req.Active)
-	tencentCOSDownObj(c, bucket(c, req.Active), req.Key)
+	return tencentCOSDownObj(c, bucket(c, req.Active), req.Key)
 }
 
-func tencentCOSDownObj(c *gin.Context, bucket, key string) {
+func tencentCOSDownObj(c *gin.Context, bucket, key string) (interface{}, error) {
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
 	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
 	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
@@ -166,26 +160,22 @@ func tencentCOSDownObj(c *gin.Context, bucket, key string) {
 	contentType := resp.Header.Get("Content-Type")
 	contentLength := resp.Header.Get("Content-Length")
 	resp.Body.Close()
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"code": 0,
-		"data": map[string]interface{}{
-			"file":          data,
-			"contentType":   contentType,
-			"contentLength": contentLength,
-		},
-		"msg": "",
-	})
+	return map[string]interface{}{
+		"file":          data,
+		"contentType":   contentType,
+		"contentLength": contentLength,
+	}, nil
 
 }
 
-func (s *Upload) DelFileIO(c *gin.Context) {
+func (s *Upload) DelFileIO(c *gin.Context) (interface{}, error) {
 	var req Bucket
 	_ = c.ShouldBindJSON(&req)
 	log.Println("bucketId:", req.Active)
-	tencentCOSDelObj(c, bucket(c, req.Active), req.Key)
+	return tencentCOSDelObj(c, bucket(c, req.Active), req.Key)
 }
 
-func tencentCOSDelObj(c *gin.Context, bucket, key string) {
+func tencentCOSDelObj(c *gin.Context, bucket, key string) (interface{}, error) {
 	// 存储桶名称，由bucketname-appid 组成，appid必须填入，可以在COS控制台查看存储桶名称。 https://console.cloud.tencent.com/cos5/bucket
 	// 替换为用户的 region，存储桶region可以在COS控制台“存储桶概览”查看 https://console.cloud.tencent.com/ ，关于地域的详情见 https://cloud.tencent.com/document/product/436/6224 。
 	u, _ := url.Parse(fmt.Sprintf(GlobalCOS, bucket))
@@ -201,9 +191,5 @@ func tencentCOSDelObj(c *gin.Context, bucket, key string) {
 	if err != nil {
 		log.Println(err)
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"code": 0,
-		"data": "",
-		"msg":  "",
-	})
+	return "", nil
 }

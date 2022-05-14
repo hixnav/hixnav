@@ -1,0 +1,8 @@
+#端口
+port: "0.0.0.0:8543"
+#日志
+log_path: "log/ginf-access.log"
+#错误日志
+log_error_path: "log/ginf-error.log"
+#开启静态打包前端资源
+is_pack_front: true
