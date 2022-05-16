@@ -11,7 +11,7 @@ func SysInit() error {
 	if err := doconfig.InitConfigs(); err != nil {
 		return err
 	}
-	//初始化日志
+	setConfig()
 	dologger.InitLogger(&dologger.LoggerOptions{
 		LogDebug:     true,
 		LogPath:      doconfig.GetString("log_path"),
@@ -23,7 +23,8 @@ func SysInit() error {
 	}
 	//初始化数据库
 	if err := InitDB(); err != nil {
-		return err
+		dologger.Error("connect db faild，err:", err.Error())
+		//return err
 	}
 	//初始化存储
 	if err := InitCos(); err != nil {

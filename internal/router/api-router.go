@@ -12,6 +12,7 @@ func RegisterApiRouters(r *gin.Engine) {
 
 	api.Use(middleware.Request())
 	{
+		api.POST("/db/test", e.ErrorWrapper(cmd.DbTest))
 		api.POST("/login", e.ErrorWrapper(cmd.Login))
 		api.POST("/logout", e.ErrorWrapper(cmd.Logout))
 
@@ -29,8 +30,8 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/editLink", e.ErrorWrapper(new(cmd.Nav).EditLink))
 		api.POST("/delLink", e.ErrorWrapper(new(cmd.Nav).DelLink))
 		// 文链
-		api.POST("/article", e.ErrorWrapper(new(cmd.Article).List))
-		api.POST("/addArticleLink", e.ErrorWrapper(new(cmd.Article).AddArticleLink))
+		api.POST("/article", e.ErrorWrapper(new(cmd.Link).List))
+		api.POST("/addArticleLink", e.ErrorWrapper(new(cmd.Link).AddArticleLink))
 		// 云存储
 		api.POST("/uploadIO", e.ErrorWrapper(new(cmd.Upload).UploadIO))
 		api.POST("/listIO", e.ErrorWrapper(new(cmd.Upload).GetFileIO))

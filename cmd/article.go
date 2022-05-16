@@ -7,19 +7,8 @@ import (
 	"net/http"
 )
 
-// 文链操作
-type Article struct {
-	Id       int64
-	Type     int64 `json:"Type, string"`
-	Catename string
-	Name     string
-	Logo     string
-	Url      string
-	Uid      int64
-}
-
-func (s *Article) List(c *gin.Context) (interface{}, error) {
-	var req Article
+func (s *Link) List(c *gin.Context) (interface{}, error) {
+	var req Link
 	uid := c.GetInt64("uid")
 	log.Println("ids: ", uid)
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -27,7 +16,7 @@ func (s *Article) List(c *gin.Context) (interface{}, error) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
 		return nil, err
 	}
-	var articles []Article
+	var articles []Link
 	dbimpl := doorm.DB().Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
 	if req.Catename != "" {
 		dbimpl = dbimpl.Where("catename = ?", req.Catename)
@@ -38,14 +27,14 @@ func (s *Article) List(c *gin.Context) (interface{}, error) {
 	}, nil
 }
 
-func (s *Article) AddArticleLink(c *gin.Context) (interface{}, error) {
-	var req Article
+func (s *Link) AddArticleLink(c *gin.Context) (interface{}, error) {
+	var req Link
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
 		return nil, err
 	}
-	data := Article{
+	data := Link{
 		Type:     req.Type,
 		Catename: req.Catename,
 		Name:     req.Name,

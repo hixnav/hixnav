@@ -7,17 +7,6 @@ import (
 	"net/http"
 )
 
-type Nav struct {
-	Id       int64
-	Cate     int64 `json:"Cate, int"`
-	Catename string
-	Name     string
-	Logo     string
-	Desc     string
-	Url      string
-	Uid      int64
-}
-
 func (s *Nav) Home(c *gin.Context) (interface{}, error) {
 	var cates []Cate
 	uid := c.GetString("uid")
