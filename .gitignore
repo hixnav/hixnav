@@ -2,4 +2,6 @@
 .idea
 hixnav
 hixnav.exe
+config/config.yaml
 web/dist/*
+log/*

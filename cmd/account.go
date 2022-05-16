@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"errors"
+	"gitee.com/wennmu/gopkg.git/dologger"
 	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/internal/e"
+	"github.com/hixnav/hixnav.git/internal/errcode"
 	"log"
 	"net/http"
 	"time"
@@ -66,7 +67,10 @@ func (a *Account) Add(c *gin.Context) (interface{}, error) {
 	var req Account
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Println(err.Error())
-		return nil, errors.New("invalid params")
+		return nil, e.AppError{
+			Code: errcode.ERROR,
+			Msg:  "invalid params",
+		}
 	}
 	data := Account{
 		Sitename: req.Sitename,
@@ -96,4 +100,19 @@ func (a *Account) Del(c *gin.Context) (interface{}, error) {
 		return nil, result.Error
 	}
 	return "", nil
+}
+
+type AccountSecretViewResponse struct {
+	Password string
+}
+
+func (a *Account) SecretView(c *gin.Context) (interface{}, error) {
+	var accountSecretViewResponse AccountSecretViewResponse
+	id := c.PostForm("id")
+	uid := c.GetInt64("uid")
+	res := doorm.DB().Table("accounts").Select("password").Where("id = ? and uid = ?", id, uid).First(&accountSecretViewResponse)
+	if res.Error != nil {
+		dologger.Error(res.Error)
+	}
+	return accountSecretViewResponse, nil
 }

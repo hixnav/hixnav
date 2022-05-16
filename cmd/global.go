@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"os"
-
 	"gorm.io/gorm"
 )
 
@@ -20,13 +18,3 @@ var (
 
 	GlobalDB *gorm.DB
 )
-
-func Init() {
-	if os.Getenv("GlobalAppSecret") != "" {
-		GlobalAppSecret = os.Getenv("AppSecret")
-	}
-	GlobalMysqlDNS = os.Getenv("DNS")
-	GlobalCOS = os.Getenv("COS")
-	GlobalCOSSecretID = os.Getenv("COSSecretID")
-	GlobalCOSSecretKey = os.Getenv("COSSecretKey")
-}

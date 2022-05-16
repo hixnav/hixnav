@@ -17,6 +17,17 @@ func SysInit() error {
 		LogPath:      doconfig.GetString("log_path"),
 		LogErrorPath: doconfig.GetString("log_error_path"),
 	})
-
+	//初始化APP
+	if err := InitApp(); err != nil {
+		return err
+	}
+	//初始化数据库
+	if err := InitDB(); err != nil {
+		return err
+	}
+	//初始化存储
+	if err := InitCos(); err != nil {
+		return err
+	}
 	return nil
 }

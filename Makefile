@@ -1,5 +1,8 @@
 name = hixnav
 
+run:
+	go run main.go
+
 build-linux:
 	set CGO_ENABLED=0
 	set GOOS=linux
@@ -19,6 +22,3 @@ build-win:
 	go build -o bin/$(name)-winx64.exe main.go
 
 build: build-linux build-mac build-win
-
-run:
-	go run main.go

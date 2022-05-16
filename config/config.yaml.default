@@ -1,0 +1,21 @@
+#端口
+port: "0.0.0.0:8543"
+
+#日志
+log_path: "log/hixnav-access.log"
+
+#错误日志
+log_error_path: "log/hixnav-error.log"
+
+#开启静态打包前端资源
+is_pack_front: true
+#AppSecret
+AppSecret: ""
+
+#数据库
+DB: "root:***@tcp(127.0.0.1:3306)/hixnav?charset=utf8mb4&parseTime=True&loc=Local"
+
+#腾讯云存储
+COS: "https://%s-***.cos.ap-***.myqcloud.com/"
+COSSecretID: ""
+COSSecretKey: ""
