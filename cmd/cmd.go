@@ -3,12 +3,13 @@ package cmd
 import (
 	"gitee.com/wennmu/gopkg.git/doconfig"
 	"gitee.com/wennmu/gopkg.git/dologger"
+	"github.com/spf13/viper"
 )
 
 //初始化系统所有子模块
 func SysInit() error {
 	//初始化配置
-	if err := doconfig.InitConfigs(); err != nil {
+	if err := doconfig.InitConfigs(); err != nil && err != err.(viper.ConfigFileNotFoundError) {
 		return err
 	}
 	setConfig()

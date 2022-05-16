@@ -3,7 +3,7 @@ module github.com/hixnav/hixnav.git
 go 1.16
 
 require (
-	gitee.com/wennmu/gopkg.git v0.3.3-0.20220514052846-fdafe34b51df
+	gitee.com/wennmu/gopkg.git v0.3.4
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/gin-gonic/gin v1.7.7
