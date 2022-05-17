@@ -19,9 +19,8 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/home", e.ErrorWrapper(new(cmd.Nav).Home))
 		api.POST("/cates", e.ErrorWrapper(new(cmd.Cate).List))
 
-		// 初始化
+		// 配置数据库
 		api.POST("/migrate/db", e.ErrorWrapper(cmd.MigrateDB))
-		api.POST("/migrate/oss", e.ErrorWrapper(cmd.MigrateCos))
 	}
 	api.Use(middleware.Request(), middleware.Check())
 	{
@@ -50,5 +49,7 @@ func RegisterApiRouters(r *gin.Engine) {
 		// 配置
 		api.POST("/config/setdb", e.ErrorWrapper(cmd.SetDBConfig))
 		api.POST("/config/setoss", e.ErrorWrapper(cmd.SetOSSConfig))
+		api.POST("/config/oss", e.ErrorWrapper(cmd.MigrateCos))
+
 	}
 }
