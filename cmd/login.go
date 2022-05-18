@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/hixnav/hixnav.git/internal/e"
 	"log"
 	"time"
+
+	"github.com/hixnav/hixnav.git/internal/e"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ func Login(c *gin.Context) (interface{}, error) {
 		return nil, e.AppError{Code: -1, Msg: err.Error()}
 	}
 
-	uid := (Admin{}).UserInfo(req.Username, req.Password)
+	uid := (User{}).UserInfo(req.Username, req.Password)
 	if uid <= 0 {
 		return nil, e.AppError{Code: -1, Msg: "user not found"}
 

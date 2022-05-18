@@ -46,6 +46,11 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/editAccount", e.ErrorWrapper(new(cmd.Account).Edit))
 		api.POST("/delAccount", e.ErrorWrapper(new(cmd.Account).Del))
 
+		//多用户
+		api.POST("/user", e.ErrorWrapper(new(cmd.User).List))
+		api.POST("/user/add", e.ErrorWrapper(new(cmd.User).Add))
+		api.POST("/user/del", e.ErrorWrapper(new(cmd.User).Del))
+
 		// 配置
 		api.POST("/config/setdb", e.ErrorWrapper(cmd.SetDBConfig))
 		api.POST("/config/setoss", e.ErrorWrapper(cmd.SetOSSConfig))
