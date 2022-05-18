@@ -59,7 +59,7 @@ func (a *User) Add(c *gin.Context) (interface{}, error) {
 	}
 	data := User{
 		Account:  req.Account,
-		Passwd:   req.Passwd,
+		Passwd:   base64.StdEncoding.EncodeToString([]byte(req.Passwd)),
 		CreateAt: time.Now().Unix(),
 	}
 	result := doorm.DB().Table("users").Create(&data)
