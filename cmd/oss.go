@@ -36,6 +36,12 @@ func MigrateCos(c *gin.Context) (interface{}, error) {
 	doconfig.Set("cos_secret_id", cosconf.COSSecretID)
 	doconfig.Set("cos_secret_key", cosconf.COSSecretKey)
 
+	if err := createDir("./config"); err != nil {
+		return "", e.AppError{
+			Code: errcode.ERROR,
+			Msg:  err.Error(),
+		}
+	}
 	doconfig.WriteConfigAs("config/config.yaml")
 	//TODO 创建内置存储桶
 

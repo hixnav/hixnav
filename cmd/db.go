@@ -44,6 +44,12 @@ func MigrateDB(c *gin.Context) (interface{}, error) {
 		"%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		dbconf.Account, dbconf.Password, dbconf.Addr, dbconf.Dbname))
 
+	if err := createDir("./config"); err != nil {
+		return "", e.AppError{
+			Code: errcode.ERROR,
+			Msg:  err.Error(),
+		}
+	}
 	doconfig.WriteConfigAs("config/config.yaml")
 
 	//初始化数据库
