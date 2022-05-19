@@ -8,5 +8,7 @@
 
 - :hearts: Donation - [Donation](./Donation.md)
 
+- :hearts: Dome - [演示Demo](http://127.0.0.1:22999/)
+
 -  :large_blue_circle: Github: https://github.com/hixnav/hixnav
 -  :large_blue_circle: Gitee: https://gitee.com/hixnav/hixnav
