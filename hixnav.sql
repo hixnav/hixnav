@@ -1,4 +1,4 @@
-CREATE DATABASES hixnav;
+CREATE DATABASE hixnav;
 
 SET NAMES utf8;
 
