@@ -1,3 +1,5 @@
+CREATE DATABASES hixnav;
+
 SET NAMES utf8;
 
 -- 导航
