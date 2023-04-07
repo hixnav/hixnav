@@ -2,7 +2,7 @@
 
 -  :house: Website - http://www.hixnav.xyz
 
-- :green_book: Instructions - [Hixnav Instructions](http://docs.hixnav.xyz/)
+- :green_book: Instructions - [Hixnav Instructions](http://doc.hixnav.iflet.cn/)
 
 - :computer: Compilation - [README-CN.md](./README-CN.md) / [README-EN.md](./README-EN.md)
 
