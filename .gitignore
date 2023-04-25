@@ -5,3 +5,4 @@ hixnav.exe
 config/config.yaml
 web/dist/*
 log/*
+nohup.out
