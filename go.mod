@@ -8,7 +8,7 @@ require (
 	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-basic/uuid v1.0.0
-	github.com/hixnav/hixnav-web v1.3.6-0.20230425062132-930ea62349ea
+	github.com/hixnav/hixnav-web v1.3.6-0.20230425104317-d0142ccd6ae2
 	github.com/jonboulle/clockwork v0.2.3 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
 	github.com/lestrrat-go/strftime v1.0.5 // indirect

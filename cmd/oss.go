@@ -6,6 +6,7 @@ import (
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/internal/errcode"
 	"log"
+	"os"
 )
 
 func InitCos() error {
@@ -35,13 +36,16 @@ func MigrateCos(c *gin.Context) (interface{}, error) {
 	doconfig.Set("cos", cosconf.COS)
 	doconfig.Set("cos_secret_id", cosconf.COSSecretID)
 	doconfig.Set("cos_secret_key", cosconf.COSSecretKey)
-
-	if err := createDir("./config"); err != nil {
-		return "", e.AppError{
-			Code: errcode.ERROR,
-			Msg:  err.Error(),
-		}
-	}
+	
+	_, err := os.Stat("./config")
+    	if os.IsNotExist(err) {
+        	if err := createDir("./config"); err != nil {
+                	return "", e.AppError{
+                        	Code: errcode.ERROR,
+                        	Msg:  err.Error(),
+                	}
+        	}
+    	}
 	doconfig.WriteConfigAs("config/config.yaml")
 	//TODO 创建内置存储桶
 

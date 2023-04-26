@@ -2,6 +2,8 @@ name = hixnav
 
 run:
 	go run main.go
+local:
+	go build -o hixnav .
 
 build-linux:
 	set CGO_ENABLED=0
