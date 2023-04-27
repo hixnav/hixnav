@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"gitee.com/wennmu/gopkg.git/doorm"
+	"gitee.com/wennmu/gopkg.git/doconfig"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -33,6 +34,9 @@ func (s *Link) AddArticleLink(c *gin.Context) (interface{}, error) {
 		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid params"})
 		return nil, err
+	}
+	if !checkLink(req.Logo, "GET") {
+		req.Logo = doconfig.GetString("default_article_icon")
 	}
 	data := Link{
 		Type:     req.Type,

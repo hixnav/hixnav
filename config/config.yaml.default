@@ -20,3 +20,6 @@ DB: "root:***@tcp(127.0.0.1:3306)/hixnav?charset=utf8mb4&parseTime=True&loc=Loca
 COS: "https://%s-***.cos.ap-***.myqcloud.com/"
 COSSecretID: ""
 COSSecretKey: ""
+
+#默认链接icon
+default_article_icon: ""
