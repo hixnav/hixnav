@@ -56,5 +56,7 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/config/setoss", e.ErrorWrapper(cmd.SetOSSConfig))
 		api.POST("/config/oss", e.ErrorWrapper(cmd.MigrateCos))
 
+		// 数据库
+		api.POST("/db/export", e.ErrorWrapper(cmd.ExportDatabase))
 	}
 }
