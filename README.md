@@ -1,6 +1,6 @@
 **Hixnav** supports custom navigation, custom links, cloud disk, cloud image, cloud account management
 
--  :house: Website - http://home.iflet.cn
+-  :house: Website - [Hixnav](http://home.iflet.cn)
 
 - :green_book: Instructions - [Hixnav Instructions](http://doc.iflet.cn/)
 
