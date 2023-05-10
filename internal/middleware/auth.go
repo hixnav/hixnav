@@ -3,11 +3,12 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"github.com/hixnav/hixnav.git/cmd"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/hixnav/hixnav.git/cmd"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -32,6 +33,7 @@ func Check() gin.HandlerFunc {
 				"code":    http.StatusUnauthorized,
 				"message": "Illegal token",
 			})
+			c.Abort()
 		}
 		claims, ok := token.Claims.(jwt.MapClaims)
 		var uid int64

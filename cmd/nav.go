@@ -1,10 +1,12 @@
 package cmd
 
 import (
-	"gitee.com/wennmu/gopkg.git/doorm"
-	"github.com/gin-gonic/gin"
+	"encoding/json"
 	"log"
 	"net/http"
+
+	"gitee.com/wennmu/gopkg.git/doorm"
+	"github.com/gin-gonic/gin"
 )
 
 func (s *Nav) Home(c *gin.Context) (interface{}, error) {
@@ -72,4 +74,39 @@ func (s *Nav) DelLink(c *gin.Context) (interface{}, error) {
 		return nil, result.Error
 	}
 	return "", nil
+}
+
+func (s *Nav) ExportLink(c *gin.Context) (interface{}, error) {
+	uid := c.GetInt64("uid")
+	// 执行查询
+	var navs []Nav
+	if err := doorm.DB().Model(&Nav{}).
+		Where("uid = ?", uid).
+		Select("catename, name, url, logo").
+		Group("catename, name, url, logo").
+		Find(&navs).Error; err != nil {
+		return nil, err
+	}
+
+	// 按照 catename 归类，输出 JSON 结果
+	type Row struct {
+		Name string `json:"name"`
+		Href string `json:"href"`
+		Icon string `json:"icon"`
+	}
+	result := make(map[string][]Row)
+	for _, nav := range navs {
+		var row = Row{
+			Name: nav.Name,
+			Href: nav.Url,
+			Icon: nav.Logo,
+		}
+		result[nav.Catename] = append(result[nav.Catename], row)
+	}
+	jsonResult, err := json.Marshal(result)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonResult, nil
 }
