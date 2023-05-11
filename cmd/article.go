@@ -56,6 +56,20 @@ func (s *Link) AddArticleLink(c *gin.Context) (interface{}, error) {
 	return "", nil
 }
 
+func (s *Link) EditArticleLink(c *gin.Context) (interface{}, error) {
+	var link Link
+	if err := c.ShouldBindJSON(&link); err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	link.Uid = c.GetInt64("uid")
+	result := doorm.DB().Table("links").Updates(&link)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return "", nil
+}
+
 func (s *Link) ExportArticleLink(c *gin.Context) (interface{}, error) {
 	uid := c.GetInt64("uid")
 	// 执行查询
