@@ -41,6 +41,7 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/article", e.ErrorWrapper(new(cmd.Link).List))
 		api.POST("/addArticleLink", e.ErrorWrapper(new(cmd.Link).AddArticleLink))
 		api.POST("/editArticleLink", e.ErrorWrapper(new(cmd.Link).EditArticleLink))
+		api.POST("/delArticleLink", e.ErrorWrapper(new(cmd.Link).DelArticleLink))
 		api.POST("/exportArticleLink", e.ErrorWrapper(new(cmd.Link).ExportArticleLink))
 
 		// 云存储
