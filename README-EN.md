@@ -16,5 +16,9 @@ $ go build -o hixnav main.go
 #### Run
 
 ```shell
+# windows
+$ hixnav.exe
+
+# linux
 $ hixnav
 ```
