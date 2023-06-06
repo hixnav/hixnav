@@ -17,10 +17,10 @@ func (s *Nav) Home(c *gin.Context) (interface{}, error) {
 		uids = append(uids, uid)
 	}
 	_ = doorm.DB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
-	var data []Nav
 
 	res := make(map[int64]interface{}, len(cates))
 	for _, cate := range cates {
+		var data []Nav
 		_ = doorm.DB().Table("navs").Where("cate = ?", cate.Cate).Find(&data)
 		res[cate.Cate] = data
 	}
