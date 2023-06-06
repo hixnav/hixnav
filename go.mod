@@ -8,7 +8,7 @@ require (
 	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-basic/uuid v1.0.0
-	github.com/hixnav/hixnav-web v1.4.1
+	github.com/hixnav/hixnav-web v1.4.2
 	github.com/spf13/viper v1.15.0
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.41
 	gorm.io/gorm v1.25.0
