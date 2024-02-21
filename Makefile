@@ -2,7 +2,8 @@ name = hixnav
 
 run:
 	go run main.go
-local:
+
+build-local:
 	go build -o hixnav .
 
 build-linux:
@@ -10,7 +11,7 @@ build-linux:
 	set GOOS=linux
 	set GOARCH=amd64
 	go build -o bin/$(name)-linux-amd64 main.go
-	
+
 build-mac:
 	set CGO_ENABLED=0
 	set GOOS=darwin
