@@ -2,12 +2,18 @@ package main
 
 import (
 	"context"
+	"embed"
 	"gitee.com/wennmu/gopkg.git/doconfig"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/cmd"
 	"github.com/hixnav/hixnav.git/internal/router"
+	"io/fs"
 	"log"
+	"net/http"
 )
+
+//go:embed dist
+var staticFS embed.FS
 
 func main() {
 	ctx, _ := context.WithCancel(context.Background())
@@ -19,6 +25,15 @@ func main() {
 
 	r := gin.Default()
 
+	subFS, err := fs.Sub(staticFS, "dist")
+	if err != nil {
+		panic(err)
+		return
+	}
+	g := r.Group("/")
+	{
+		g.StaticFS("/", http.FS(subFS))
+	}
 	router.Register(r)
 
 	if err := r.Run(doconfig.GetString("port")); err != nil {
@@ -27,5 +42,5 @@ func main() {
 	}
 
 	<-ctx.Done()
-	
+
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func Register(r *gin.Engine) {
-	RegisterFrontRouters(r)
+	//RegisterFrontRouters(r)
 	RegisterWebRouters(r)
 	RegisterApiRouters(r)
 }
