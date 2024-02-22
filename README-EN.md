@@ -22,3 +22,9 @@ $ hixnav.exe
 # linux
 $ hixnav
 ```
+
+#### Docker
+
+```shell
+$ docker pull ghcr.io/hixnav/hixnav:latest
+```

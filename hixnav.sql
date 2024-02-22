@@ -44,6 +44,7 @@ COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 ;
 
+-- 账号
 CREATE TABLE `accounts` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `uid` int(10) NOT NULL COMMENT 'UID',

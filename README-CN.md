@@ -33,6 +33,12 @@ $ go build -o hixnav main.go
 $ hixnav
 ```
 
+#### Docker
+
+```shell
+$ docker pull ghcr.io/hixnav/hixnav:latest
+```
+
 ### 提交问题
 
 > 请提交issue，并详细描述您的问题
