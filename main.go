@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-//go:embed dist
+//go:embed front/dist
 var staticFS embed.FS
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 
 	r := gin.Default()
 
-	subFS, err := fs.Sub(staticFS, "dist")
+	subFS, err := fs.Sub(staticFS, "front/dist")
 	if err != nil {
 		panic(err)
 		return
