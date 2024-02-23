@@ -14,17 +14,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5.0.0
       with:
-        go-version: 1.18
+        go-version: 1.21
 
 #     - name: Set up npm
-#       uses: actions/setup-node@v1
+#       uses: actions/setup-node@v4.0.2
 #       with:
-#         node-version: 16
+#         node-version: 20
 
 #     - name: install
 #       run: |
