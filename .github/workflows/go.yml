@@ -36,6 +36,12 @@ jobs:
 #         cd ..
 #         go-bindata -o cmd/bindata.go -pkg cmd ./web/dist/...
 
+    - name: submodule
+      run: |
+        git submodule init
+        git submodule update --remote --merge
+        cp -RF front/dist ./
+        
     - name: build
       run: |
         go mod tidy
