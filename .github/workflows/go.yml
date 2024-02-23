@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.1
+      with:
+        submodules: 'recursive'
 
     - name: Set up Go
       uses: actions/setup-go@v5.0.0
@@ -38,9 +40,9 @@ jobs:
 
     - name: submodule
       run: |
-        git submodule init
-        git submodule update --remote --merge
-        cp -RF front/dist ./
+        #git submodule init
+        #git submodule update --remote --merge
+        cp -rf front/dist ./
         
     - name: build
       run: |
