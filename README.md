@@ -1,6 +1,6 @@
 The new version iteration is about to begin. Despite the eight-month gap since the last update, the current v1 version has already greatly helped me address routine issues. This time, we will be welcoming more teammates, including AI, which will play a crucial role in assisting us with a significant amount of explanatory work. Thank you.
 
-**Hixnav** supports custom navigation, custom links, cloud disk, cloud image, cloud account management
+**Hixnav** (Haixin-Navigation) supports custom navigation, custom links, cloud disk, cloud image, cloud account management
 
 -  :house: Website - [Hixnav Index](http://doc.iflet.cn)
 
