@@ -8,7 +8,7 @@ log_path: "log/hixnav-access.log"
 log_error_path: "log/hixnav-error.log"
 
 #开启静态打包前端资源
-is_pack_front: true
+#is_pack_front: true
 
 #AppSecret
 AppSecret: ""
