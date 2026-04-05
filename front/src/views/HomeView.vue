@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <HeadBar title="海芯导航" :searchVal="searchVal" :activeIndex="activeIndex" />
-    <div class="bg-banner"></div>
+    <div class="bg-banner" :style="bannerStyle"></div>
     <div class="line"></div>
     <el-row :gutter="16" style="
         margin: 0;
@@ -205,6 +205,7 @@ export default {
       searchVal: "",
       activeIndex: "1",
       showBtn: false,
+      navBanner: "",
       // 弹出层控制
       addNavDialog: false,
       dialog: false,
@@ -255,6 +256,16 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    bannerStyle() {
+      if (this.navBanner) {
+        return {
+          backgroundImage: `url(${this.navBanner})`,
+        };
+      }
+      return {};
+    }
   },
   methods: {
     openDrawer(navInfo) {
@@ -407,6 +418,14 @@ export default {
   created: function () {
     let self = this;
     this.getData();
+    // 加载 Banner
+    this.$store.dispatch('config/getBanner', {})
+      .then((response) => {
+        if (response.data && response.data.navBanner) {
+          self.navBanner = response.data.navBanner;
+        }
+      })
+      .catch(() => {});
   },
   mounted: function () {
     this.getData();

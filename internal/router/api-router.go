@@ -69,6 +69,8 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/config/setdb", e.ErrorWrapper(cmd.SetDBConfig))
 		api.POST("/config/setoss", e.ErrorWrapper(cmd.SetOSSConfig))
 		api.POST("/config/oss", e.ErrorWrapper(cmd.MigrateCos))
+		api.POST("/config/banner/save", e.ErrorWrapper(cmd.SaveBanner))
+		api.POST("/config/banner/get", e.ErrorWrapper(cmd.GetBanner))
 
 		// 数据库
 		api.POST("/db/export", e.ErrorWrapper(cmd.ExportDatabase))

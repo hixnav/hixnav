@@ -361,7 +361,27 @@ export default {
         });
     },
     saveBanner(){
-      console.log(this.config)
+      this.$store.dispatch('config/saveBanner', this.config)
+        .then((response) => {
+          if (response.data && response.data.success) {
+            this.$message.success('Banner 配置已保存');
+          } else {
+            this.$message.warning(response.data.message || '保存失败');
+          }
+        })
+        .catch(() => {
+          this.$message.error('保存失败');
+        });
+    },
+    loadBanner(){
+      this.$store.dispatch('config/getBanner', {})
+        .then((response) => {
+          if (response.data) {
+            this.config.navBanner = response.data.navBanner || '';
+            this.config.linkBanner = response.data.linkBanner || '';
+          }
+        })
+        .catch(() => {});
     },
     handlePushToCOS() {
       this.$confirm('确定要将本地数据同步到COS吗？', '提示', {

@@ -1,4 +1,4 @@
-import {dbTest, dbMigrate, cosMigrate, syncPush, syncPull, syncStatus} from '@/api/config'
+import {dbTest, dbMigrate, cosMigrate, syncPush, syncPull, syncStatus, saveBanner, getBanner} from '@/api/config'
 
 const getDefaultState = () => {
     return {}
@@ -62,6 +62,26 @@ const actions = {
     syncStatus({ commit }, data) {
         return new Promise((resolve, reject) => {
             syncStatus(data).then(response => {
+                resolve(response)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+
+    saveBanner({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            saveBanner(data).then(response => {
+                resolve(response)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+
+    getBanner({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            getBanner(data).then(response => {
                 resolve(response)
             }).catch(error => {
                 reject(error)

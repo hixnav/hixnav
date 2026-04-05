@@ -5,7 +5,7 @@
       :searchVal="searchVal"
       :activeIndex="activeIndex"
     />
-    <div class="bg-banner">
+    <div class="bg-banner" :style="bannerStyle">
       <el-row :gutter="16" style="margin-left: 0px; margin-right: 0px">
       </el-row>
     </div>
@@ -220,6 +220,7 @@ export default {
       searchVal: "",
       activeIndex: "2",
       showBtn: false,
+      linkBanner: "",
       showDialog: "add",
       // 链接
       linkCates: [
@@ -241,6 +242,16 @@ export default {
         url: "",
       },
     };
+  },
+  computed: {
+    bannerStyle() {
+      if (this.linkBanner) {
+        return {
+          backgroundImage: `url(${this.linkBanner})`,
+        };
+      }
+      return {};
+    }
   },
   methods: {
     openDrawer(row) {
@@ -374,7 +385,16 @@ export default {
     },
   },
   created() {
-    this.getLinks()
+    let self = this;
+    this.getLinks();
+    // 加载 Banner
+    this.$store.dispatch('config/getBanner', {})
+      .then((response) => {
+        if (response.data && response.data.linkBanner) {
+          self.linkBanner = response.data.linkBanner;
+        }
+      })
+      .catch(() => {});
   },
 };
 </script>

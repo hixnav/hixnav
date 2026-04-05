@@ -47,3 +47,19 @@ export function syncStatus(data) {
         data
     })
 }
+
+export function saveBanner(data) {
+    return request({
+        url: '/api/config/banner/save',
+        method: 'post',
+        data
+    })
+}
+
+export function getBanner(data) {
+    return request({
+        url: '/api/config/banner/get',
+        method: 'post',
+        data
+    })
+}
