@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
+	"github.com/hixnav/hixnav.git/internal/storage"
 	"log"
 )
 
@@ -18,7 +18,7 @@ func (s *Cate) List(c *gin.Context) (interface{}, error) {
 	if uid != "" {
 		uids = append(uids, uid)
 	}
-	res := doorm.DB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
+	res := storage.GetDB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 	if res.Error != nil {
 		log.Println(res.Error)
 	}

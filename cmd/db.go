@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"gitee.com/wennmu/gopkg.git/doconfig"
 	"gitee.com/wennmu/gopkg.git/dologger"
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/internal/errcode"
+	"github.com/hixnav/hixnav.git/internal/storage"
 	"io/ioutil"
 	"log"
 	"os"
@@ -16,11 +16,65 @@ import (
 )
 
 func InitDB() error {
-	//初始化数据库
-	if err := doorm.InitMysqlDB(doorm.GlobalDBOptions{DSN: doconfig.GetString("DB")}); err != nil {
-		dologger.Error(err)
+	driverType := doconfig.GetString("storage_driver")
+	if driverType == "" {
+		driverType = "mysql"
+	}
+
+	var err error
+	switch storage.DriverType(driverType) {
+	case storage.DriverSQLite:
+		sqlitePath := doconfig.GetString("sqlite_path")
+		if sqlitePath == "" {
+			sqlitePath = "data/hixnav.db"
+		}
+		err = storage.Register(storage.NewSQLiteDriver(sqlitePath))
+		// Auto-migrate tables for SQLite
+		if err == nil {
+			db := storage.GetDB()
+			if db != nil {
+				err = db.AutoMigrate(&User{}, &Nav{}, &Link{}, &Account{})
+				if err != nil {
+					dologger.Error("sqlite auto-migrate failed:", err.Error())
+					return err
+				}
+			}
+		}
+	case storage.DriverMySQL:
+		fallthrough
+	default:
+		dsn := doconfig.GetString("DB")
+		if dsn == "" {
+			dologger.Warn("DB DSN is empty, falling back to sqlite")
+			sqlitePath := doconfig.GetString("sqlite_path")
+			if sqlitePath == "" {
+				sqlitePath = "data/hixnav.db"
+			}
+			err = storage.Register(storage.NewSQLiteDriver(sqlitePath))
+			// Auto-migrate tables for SQLite fallback
+			if err == nil {
+				db := storage.GetDB()
+				if db != nil {
+					err = db.AutoMigrate(&User{}, &Nav{}, &Link{}, &Account{})
+					if err != nil {
+						dologger.Error("sqlite auto-migrate failed:", err.Error())
+						return err
+					}
+				}
+			}
+		} else {
+			err = storage.Register(storage.NewMySQLDriver(dsn))
+		}
+	}
+
+	if err != nil {
+		dologger.Error("init db failed:", err.Error())
 		return err
 	}
+
+	// Set the global DB reference for backward compatibility
+	GlobalDB = storage.GetDB()
+
 	return nil
 }
 
@@ -66,7 +120,14 @@ func MigrateDB(c *gin.Context) (interface{}, error) {
 		return "", nil
 	}
 	//创建数据库表
-	err := doorm.DB().Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{}, &Nav{}, &Link{}, &Account{})
+	db := storage.GetDB()
+	if db == nil {
+		return nil, e.AppError{
+			Code: errcode.ERROR,
+			Msg:  "db not initialized",
+		}
+	}
+	err := db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{}, &Nav{}, &Link{}, &Account{})
 	if err != nil {
 		log.Println(err.Error())
 		return nil, e.AppError{
@@ -75,7 +136,7 @@ func MigrateDB(c *gin.Context) (interface{}, error) {
 		}
 	}
 	//内置用户
-	res := doorm.DB().Create(&User{
+	res := db.Create(&User{
 		Account:  defaultUsername,
 		Passwd:   base64.StdEncoding.EncodeToString([]byte(defaultUserPasswd)),
 		CreateAt: time.Now().Unix(),
@@ -92,8 +153,14 @@ func MigrateDB(c *gin.Context) (interface{}, error) {
 
 //检查数据库可用性
 func DbTest(c *gin.Context) (interface{}, error) {
-	if err := doorm.InitMysqlDB(doorm.GlobalDBOptions{DSN: doconfig.GetString("db")}); err != nil {
-		return "", e.AppError{Code: -1, Msg: "db invalid.Please modify the database configuration information."}
+	db := storage.GetDB()
+	if db == nil {
+		return "", e.AppError{Code: -1, Msg: "db not initialized"}
+	}
+	// Try a simple query to test connectivity
+	var result int
+	if err := db.Raw("SELECT 1").Scan(&result).Error; err != nil {
+		return "", e.AppError{Code: -1, Msg: "db invalid. Please modify the database configuration information."}
 	}
 	return "", nil
 }
@@ -116,53 +183,61 @@ func ExportDatabase(c *gin.Context) (interface{}, error) {
 	}
 	defer file.Close()
 
-	// 获取数据库中所有表名
-	var tables []Table
-	if err := doorm.DB().Raw("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?", "mydb").Scan(&tables).Error; err != nil {
-		return nil, e.AppError{
-			Code: errcode.ERROR,
-			Msg:  err.Error(),
-		}
+	// Get the active driver type
+	driverType := doconfig.GetString("storage_driver")
+	if driverType == "" {
+		driverType = "mysql"
 	}
 
-	// 遍历表名并导出数据
-	for _, table := range tables {
-		tableName := table.TableName
-
-		// 生成导出数据的SQL语句
-		stmt := fmt.Sprintf("SELECT * INTO OUTFILE '%s' FROM %s", tableName+".sql", tableName)
-
-		// 执行导出SQL语句
-		if err := doorm.DB().Exec(stmt).Error; err != nil {
+	if storage.DriverType(driverType) == storage.DriverMySQL {
+		// MySQL-specific export using information_schema
+		var tables []Table
+		if err := storage.GetDB().Raw("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?", "mydb").Scan(&tables).Error; err != nil {
 			return nil, e.AppError{
 				Code: errcode.ERROR,
 				Msg:  err.Error(),
 			}
 		}
 
-		// 读取导出的SQL文件内容
-		sqlBytes, err := ioutil.ReadFile(tableName + ".sql")
-		if err != nil {
-			return nil, e.AppError{
-				Code: errcode.ERROR,
-				Msg:  err.Error(),
-			}
-		}
+		// 遍历表名并导出数据
+		for _, table := range tables {
+			tableName := table.TableName
 
-		// 将SQL文件内容写入总的SQL文件
-		_, err = file.Write(sqlBytes)
-		if err != nil {
-			return nil, e.AppError{
-				Code: errcode.ERROR,
-				Msg:  err.Error(),
-			}
-		}
+			// 生成导出数据的SQL语句
+			stmt := fmt.Sprintf("SELECT * INTO OUTFILE '%s' FROM %s", tableName+".sql", tableName)
 
-		// 删除单独的SQL文件
-		if err := os.Remove(tableName + ".sql"); err != nil {
-			return nil, e.AppError{
-				Code: errcode.ERROR,
-				Msg:  err.Error(),
+			// 执行导出SQL语句
+			if err := storage.GetDB().Exec(stmt).Error; err != nil {
+				return nil, e.AppError{
+					Code: errcode.ERROR,
+					Msg:  err.Error(),
+				}
+			}
+
+			// 读取导出的SQL文件内容
+			sqlBytes, err := ioutil.ReadFile(tableName + ".sql")
+			if err != nil {
+				return nil, e.AppError{
+					Code: errcode.ERROR,
+					Msg:  err.Error(),
+				}
+			}
+
+			// 将SQL文件内容写入总的SQL文件
+			_, err = file.Write(sqlBytes)
+			if err != nil {
+				return nil, e.AppError{
+					Code: errcode.ERROR,
+					Msg:  err.Error(),
+				}
+			}
+
+			// 删除单独的SQL文件
+			if err := os.Remove(tableName + ".sql"); err != nil {
+				return nil, e.AppError{
+					Code: errcode.ERROR,
+					Msg:  err.Error(),
+				}
 			}
 		}
 	}

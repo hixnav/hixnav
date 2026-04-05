@@ -3,6 +3,10 @@ name = hixnav
 run:
 	go run main.go
 
+build-front:
+	cd front && npm run build
+	rsync -av --delete front/dist/ dist/
+
 build-local:
 	go build -o hixnav .
 
@@ -24,4 +28,4 @@ build-win:
 	set GOARCH=amd64
 	go build -o bin/$(name)-winx64.exe main.go
 
-build: build-linux build-mac build-win
+build: build-front build-linux build-mac build-win

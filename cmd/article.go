@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"gitee.com/wennmu/gopkg.git/doconfig"
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
+	"github.com/hixnav/hixnav.git/internal/storage"
 )
 
 func (s *Link) List(c *gin.Context) (interface{}, error) {
@@ -20,7 +20,7 @@ func (s *Link) List(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	var articles []Link
-	dbimpl := doorm.DB().Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
+	dbimpl := storage.GetDB().Table("links").Where("type = ?", req.Type).Where("uid = ?", uid)
 	if req.Catename != "" {
 		dbimpl = dbimpl.Where("catename = ?", req.Catename)
 	}
@@ -48,7 +48,7 @@ func (s *Link) AddArticleLink(c *gin.Context) (interface{}, error) {
 		Url:      req.Url,
 		Uid:      c.GetInt64("uid"),
 	}
-	result := doorm.DB().Table("links").Create(&data)
+	result := storage.GetDB().Table("links").Create(&data)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return nil, result.Error
@@ -63,7 +63,7 @@ func (s *Link) EditArticleLink(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	link.Uid = c.GetInt64("uid")
-	result := doorm.DB().Table("links").Updates(&link)
+	result := storage.GetDB().Table("links").Updates(&link)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -74,7 +74,7 @@ func (s *Link) DelArticleLink(c *gin.Context) (interface{}, error) {
 	var link Link
 	id := c.PostForm("id")
 	uid := c.GetInt64("uid")
-	result := doorm.DB().Table("links").Where("id = ? and uid = ?", id, uid).Delete(&link)
+	result := storage.GetDB().Table("links").Where("id = ? and uid = ?", id, uid).Delete(&link)
 	if result.Error != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"code": -1,
@@ -87,17 +87,11 @@ func (s *Link) DelArticleLink(c *gin.Context) (interface{}, error) {
 
 func (s *Link) ExportArticleLink(c *gin.Context) (interface{}, error) {
 	uid := c.GetInt64("uid")
-	// 执行查询
 	var links []Link
-	if err := doorm.DB().Model(&Link{}).
+	if err := storage.GetDB().Table("links").
 		Where("uid = ?", uid).
 		Select("catename, name, url, logo").
-		Group("catename, name, url, logo").
 		Find(&links).Error; err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"code": -1,
-			"msg":  err.Error(),
-		})
 		return nil, err
 	}
 

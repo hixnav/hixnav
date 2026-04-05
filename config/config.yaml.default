@@ -13,13 +13,25 @@ log_error_path: "log/hixnav-error.log"
 #AppSecret
 AppSecret: ""
 
-#数据库
+#存储驱动: mysql, sqlite
+storage_driver: "mysql"
+
+#数据库 (当 storage_driver=mysql 时使用)
 DB: "root:***@tcp(127.0.0.1:3306)/hixnav?charset=utf8mb4&parseTime=True&loc=Local"
+
+#SQLite数据库路径 (当 storage_driver=sqlite 时使用)
+sqlite_path: "data/hixnav.db"
 
 #腾讯云存储
 COS: "https://%s-***.cos.ap-***.myqcloud.com/"
 COSSecretID: ""
 COSSecretKey: ""
+
+#COS同步配置 (仅当 storage_driver=sqlite 时生效)
+cos_sync_enabled: false
+cos_sync_interval: 3600
+cos_sync_bucket: "hixnav-db"
+cos_sync_export_dir: "data/export"
 
 #默认链接icon
 default_article_icon: ""

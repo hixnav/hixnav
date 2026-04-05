@@ -72,5 +72,12 @@ func RegisterApiRouters(r *gin.Engine) {
 
 		// 数据库
 		api.POST("/db/export", e.ErrorWrapper(cmd.ExportDatabase))
+
+		// COS同步
+		api.POST("/sync/push", e.ErrorWrapper(cmd.SyncPushToCOS))
+		api.POST("/sync/pull", e.ErrorWrapper(cmd.SyncPullFromCOS))
+		api.POST("/sync/export", e.ErrorWrapper(cmd.SyncExportToFile))
+		api.POST("/sync/import", e.ErrorWrapper(cmd.SyncImportFromFile))
+		api.POST("/sync/status", e.ErrorWrapper(cmd.GetSyncStatus))
 	}
 }

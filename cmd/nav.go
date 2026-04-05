@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
+	"github.com/hixnav/hixnav.git/internal/storage"
 )
 
 func (s *Nav) Home(c *gin.Context) (interface{}, error) {
@@ -16,12 +16,12 @@ func (s *Nav) Home(c *gin.Context) (interface{}, error) {
 	if uid != "" {
 		uids = append(uids, uid)
 	}
-	_ = doorm.DB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
+	_ = storage.GetDB().Table("navs").Select("cate as cate, catename as catename").Where("uid IN ?", uids).Group("cate,catename").Scan(&cates)
 
 	res := make(map[int64]interface{}, len(cates))
 	for _, cate := range cates {
 		var data []Nav
-		_ = doorm.DB().Table("navs").Where("cate = ?", cate.Cate).Find(&data)
+		_ = storage.GetDB().Table("navs").Where("cate = ?", cate.Cate).Find(&data)
 		res[cate.Cate] = data
 	}
 	return map[string]interface{}{
@@ -37,7 +37,7 @@ func (s *Nav) AddLink(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	nav.Uid = c.GetInt64("uid")
-	result := doorm.DB().Table("navs").Create(&nav)
+	result := storage.GetDB().Table("navs").Create(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return nil, result.Error
@@ -53,7 +53,7 @@ func (s *Nav) EditLink(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	nav.Uid = c.GetInt64("uid")
-	result := doorm.DB().Table("navs").Updates(&nav)
+	result := storage.GetDB().Table("navs").Updates(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return nil, result.Error
@@ -65,7 +65,7 @@ func (s *Nav) DelLink(c *gin.Context) (interface{}, error) {
 	var nav Nav
 	id := c.PostForm("id")
 	uid := c.GetInt64("uid")
-	result := doorm.DB().Table("navs").Where("id = ? and uid = ?", id, uid).Delete(&nav)
+	result := storage.GetDB().Table("navs").Where("id = ? and uid = ?", id, uid).Delete(&nav)
 	if result.Error != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"code": -1,
@@ -78,12 +78,10 @@ func (s *Nav) DelLink(c *gin.Context) (interface{}, error) {
 
 func (s *Nav) ExportLink(c *gin.Context) (interface{}, error) {
 	uid := c.GetInt64("uid")
-	// 执行查询
 	var navs []Nav
-	if err := doorm.DB().Model(&Nav{}).
+	if err := storage.GetDB().Table("navs").
 		Where("uid = ?", uid).
 		Select("catename, name, url, logo").
-		Group("catename, name, url, logo").
 		Find(&navs).Error; err != nil {
 		return nil, err
 	}

@@ -1,0 +1,55 @@
+name: Hixnav Web Build
+
+on:
+  push:
+    tags:
+      - '*'
+    # branches: [ main ]
+  # pull_request:
+    # branches: [ main ]
+  # Allows you to run this workflow manually from the Actions tab
+  # workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          persist-credentials: false
+
+      # - name: Set up Go
+      #   uses: actions/setup-go@v5.0.0
+      #   with:
+      #     go-version: 1.21
+        
+      - name: Set up npm
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          
+      - name: npm build
+        run: |
+          npm install && npm run build
+          
+      # - name: go build
+      #   run: |
+      #     go get -u github.com/jteeuwen/go-bindata/...
+      #     go get -u github.com/elazarl/go-bindata-assetfs/...
+      #     go-bindata -o pkg/bindata.go -pkg pkg ./dist/...
+    
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # git add pkg/bindata.go
+          # git add go.sum
+          git add ./dist/*
+          git commit -m "build"
+          # git commit -m "update pkg/bindata.go"
+        
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.REPO }}
+          branch: ${{ github.ref }}

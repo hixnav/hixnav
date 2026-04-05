@@ -23,7 +23,18 @@ func ErrorWrapper(handle WrapperHandle) gin.HandlerFunc {
 		reqId, _ := c.Get("requestId")
 		data, err := handle(c)
 		if err != nil {
-			appError := err.(AppError)
+			var appError AppError
+			switch e := err.(type) {
+			case AppError:
+				appError = e
+			case *AppError:
+				appError = *e
+			default:
+				appError = AppError{
+					Code: -1,
+					Msg:  err.Error(),
+				}
+			}
 			c.JSON(http.StatusOK, gin.H{
 				"code":      appError.Code,
 				"msg":       appError.Msg,

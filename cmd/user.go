@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/internal/errcode"
+	"github.com/hixnav/hixnav.git/internal/storage"
 )
 
 type userInfoResponse struct {
@@ -20,7 +20,7 @@ type userInfoResponse struct {
 
 func (a User) UserInfo(username, password string) (uid int64) {
 	var u userInfoResponse
-	err := doorm.DB().Table("users").Where("account = ? ", username).Where("passwd = ?", base64.StdEncoding.EncodeToString([]byte(password))).First(&u)
+	err := storage.GetDB().Table("users").Where("account = ? ", username).Where("passwd = ?", base64.StdEncoding.EncodeToString([]byte(password))).First(&u)
 	if err != nil {
 		uid = 0
 	}
@@ -36,7 +36,7 @@ type userListResponse struct {
 
 func (a *User) List(c *gin.Context) (interface{}, error) {
 	var users []userListResponse
-	res := doorm.DB().Table("users").Select("id, account, create_at").Find(&users)
+	res := storage.GetDB().Table("users").Select("id, account, create_at").Find(&users)
 	if res.Error != nil {
 		log.Println(res.Error)
 	}
@@ -62,7 +62,7 @@ func (a *User) Add(c *gin.Context) (interface{}, error) {
 		Passwd:   base64.StdEncoding.EncodeToString([]byte(req.Passwd)),
 		CreateAt: time.Now().Unix(),
 	}
-	result := doorm.DB().Table("users").Create(&data)
+	result := storage.GetDB().Table("users").Create(&data)
 	if result.Error != nil {
 		return nil, e.AppError{Code: -1, Msg: result.Error.Error()}
 	}
@@ -72,7 +72,7 @@ func (a *User) Add(c *gin.Context) (interface{}, error) {
 func (a *User) Del(c *gin.Context) (interface{}, error) {
 	var u User
 	id := c.PostForm("id")
-	result := doorm.DB().Table("users").Where("id = ? ", id).Delete(&u)
+	result := storage.GetDB().Table("users").Where("id = ? ", id).Delete(&u)
 	if result.Error != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"code": -1,

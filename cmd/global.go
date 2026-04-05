@@ -16,5 +16,6 @@ var (
 	// 登录验证秘钥，请务必更改
 	GlobalAppSecret = "wN3bdUQbBuL2AD7PeU9VYIqO7a35VU0G"
 
+	// GlobalDB is the active database connection (from storage layer)
 	GlobalDB *gorm.DB
 )

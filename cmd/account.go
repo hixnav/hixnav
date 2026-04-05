@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"gitee.com/wennmu/gopkg.git/dologger"
-	"gitee.com/wennmu/gopkg.git/doorm"
 	"github.com/gin-gonic/gin"
 	"github.com/hixnav/hixnav.git/internal/e"
 	"github.com/hixnav/hixnav.git/internal/errcode"
+	"github.com/hixnav/hixnav.git/internal/storage"
 	"log"
 	"net/http"
 	"time"
@@ -25,7 +25,7 @@ type AccountResponse struct {
 func (a *Account) List(c *gin.Context) (interface{}, error) {
 	var accounts []AccountResponse
 	uid := c.GetInt64("uid")
-	res := doorm.DB().Table("accounts").Select("id, sitename, siteurl, name, createat, uid").Where("uid = ?", uid).Find(&accounts)
+	res := storage.GetDB().Table("accounts").Select("id, sitename, siteurl, name, createat, uid").Where("uid = ?", uid).Find(&accounts)
 	if res.Error != nil {
 		log.Println(res.Error)
 	}
@@ -45,7 +45,7 @@ func (s *Account) Edit(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	acc.Uid = c.GetInt64("uid")
-	result := doorm.DB().Table("accounts").Where("uid = ?", acc.Uid).Where("id = ?", acc.ID).Updates(&acc)
+	result := storage.GetDB().Table("accounts").Where("uid = ?", acc.Uid).Where("id = ?", acc.ID).Updates(&acc)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "failed"})
 		return nil, result.Error
@@ -70,7 +70,7 @@ func (a *Account) Add(c *gin.Context) (interface{}, error) {
 		Createat: time.Now().Unix(),
 		Uid:      c.GetInt64("uid"),
 	}
-	result := doorm.DB().Table("accounts").Create(&data)
+	result := storage.GetDB().Table("accounts").Create(&data)
 	if result.Error != nil {
 		return nil, e.AppError{Code: -1, Msg: result.Error.Error()}
 	}
@@ -81,7 +81,7 @@ func (a *Account) Del(c *gin.Context) (interface{}, error) {
 	var account Account
 	id := c.PostForm("id")
 	uid := c.GetInt64("uid")
-	result := doorm.DB().Table("accounts").Where("id = ? and uid = ?", id, uid).Delete(&account)
+	result := storage.GetDB().Table("accounts").Where("id = ? and uid = ?", id, uid).Delete(&account)
 	if result.Error != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"code": -1,
@@ -100,7 +100,7 @@ func (a *Account) SecretView(c *gin.Context) (interface{}, error) {
 	var accountSecretViewResponse AccountSecretViewResponse
 	id := c.PostForm("id")
 	uid := c.GetInt64("uid")
-	res := doorm.DB().Table("accounts").Select("password").Where("id = ? and uid = ?", id, uid).First(&accountSecretViewResponse)
+	res := storage.GetDB().Table("accounts").Select("password").Where("id = ? and uid = ?", id, uid).First(&accountSecretViewResponse)
 	if res.Error != nil {
 		dologger.Error(res.Error)
 	}
