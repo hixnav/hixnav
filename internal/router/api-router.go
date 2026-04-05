@@ -21,6 +21,9 @@ func RegisterApiRouters(r *gin.Engine) {
 		api.POST("/home", e.ErrorWrapper(new(cmd.Nav).Home))
 		api.POST("/cates", e.ErrorWrapper(new(cmd.Cate).List))
 
+		// 搜索
+		api.POST("/search", e.ErrorWrapper(new(cmd.Nav).Search))
+
 		// 配置数据库
 		api.POST("/migrate/db", e.ErrorWrapper(cmd.MigrateDB))
 

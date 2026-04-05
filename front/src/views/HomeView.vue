@@ -15,17 +15,27 @@
       ">
       <!-- 搜索 -->
       <div class="main-search">
-        <el-row style="min-width: 400px; padding: 14px 50px 20px">
-          <el-input placeholder="搜索关键词" :value="searchVal" class="input-with-select" suffix-icon="el-icon-search"
-            size="large" style="border: none" />
-          <div class="history">
-            <div v-for="o in quikList" :key="o">
-              <!-- <i class="el-icon-search"></i> -->
-              <el-link :href="o.href" target="_blank" style="font-size: 10px">{{ o.name }}
-              </el-link>
-            </div>
+        <div class="cyber-search-wrapper">
+          <div class="search-glow"></div>
+          <el-input 
+            placeholder="搜索导航、链接..." 
+            v-model="searchVal" 
+            class="cyber-search-input"
+            suffix-icon="el-icon-search"
+            size="large" 
+            @keyup.enter.native="goToSearch"
+          />
+          <el-button type="primary" class="cyber-search-btn" size="large" @click="goToSearch">
+            <i class="el-icon-search"></i> 搜索
+          </el-button>
+        </div>
+        <div class="history">
+          <div v-for="o in quikList" :key="o.name">
+            <el-link :href="o.href" target="_blank" style="font-size: 12px" class="quick-link">
+              <span class="link-dot"></span>{{ o.name }}
+            </el-link>
           </div>
-        </el-row>
+        </div>
       </div>
       <!-- 标签 -->
       <div style="flex: 1; border-left: 1px solid #ccc; padding-left: 20px">
@@ -393,6 +403,11 @@ export default {
         inline: "nearest",
       });
     },
+    goToSearch() {
+      if (this.searchVal.trim()) {
+        this.$router.push({ path: '/search', query: { q: this.searchVal.trim() } })
+      }
+    },
     getData() {
       let self = this;
       this.axios
@@ -503,7 +518,78 @@ export default {
 }
 
 .history>div {
-  /* width: 80px; */
   margin: 10px 20px 0 0;
+}
+
+.cyber-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  min-width: 400px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(0, 195, 255, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.cyber-search-wrapper:focus-within {
+  border-color: #00c3ff;
+  box-shadow: 0 0 20px rgba(0, 195, 255, 0.2);
+}
+.search-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 195, 255, 0.05), transparent);
+  animation: searchGlow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes searchGlow {
+  0%, 100% { opacity: 0; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
+}
+.cyber-search-input { flex: 1; }
+.cyber-search-input >>> .el-input__inner {
+  background: transparent !important;
+  border: none !important;
+  color: #e0e6f0 !important;
+  font-size: 15px !important;
+}
+.cyber-search-input >>> .el-input__inner::placeholder {
+  color: rgba(224, 230, 240, 0.4) !important;
+}
+.cyber-search-btn {
+  background: linear-gradient(135deg, #00c3ff, #0077ff) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  margin-left: 12px;
+  font-weight: 600;
+}
+.cyber-search-btn:hover {
+  background: linear-gradient(135deg, #00d4ff, #0088ff) !important;
+  box-shadow: 0 0 20px rgba(0, 195, 255, 0.4);
+}
+.quick-link { color: rgba(0, 195, 255, 0.7) !important; }
+.quick-link:hover { color: #00c3ff !important; }
+.link-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #00c3ff;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.main-search {
+  width: 100%;
+  min-height: 150px;
+  margin: 20px 20px;
+  flex: 3;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+  border: 1px solid rgba(0, 195, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px;
 }
 </style>

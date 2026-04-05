@@ -2,7 +2,7 @@ import { getToken } from '@/utils/auth'
 import router from './router'
 import NProgress from 'nprogress'
 
-const whiteList = ['/install','/signin','/']
+const whiteList = ['/install','/signin','/','/search']
 
 router.beforeEach(async(to, from, next) => {
     NProgress.start()
